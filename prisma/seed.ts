@@ -1,11 +1,11 @@
-import { Prisma, PrismaClient } from '@prisma/client'
-import faker from 'faker'
+import { Prisma, PrismaClient } from '@prisma/client';
+import faker from 'faker';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-const NUMBER_OF_USERS = 10
-const MAX_POSTS = 10
-const MAX_PROFILES = 2
+const NUMBER_OF_USERS = 10;
+const MAX_POSTS = 10;
+const MAX_PROFILES = 2;
 
 const users: Prisma.UserCreateInput[] = Array.from({
   length: NUMBER_OF_USERS,
@@ -31,18 +31,18 @@ const users: Prisma.UserCreateInput[] = Array.from({
       })),
     },
   },
-}))
+}));
 
 async function main() {
   await prisma.$transaction(
     users.map((user) =>
       prisma.user.create({
         data: user,
-      }),
-    ),
-  )
+      })
+    )
+  );
 }
 
 main().finally(async () => {
-  await prisma.$disconnect()
-})
+  await prisma.$disconnect();
+});

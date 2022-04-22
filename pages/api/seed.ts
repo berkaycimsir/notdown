@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client'
-import { NextApiHandler } from 'next'
-import { prisma } from '../../lib/prisma'
+import { Prisma } from '@prisma/client';
+import { NextApiHandler } from 'next';
+import { prisma } from '../../lib/prisma';
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ const handler: NextApiHandler = async (req, res) => {
       prisma.profile.deleteMany({}),
       prisma.post.deleteMany({}),
       prisma.user.deleteMany({}),
-    ])
+    ]);
 
     const createdUsers = await prisma.$transaction([
       prisma.user.create({
@@ -17,14 +17,14 @@ const handler: NextApiHandler = async (req, res) => {
       prisma.user.create({
         data: seedUsers[1],
       }),
-    ])
+    ]);
 
-    res.status(201).json(createdUsers)
+    res.status(201).json(createdUsers);
   } catch (error) {
-    console.error(error)
-    return res.status(500).end()
+    console.error(error);
+    return res.status(500).end();
   }
-}
+};
 
 const seedUsers: Prisma.UserCreateInput[] = [
   {
@@ -91,6 +91,6 @@ const seedUsers: Prisma.UserCreateInput[] = [
       ],
     },
   },
-]
+];
 
-export default handler
+export default handler;
