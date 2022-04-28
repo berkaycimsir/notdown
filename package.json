@@ -29,9 +29,9 @@
   "scripts": {
     "init": "prisma db push && prisma db seed",
     "dev": "next dev",
-    "build": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate && next build",
+    "build": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' yarn generate:prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:generate": "prisma generate"
+    "generate:prisma": "prisma generate"
   }
 }
