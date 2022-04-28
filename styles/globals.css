@@ -14,7 +14,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-.cm-s-default:last-child {
-  display: none !important;
-}
