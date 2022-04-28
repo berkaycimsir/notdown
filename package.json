@@ -9,8 +9,9 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.2",
-    "@prisma/client": "3.4.2",
+    "@uiw/react-markdown-editor": "^4.0.3",
     "next": "latest",
+    "next-remove-imports": "^1.0.6",
     "react": "latest",
     "react-dom": "latest"
   },
