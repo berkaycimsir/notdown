@@ -6,7 +6,7 @@ import { isBrowser } from '../../lib/isBrowser';
 
 export const getMarkdownEditorTheme = (): MarkdownEditorThemeType => {
   return isBrowser
-    ? ((localStorage.getItem(MARKDOWN_EDITOR_THEME_KEY) ||'light') as MarkdownEditorThemeType)
+    ? ((localStorage.getItem(MARKDOWN_EDITOR_THEME_KEY) || 'light') as MarkdownEditorThemeType)
     : 'light';
 };
 
