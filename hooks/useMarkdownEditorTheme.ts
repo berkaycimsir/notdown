@@ -1,5 +1,9 @@
 import React from 'react';
-import { getMarkdownEditorTheme } from '../utils/editor';
+import {
+  getMarkdownEditorTheme,
+  setHtmlDataColorMode,
+  setMarkdownEditorTheme,
+} from '../utils/editor';
 
 export const MARKDOWN_EDITOR_THEME_KEY = 'markdown-editor-theme';
 
@@ -13,14 +17,13 @@ const useMarkdownEditorTheme = (): ReturnType => {
   const changeTheme = React.useCallback(() => {
     const theme = getMarkdownEditorTheme();
     const newValue = theme === 'light' ? 'dark' : 'light';
-
-    localStorage.setItem(MARKDOWN_EDITOR_THEME_KEY, newValue);
-    document.documentElement.setAttribute('data-color-mode', newValue);
+    setMarkdownEditorTheme(newValue);
+    setHtmlDataColorMode(newValue);
   }, []);
 
   React.useEffect(() => {
     const theme = getMarkdownEditorTheme();
-    document.documentElement.setAttribute('data-color-mode', theme);
+    setHtmlDataColorMode(theme);
   }, []);
 
   return { changeTheme };
