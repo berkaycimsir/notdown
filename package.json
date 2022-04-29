@@ -14,7 +14,8 @@
     "next": "latest",
     "next-remove-imports": "^1.0.6",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-spinners": "^0.11.0"
   },
   "devDependencies": {
     "@types/node": "16.11.7",

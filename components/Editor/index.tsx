@@ -3,13 +3,15 @@ import dynamic from 'next/dynamic';
 import '@uiw/react-markdown-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import { styled } from '@mui/material';
-import { prod } from '../lib/isProd';
+import { prod } from '../../lib/isProd';
+import EditorLoader from './Loader';
 
 const MarkdownEditor = dynamic(() => import('@uiw/react-markdown-editor'), {
   ssr: false,
+  loading: () => <EditorLoader />,
 });
 
-const StyledEditor = styled(MarkdownEditor)({
+const StyledMarkdownEditor = styled(MarkdownEditor)({
   ...(!prod
     ? {
         '.cm-s-default:last-child': {
@@ -30,7 +32,12 @@ const Editor: React.FC = () => {
   );
 
   return (
-    <StyledEditor visible height={800} value={value} onChange={onChange} />
+    <StyledMarkdownEditor
+      visible
+      height={800}
+      value={value}
+      onChange={onChange}
+    />
   );
 };
 

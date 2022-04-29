@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import type { NextPage } from 'next';
 import React from 'react';
 import useMarkdownEditorTheme from '../hooks/useMarkdownEditorTheme';
-import Editor from './Editor';
+import Editor from '../components/Editor';
 
 const Home: NextPage = () => {
   const { changeTheme } = useMarkdownEditorTheme();
