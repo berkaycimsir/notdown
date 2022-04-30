@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  AuthErrors: "incorrect-password" | "incorrect-username-or-email" | "username-or-email-already-exists"
 }
 
 export interface NexusGenScalars {
@@ -28,6 +29,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthMutationReturnType: { // root type
+    error?: NexusGenEnums['AuthErrors'] | null; // AuthErrors
+    token?: string | null; // String
+  }
   Mutation: {};
   Query: {};
   User: { // root type
@@ -46,11 +51,15 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  AuthMutationReturnType: { // field return type
+    error: NexusGenEnums['AuthErrors'] | null; // AuthErrors
+    token: string | null; // String
+  }
   Mutation: { // field return type
-    createUser: NexusGenRootTypes['User'] | null; // User
+    createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
   }
   Query: { // field return type
     hello: string; // String!
@@ -64,8 +73,12 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthMutationReturnType: { // field return type name
+    error: 'AuthErrors'
+    token: 'String'
+  }
   Mutation: { // field return type name
-    createUser: 'User'
+    createUser: 'AuthMutationReturnType'
   }
   Query: { // field return type name
     hello: 'String'
@@ -104,7 +117,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

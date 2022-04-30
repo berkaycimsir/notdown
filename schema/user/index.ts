@@ -1,6 +1,7 @@
 import { User } from 'nexus-prisma';
 import { objectType } from 'nexus';
 import { UserMutation } from './mutation';
+import { UserEnums } from './enum';
 
 const UserType = objectType({
   name: User.$name,
@@ -13,4 +14,19 @@ const UserType = objectType({
   },
 });
 
-export const UserTypes = [UserType, ...UserMutation];
+const AuthMutationReturnType = objectType({
+  name: 'AuthMutationReturnType',
+  definition(t) {
+    t.string('token');
+    t.field('error', {
+      type: 'AuthErrors',
+    });
+  },
+});
+
+export const UserTypes = [
+  UserType,
+  ...UserMutation,
+  ...UserEnums,
+  AuthMutationReturnType,
+];

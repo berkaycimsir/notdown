@@ -1,7 +1,9 @@
 import { mutationField, nonNull, stringArg } from 'nexus';
+import { generate } from '../../utils/token';
+import { AuthErrors } from './enum';
 
 const CreateUserMutation = mutationField('createUser', {
-  type: 'User',
+  type: nonNull('AuthMutationReturnType'),
   args: {
     fullName: nonNull(stringArg()),
     email: nonNull(stringArg()),
@@ -20,7 +22,10 @@ const CreateUserMutation = mutationField('createUser', {
     });
 
     if (user) {
-      return null;
+      return {
+        token: null,
+        error: AuthErrors.USERNAME_OR_EMAIL_ALREADY_EXISTS,
+      };
     }
 
     const createdUser = await prisma.user.create({
@@ -32,7 +37,10 @@ const CreateUserMutation = mutationField('createUser', {
       },
     });
 
-    return createdUser;
+    return {
+      token: generate({ payload: createdUser, options: { expiresIn: '12h' } }),
+      error: null,
+    };
   },
 });
 
