@@ -15,6 +15,7 @@ type AuthMutationReturnType {
 
 type Mutation {
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
+  signIn(email: String, password: String!, username: String): AuthMutationReturnType!
 }
 
 type Query {

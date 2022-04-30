@@ -60,6 +60,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+    signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
   }
   Query: { // field return type
     hello: string; // String!
@@ -79,6 +80,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createUser: 'AuthMutationReturnType'
+    signIn: 'AuthMutationReturnType'
   }
   Query: { // field return type name
     hello: 'String'
@@ -98,6 +100,11 @@ export interface NexusGenArgTypes {
       fullName: string; // String!
       password: string; // String!
       username: string; // String!
+    }
+    signIn: { // args
+      email?: string | null; // String
+      password: string; // String!
+      username?: string | null; // String
     }
   }
   Query: {
