@@ -78,13 +78,14 @@ const RouterIcons: Array<RouteIcon> = [
 
 const StyledSidebar = styled(Box)(
   sx({
-    width: '10%',
+    width: 'auto',
     height: '100vh',
     borderRight: `1px solid ${SIDEBAR_BORDER_COLOR}`,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
     py: 5,
+    px: 2,
   })
 );
 
