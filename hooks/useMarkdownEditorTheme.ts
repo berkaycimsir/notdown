@@ -11,6 +11,7 @@ export type MarkdownEditorThemeType = 'dark' | 'light';
 
 type ReturnType = {
   changeTheme: () => void;
+  theme: MarkdownEditorThemeType;
 };
 
 const useMarkdownEditorTheme = (): ReturnType => {
@@ -26,7 +27,7 @@ const useMarkdownEditorTheme = (): ReturnType => {
     setHtmlDataColorMode(theme);
   }, []);
 
-  return { changeTheme };
+  return { changeTheme, theme: getMarkdownEditorTheme() };
 };
 
 export default useMarkdownEditorTheme;

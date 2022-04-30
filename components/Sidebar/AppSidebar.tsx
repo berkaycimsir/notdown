@@ -30,11 +30,11 @@ const ROUTER_ICON_DIMENSIONS = { width: 28, height: 28 };
 const ROUTER_ICON_STYLES = {
   filled: {
     ...ROUTER_ICON_DIMENSIONS,
-    color: '#303030',
+    color: '#454545',
   },
   outlined: {
     ...ROUTER_ICON_DIMENSIONS,
-    color: grey[800],
+    color: grey[600],
   },
 };
 
@@ -57,7 +57,12 @@ const RouterIcons: Array<RouteIcon> = [
   {
     pathname: '/notifications',
     filled: <Notifications sx={ROUTER_ICON_STYLES.filled} />,
-    outlined: <NotificationsNoneRounded sx={ROUTER_ICON_STYLES.outlined} />,
+    outlined: (
+      <NotificationsNoneRounded
+        strokeWidth="0.1px"
+        sx={ROUTER_ICON_STYLES.outlined}
+      />
+    ),
   },
   {
     pathname: '/bookmarks',
@@ -118,6 +123,13 @@ const StyledProfileImage = styled(Avatar)({
 const AppSidebar: React.FC = () => {
   const router = useRouter();
 
+  const onRouteIconClick = React.useCallback(
+    (pathname: string) => {
+      router.push(pathname);
+    },
+    [router]
+  );
+
   return (
     <StyledSidebar>
       <StyledBrandIcon fontSize="large" />
@@ -131,6 +143,7 @@ const AppSidebar: React.FC = () => {
           <>
             {isLastIcon && <StyledLastRouterIconDivider />}
             <StyledRouterIconButton
+              onClick={() => onRouteIconClick(pathname)}
               $isLastIcon={isLastIcon}
               disableTouchRipple
               key={pathname}
