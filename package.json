@@ -28,6 +28,11 @@
     "react-spinners": "^0.11.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/typescript-operations": "^2.3.5",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.11",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "16.11.7",
@@ -42,13 +47,14 @@
     "seed": "ts-node ./prisma/seed.ts"
   },
   "scripts": {
-    "init": "prisma db push && prisma db seed",
+    "init": "prisma db push",
     "dev": "next dev",
     "build": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' yarn generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "yarn generate:prisma && yarn generate:nexus",
+    "generate": "yarn generate:prisma && yarn generate:nexus && yarn generate:graphql",
     "generate:prisma": "prisma generate",
-    "generate:nexus": "ts-node --transpile-only --compiler-options '{\"module\":\"CommonJS\"}' schema"
+    "generate:nexus": "ts-node --transpile-only --compiler-options '{\"module\":\"CommonJS\"}' schema",
+    "generate:graphql": "graphql-codegen --config codegen.js"
   }
 }

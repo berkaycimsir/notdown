@@ -1,26 +1,15 @@
-import { gql, useQuery } from '@apollo/client';
-import { User } from '@prisma/client';
+import React from 'react';
+import { useMeQuery, User } from '../generated/graphql';
 
 type ReturnType = {
-  me: User | null;
+  me: User | null | undefined;
   loading: boolean;
 };
 
 const useMe = (): ReturnType => {
-  const { data, loading } = useQuery(
-    gql`
-      query {
-        me {
-          id
-          fullName
-          username
-          email
-        }
-      }
-    `
-  );
+  const { data, loading } = useMeQuery();
 
-  const me = data?.me;
+  const me = React.useMemo(() => data?.me, [data?.me]);
 
   return { me, loading };
 };

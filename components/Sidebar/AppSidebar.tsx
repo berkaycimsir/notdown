@@ -106,14 +106,14 @@ const StyledLastRouterIconDivider = styled(Divider)(
   })
 );
 
-const StyledRouterIconButton = styled(IconButton)<{ $isLastIcon: boolean }>(
-  ({ $isLastIcon }) => {
-    return sx({
-      mt: 2,
-      mb: $isLastIcon ? 2 : 0,
-    });
-  }
-);
+const StyledRouterIconButton = styled(IconButton, {
+  shouldForwardProp: (prop: any) => prop !== '$isLastIcon',
+})<{ $isLastIcon: boolean }>(({ $isLastIcon }) => {
+  return sx({
+    mt: 2,
+    mb: $isLastIcon ? 2 : 0,
+  });
+});
 
 const StyledProfileImage = styled(Avatar)({
   width: 36,
@@ -146,6 +146,7 @@ const AppSidebar: React.FC = () => {
               onClick={() => onRouteIconClick(pathname)}
               $isLastIcon={isLastIcon}
               disableTouchRipple
+              key={pathname}
             >
               {router.pathname === pathname ? filled : outlined}
             </StyledRouterIconButton>
