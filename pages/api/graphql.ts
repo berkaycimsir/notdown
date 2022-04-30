@@ -14,7 +14,7 @@ const apolloServer = new ApolloServer({
     ApolloServerPluginLandingPageDisabled(),
     ApolloServerPluginLandingPageGraphQLPlayground(),
   ],
-  context,
+  context: ({ req }) => context(req),
 });
 
 const startServer = apolloServer.start();

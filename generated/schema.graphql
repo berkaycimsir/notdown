@@ -20,6 +20,7 @@ type Mutation {
 
 type Query {
   hello(name: String!): String!
+  me: User
 }
 
 type User {

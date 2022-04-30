@@ -3,6 +3,7 @@
   "description": "Markdown note taking app built with Next.js and Prisma",
   "license": "UNLICENSED",
   "dependencies": {
+    "@apollo/client": "3.5.10",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.9.0",
     "@emotion/server": "^11.4.0",

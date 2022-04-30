@@ -2,6 +2,7 @@ import { User } from 'nexus-prisma';
 import { objectType } from 'nexus';
 import { UserMutation } from './mutation';
 import { UserEnums } from './enum';
+import { UserQuery } from './query';
 
 const UserType = objectType({
   name: User.$name,
@@ -26,7 +27,8 @@ const AuthMutationReturnType = objectType({
 
 export const UserTypes = [
   UserType,
+  UserQuery,
+  AuthMutationReturnType,
   ...UserMutation,
   ...UserEnums,
-  AuthMutationReturnType,
 ];

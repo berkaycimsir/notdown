@@ -8,6 +8,8 @@ import theme from '../utils/mui/theme';
 import createEmotionCache from '../utils/mui/createEmotionCache';
 import '../styles/globals.css';
 import AppLayout from '../layouts/AppLayout';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../graphql/client';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -26,9 +28,11 @@ export default function MyApp(props: MyAppProps) {
 
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppLayout>
-          <Component {...pageProps} />
-        </AppLayout>
+        <ApolloProvider client={client}>
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>
   );

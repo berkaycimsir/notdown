@@ -64,6 +64,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     hello: string; // String!
+    me: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
     email: string; // String!
@@ -84,6 +85,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     hello: 'String'
+    me: 'User'
   }
   User: { // field return type name
     email: 'String'

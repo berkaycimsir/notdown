@@ -16,10 +16,6 @@ const CreateUserMutation = mutationField('createUser', {
       where: {
         OR: [{ username }, { email }],
       },
-      select: {
-        email: true,
-        username: true,
-      },
     });
 
     if (user) {
