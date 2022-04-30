@@ -1,14 +1,15 @@
-/**
- * Avoid instantiating too many instances of Prisma, especially in development.
- *
- * @link https://www.prisma.io/docs/support/help-articles/nextjs-prisma-client-dev-practices#problem
- */
+import { PrismaClient, Prisma } from '@prisma/client';
+import { prod } from './isProd';
 
-import { PrismaClient } from '@prisma/client';
+export type PrismaInstance = PrismaClient<
+  Prisma.PrismaClientOptions,
+  never,
+  Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
+>;
 
-let prisma: PrismaClient;
+let prisma: PrismaInstance;
 
-if (process.env.NODE_ENV === 'production') {
+if (prod) {
   prisma = new PrismaClient();
 } else {
   const g = global as any;
