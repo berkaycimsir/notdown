@@ -6,6 +6,7 @@ import {
 import { ApolloServer } from 'apollo-server-micro';
 import { MicroRequest } from 'apollo-server-micro/dist/types';
 import { ServerResponse } from 'http';
+import { context } from '../../schema/context';
 
 const apolloServer = new ApolloServer({
   schema,
@@ -13,6 +14,7 @@ const apolloServer = new ApolloServer({
     ApolloServerPluginLandingPageDisabled(),
     ApolloServerPluginLandingPageGraphQLPlayground(),
   ],
+  context,
 });
 
 const startServer = apolloServer.start();

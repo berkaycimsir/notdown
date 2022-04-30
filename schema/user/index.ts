@@ -1,7 +1,8 @@
 import { User } from 'nexus-prisma';
 import { objectType } from 'nexus';
+import { UserMutation } from './mutation';
 
-export const UserType = objectType({
+const UserType = objectType({
   name: User.$name,
   description: User.$description,
   definition(t) {
@@ -11,3 +12,5 @@ export const UserType = objectType({
     t.field(User.username);
   },
 });
+
+export const UserTypes = [UserType, ...UserMutation];
