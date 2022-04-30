@@ -140,17 +140,16 @@ const AppSidebar: React.FC = () => {
         const isLastIcon = index === RouterIcons.length - 1;
 
         return (
-          <>
+          <React.Fragment key={pathname}>
             {isLastIcon && <StyledLastRouterIconDivider />}
             <StyledRouterIconButton
               onClick={() => onRouteIconClick(pathname)}
               $isLastIcon={isLastIcon}
               disableTouchRipple
-              key={pathname}
             >
               {router.pathname === pathname ? filled : outlined}
             </StyledRouterIconButton>
-          </>
+          </React.Fragment>
         );
       })}
 
