@@ -3,6 +3,10 @@ generator client {
   previewFeatures = ["dataproxy"]
 }
 
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -11,5 +15,7 @@ datasource db {
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
-  name  String?
+  username String @unique
+  fullName String
+  password String 
 }
