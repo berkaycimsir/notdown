@@ -1,17 +1,20 @@
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import type { NextPage } from 'next';
 import React from 'react';
 import useMarkdownEditorTheme from '../hooks/useMarkdownEditorTheme';
 import Editor from '../components/Editor';
+import AppLayout from '../layouts/AppLayout';
 
 const Home: NextPage = () => {
   const { changeTheme } = useMarkdownEditorTheme();
 
   return (
-    <div style={{ padding: 50 }}>
-      <Button onClick={changeTheme}>change theme</Button>
+    <AppLayout>
+      <Button variant="outlined" onClick={changeTheme}>
+        change theme
+      </Button>
       <Editor />
-    </div>
+    </AppLayout>
   );
 };
 
