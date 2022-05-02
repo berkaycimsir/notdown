@@ -140,7 +140,7 @@ const AppSidebar: React.FC = () => {
       if (me || pathname === '/') {
         router.push(pathname);
       } else {
-        showModal({ type: CustomModalTypes.SIGN_IN });
+        showModal({ type: CustomModalTypes.SIGN_IN, showCloseButton: true });
       }
     },
     [me, router, showModal]

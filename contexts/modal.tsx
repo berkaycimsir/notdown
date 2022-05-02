@@ -11,6 +11,7 @@ import {
   DialogTitle,
   IconButton,
 } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 export enum CustomModalTypes {
   CUSTOM = 0,
@@ -104,7 +105,7 @@ export const ModalContextProvider: React.FC<{ children: React.ReactNode }> = ({
             <Box display="flex" alignItems="center" flexDirection="row">
               <div style={{ flex: 1 }} />
               <IconButton size="small">
-                <Close />
+                <Close htmlColor={grey[500]} />
               </IconButton>
             </Box>
           </DialogTitle>
