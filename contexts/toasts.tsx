@@ -34,7 +34,6 @@ const ToastsContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const showToast = React.useCallback(
     (props: ToastProps) => {
-      console.log('p', props);
       setToastProps({ ...toastProps, ...props });
       setIsToastVisible(true);
     },

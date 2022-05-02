@@ -4,3 +4,20 @@ mutation SignIn($username: String, $email: String, $password: String!) {
     error
   }
 }
+
+mutation SignUp(
+  $fullName: String!
+  $username: String!
+  $email: String!
+  $password: String!
+) {
+  createUser(
+    fullName: $fullName
+    username: $username
+    email: $email
+    password: $password
+  ) {
+    token
+    error
+  }
+}

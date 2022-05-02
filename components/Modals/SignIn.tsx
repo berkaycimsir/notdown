@@ -17,10 +17,9 @@ import { Controller, useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useSignInMutation } from '../../generated/graphql';
 import Input from '../Input';
-import Link from '../Link';
 import { saveToken } from '../../utils/token';
 import useMe from '../../hooks/useMe';
-import { useModalContext } from '../../contexts/modal';
+import { CustomModalTypes, useModalContext } from '../../contexts/modal';
 import { useToastsContext } from '../../contexts/toasts';
 import { getAuthErrorMessage } from '../../utils/auth';
 
@@ -71,11 +70,13 @@ const StyledBottomText = styled(Typography)(
   })
 );
 
-const StyledLink = styled(Link)(({ theme }) =>
+const StyledLink = styled(Typography)(({ theme }) =>
   sx({
     fontWeight: 600,
     ml: '6px',
     color: theme.palette.secondary.main,
+    cursor: 'pointer',
+    display: 'inline',
   })
 );
 
@@ -90,7 +91,7 @@ const defaultValues: IFormValues = {
 };
 
 const SignIn = () => {
-  const { hideModal } = useModalContext();
+  const { hideModal, showModal } = useModalContext();
   const { showToast } = useToastsContext();
   const { refetch } = useMe();
   const [signIn] = useSignInMutation();
@@ -120,7 +121,7 @@ const SignIn = () => {
         },
       });
 
-      const token = data?.signIn.token || '';
+      const token = data?.signIn.token;
       const error = data?.signIn.error;
 
       reset();
@@ -200,7 +201,14 @@ const SignIn = () => {
 
       <StyledBottomText variant="subtitle1">
         Don{"'"}t have an account yet ?
-        <StyledLink href="/sign-up">Sign Up</StyledLink>
+        <StyledLink
+          onClick={() =>
+            showModal({ type: CustomModalTypes.SIGN_UP, showCloseButton: true })
+          }
+          variant="subtitle2"
+        >
+          Sign Up
+        </StyledLink>
       </StyledBottomText>
     </StyledContainer>
   );
