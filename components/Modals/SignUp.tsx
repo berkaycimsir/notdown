@@ -131,7 +131,7 @@ const SignUp = () => {
       reset();
       showToast({
         type: error ? 'error' : 'success',
-        message: getAuthErrorMessage(error, 'sign-in'),
+        message: getAuthErrorMessage(error, 'sign-up'),
       });
 
       if (token) {
