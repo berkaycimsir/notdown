@@ -6,6 +6,7 @@ import {
   BookmarksRounded,
   EditOutlined,
   EditRounded,
+  Face,
   Notifications,
   NotificationsNoneRounded,
 } from '@mui/icons-material';
@@ -17,6 +18,7 @@ import {
   IconButton,
   styled,
   SvgIconTypeMap,
+  Tooltip,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
@@ -24,6 +26,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import HomeFilled from '../../assets/svg/homeFilled.svg';
 import HomeOutlined from '../../assets/svg/homeOutlined.svg';
+import { CustomModalTypes, useModalContext } from '../../contexts/modal';
+import useMe from '../../hooks/useMe';
 
 const SIDEBAR_BORDER_COLOR = 'rgba(230, 230, 230, 1)';
 const ROUTER_ICON_DIMENSIONS = { width: 28, height: 28 };
@@ -43,6 +47,7 @@ type MaterialIconType = OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
 };
 
 type RouteIcon = {
+  name: string;
   pathname: string;
   filled: MaterialIconType | any;
   outlined: MaterialIconType | any;
@@ -50,11 +55,13 @@ type RouteIcon = {
 
 const RouterIcons: Array<RouteIcon> = [
   {
+    name: 'Home',
     pathname: '/',
     filled: <HomeFilled />,
     outlined: <HomeOutlined />,
   },
   {
+    name: 'Notifications',
     pathname: '/notifications',
     filled: <Notifications sx={ROUTER_ICON_STYLES.filled} />,
     outlined: (
@@ -65,16 +72,19 @@ const RouterIcons: Array<RouteIcon> = [
     ),
   },
   {
+    name: 'Bookmarks',
     pathname: '/bookmarks',
     filled: <BookmarksRounded sx={ROUTER_ICON_STYLES.filled} />,
     outlined: <BookmarksOutlined sx={ROUTER_ICON_STYLES.outlined} />,
   },
   {
+    name: 'Stories',
     pathname: '/stories',
     filled: <ArticleRounded sx={ROUTER_ICON_STYLES.filled} />,
     outlined: <ArticleOutlined sx={ROUTER_ICON_STYLES.outlined} />,
   },
   {
+    name: 'New',
     pathname: '/new',
     filled: <EditRounded sx={ROUTER_ICON_STYLES.filled} />,
     outlined: <EditOutlined sx={ROUTER_ICON_STYLES.outlined} />,
@@ -122,12 +132,18 @@ const StyledProfileImage = styled(Avatar)({
 
 const AppSidebar: React.FC = () => {
   const router = useRouter();
+  const { me } = useMe();
+  const { showModal } = useModalContext();
 
   const onRouteIconClick = React.useCallback(
     (pathname: string) => {
-      router.push(pathname);
+      if (me || pathname === '/') {
+        router.push(pathname);
+      } else {
+        showModal({ type: CustomModalTypes.SIGN_IN });
+      }
     },
-    [router]
+    [me, router, showModal]
   );
 
   return (
@@ -136,29 +152,37 @@ const AppSidebar: React.FC = () => {
 
       <div style={{ flex: 1 }} />
 
-      {RouterIcons.map(({ pathname, filled, outlined }, index) => {
+      {RouterIcons.map(({ name, pathname, filled, outlined }, index) => {
         const isLastIcon = index === RouterIcons.length - 1;
 
         return (
           <React.Fragment key={pathname}>
             {isLastIcon && <StyledLastRouterIconDivider />}
-            <StyledRouterIconButton
-              onClick={() => onRouteIconClick(pathname)}
-              $isLastIcon={isLastIcon}
-              disableTouchRipple
-              key={pathname}
-            >
-              {router.pathname === pathname ? filled : outlined}
-            </StyledRouterIconButton>
+            <Tooltip placement="left" title={name}>
+              <StyledRouterIconButton
+                onClick={() => onRouteIconClick(pathname)}
+                $isLastIcon={isLastIcon}
+                disableTouchRipple
+                key={pathname}
+              >
+                {router.pathname === pathname ? filled : outlined}
+              </StyledRouterIconButton>
+            </Tooltip>
           </React.Fragment>
         );
       })}
 
       <div style={{ flex: 1 }} />
 
-      <IconButton size="small">
-        <StyledProfileImage src="https://avatars.githubusercontent.com/u/47090177?v=4" />
-      </IconButton>
+      <Tooltip title="Profile" placement="left">
+        <IconButton onClick={() => onRouteIconClick('/profile')} size="small">
+          {me ? (
+            <StyledProfileImage src="https://avatars.githubusercontent.com/u/47090177?v=4" />
+          ) : (
+            <Face sx={{ fontSize: 28 }} />
+          )}
+        </IconButton>
+      </Tooltip>
     </StyledSidebar>
   );
 };
