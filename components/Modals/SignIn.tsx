@@ -21,6 +21,8 @@ import Link from '../Link';
 import { saveToken } from '../../utils/token';
 import useMe from '../../hooks/useMe';
 import { useModalContext } from '../../contexts/modal';
+import { useToastsContext } from '../../contexts/toasts';
+import { getAuthErrorMessage } from '../../utils/auth';
 
 const StyledContainer = styled(Container)(
   sx({
@@ -89,9 +91,15 @@ const defaultValues: IFormValues = {
 
 const SignIn = () => {
   const { hideModal } = useModalContext();
+  const { showToast } = useToastsContext();
   const { refetch } = useMe();
-  const [signIn, { loading }] = useSignInMutation();
-  const { handleSubmit, control, reset } = useForm<IFormValues>({
+  const [signIn] = useSignInMutation();
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<IFormValues>({
     defaultValues,
   });
 
@@ -113,14 +121,21 @@ const SignIn = () => {
       });
 
       const token = data?.signIn.token || '';
+      const error = data?.signIn.error;
 
       reset();
-      saveToken(token);
-      hideModal();
+      showToast({
+        type: error ? 'error' : 'success',
+        message: getAuthErrorMessage(error, 'sign-in'),
+      });
 
-      await refetch();
+      if (token) {
+        saveToken(token);
+        hideModal();
+        await refetch();
+      }
     },
-    [reset, signIn, refetch, hideModal]
+    [signIn, reset, showToast, hideModal, refetch]
   );
 
   return (
@@ -172,7 +187,7 @@ const SignIn = () => {
         <StyledButton
           type="submit"
           fullWidth
-          loading={loading}
+          loading={isSubmitting}
           variant="outlined"
           disableFocusRipple
           disableTouchRipple

@@ -11,6 +11,7 @@ import AppLayout from '../layouts/AppLayout';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';
 import { ModalContextProvider } from '../contexts/modal';
+import ToastsContextProvider from '../contexts/toasts';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -30,11 +31,13 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ApolloProvider client={client}>
-          <ModalContextProvider>
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
-          </ModalContextProvider>
+          <ToastsContextProvider>
+            <ModalContextProvider>
+              <AppLayout>
+                <Component {...pageProps} />
+              </AppLayout>
+            </ModalContextProvider>
+          </ToastsContextProvider>
         </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>
