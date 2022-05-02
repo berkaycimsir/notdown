@@ -18,3 +18,7 @@ export const verify = (token: string): string | jwt.JwtPayload => {
 export const getToken = (): string => {
   return localStorage.getItem('token') || '';
 };
+
+export const saveToken = (token: string): void => {
+  localStorage.setItem('token', token);
+};

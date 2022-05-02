@@ -44,10 +44,12 @@ const ModalContext = createContext<{
   showModal: (props: ModalPropsType) => void;
   isModalVisible: boolean;
   type?: CustomModalTypes;
+  hideModal: () => void;
 }>({
   showModal: () => {},
   isModalVisible: false,
   type: undefined,
+  hideModal: () => {},
 });
 
 export const useModalContext = () => useContext(ModalContext);
@@ -87,6 +89,7 @@ export const ModalContextProvider: React.FC<{ children: React.ReactNode }> = ({
         showModal,
         isModalVisible,
         type,
+        hideModal,
       }}
     >
       {children}

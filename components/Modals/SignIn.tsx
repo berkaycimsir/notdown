@@ -5,7 +5,6 @@ import {
   VisibilityOutlined,
 } from '@mui/icons-material';
 import {
-  Button,
   Container,
   styled,
   Typography,
@@ -15,8 +14,13 @@ import {
 import { grey } from '@mui/material/colors';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useSignInMutation } from '../../generated/graphql';
 import Input from '../Input';
 import Link from '../Link';
+import { saveToken } from '../../utils/token';
+import useMe from '../../hooks/useMe';
+import { useModalContext } from '../../contexts/modal';
 
 const StyledContainer = styled(Container)(
   sx({
@@ -41,7 +45,7 @@ const StyledForm = styled('form')(
   })
 );
 
-const StyledButton = styled(Button)(
+const StyledButton = styled(LoadingButton)(
   sx({
     textTransform: 'none',
     mt: 3,
@@ -84,6 +88,9 @@ const defaultValues: IFormValues = {
 };
 
 const SignIn = () => {
+  const { hideModal } = useModalContext();
+  const { refetch } = useMe();
+  const [signIn, { loading }] = useSignInMutation();
   const { handleSubmit, control, reset } = useForm<IFormValues>({
     defaultValues,
   });
@@ -96,11 +103,24 @@ const SignIn = () => {
   );
 
   const onSubmit = React.useCallback(
-    (data: IFormValues) => {
-      console.log(data);
+    async (formValues: IFormValues) => {
+      const { data } = await signIn({
+        variables: {
+          username: formValues.usernameOrEmail,
+          email: formValues.usernameOrEmail,
+          password: formValues.password,
+        },
+      });
+
+      const token = data?.signIn.token || '';
+
       reset();
+      saveToken(token);
+      hideModal();
+
+      await refetch();
     },
-    [reset]
+    [reset, signIn, refetch, hideModal]
   );
 
   return (
@@ -112,9 +132,11 @@ const SignIn = () => {
           name="usernameOrEmail"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => (
+          render={({ field, formState: { errors } }) => (
             <Input
               fullWidth
+              hasError={Boolean(errors.usernameOrEmail)}
+              errorText="This field is required"
               startIcon={<PersonRounded fontSize="small" />}
               placeholder="username or email"
               {...field}
@@ -125,14 +147,16 @@ const SignIn = () => {
         <Controller
           name="password"
           control={control}
-          rules={{ required: true, minLength: 6 }}
-          render={({ field }) => (
+          rules={{ required: true }}
+          render={({ field, formState: { errors } }) => (
             <Input
               fullWidth
               startIcon={<LockRounded fontSize="small" />}
               placeholder="password"
               type={showPassword ? 'text' : 'password'}
               {...field}
+              hasError={Boolean(errors.password)}
+              errorText="This field is required"
               onEndIconClick={onEndIconClick}
               endIcon={
                 !showPassword ? (
@@ -148,7 +172,8 @@ const SignIn = () => {
         <StyledButton
           type="submit"
           fullWidth
-          variant="text"
+          loading={loading}
+          variant="outlined"
           disableFocusRipple
           disableTouchRipple
         >

@@ -1,0 +1,6 @@
+mutation SignIn($username: String, $email: String, $password: String!) {
+  signIn(username: $username, email: $email, password: $password) {
+    token
+    error
+  }
+}
