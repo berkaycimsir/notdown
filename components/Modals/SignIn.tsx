@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import Input from '../Input';
 import Link from '../Link';
 
@@ -30,6 +31,13 @@ const StyledWelcomeBackText = styled(Typography)(
   sx({
     fontWeight: 400,
     fontStyle: 'italic',
+  })
+);
+
+const StyledForm = styled('form')(
+  sx({
+    marginTop: 4,
+    width: '100%',
   })
 );
 
@@ -65,7 +73,21 @@ const StyledLink = styled(Link)(({ theme }) =>
   })
 );
 
+interface IFormValues {
+  usernameOrEmail: string;
+  password: string;
+}
+
+const defaultValues: IFormValues = {
+  usernameOrEmail: '',
+  password: '',
+};
+
 const SignIn = () => {
+  const { handleSubmit, control, reset } = useForm<IFormValues>({
+    defaultValues,
+  });
+
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
   const onEndIconClick = React.useCallback(
@@ -73,33 +95,58 @@ const SignIn = () => {
     [setShowPassword, showPassword]
   );
 
+  const onSubmit = React.useCallback(
+    (data: IFormValues) => {
+      console.log(data);
+      reset();
+    },
+    [reset]
+  );
+
   return (
     <StyledContainer maxWidth="xs">
       <StyledWelcomeBackText variant="h4">Welcome Back</StyledWelcomeBackText>
 
-      <form style={{ marginTop: 24, width: '100%' }}>
-        <Input
-          fullWidth
-          startIcon={<PersonRounded fontSize="small" />}
-          placeholder="username or email"
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="usernameOrEmail"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Input
+              fullWidth
+              startIcon={<PersonRounded fontSize="small" />}
+              placeholder="username or email"
+              {...field}
+            />
+          )}
         />
 
-        <Input
-          fullWidth
-          startIcon={<LockRounded fontSize="small" />}
-          placeholder="password"
-          type={showPassword ? 'text' : 'password'}
-          onEndIconClick={onEndIconClick}
-          endIcon={
-            !showPassword ? (
-              <VisibilityOutlined fontSize="small" htmlColor={grey[500]} />
-            ) : (
-              <VisibilityOff fontSize="small" htmlColor={grey[500]} />
-            )
-          }
+        <Controller
+          name="password"
+          control={control}
+          rules={{ required: true, minLength: 6 }}
+          render={({ field }) => (
+            <Input
+              fullWidth
+              startIcon={<LockRounded fontSize="small" />}
+              placeholder="password"
+              type={showPassword ? 'text' : 'password'}
+              {...field}
+              onEndIconClick={onEndIconClick}
+              endIcon={
+                !showPassword ? (
+                  <VisibilityOutlined fontSize="small" htmlColor={grey[500]} />
+                ) : (
+                  <VisibilityOff fontSize="small" htmlColor={grey[500]} />
+                )
+              }
+            />
+          )}
         />
 
         <StyledButton
+          type="submit"
           fullWidth
           variant="text"
           disableFocusRipple
@@ -107,7 +154,7 @@ const SignIn = () => {
         >
           Sign In
         </StyledButton>
-      </form>
+      </StyledForm>
 
       <StyledDivider />
 

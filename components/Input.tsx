@@ -75,7 +75,7 @@ const Input: React.FC<Props> = ({
       <StyledInput $size={size} {...props} />
       {endIcon && (
         <>
-          <Divider sx={{ height: 22 }} orientation="vertical" />
+          <Divider sx={{ height: 22, mr: 1 }} orientation="vertical" />
           <IconButton
             onClick={() => onEndIconClick?.()}
             size="small"

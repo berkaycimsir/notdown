@@ -104,7 +104,7 @@ export const ModalContextProvider: React.FC<{ children: React.ReactNode }> = ({
           <DialogTitle>
             <Box display="flex" alignItems="center" flexDirection="row">
               <div style={{ flex: 1 }} />
-              <IconButton size="small">
+              <IconButton onClick={hideModal} size="small">
                 <Close htmlColor={grey[500]} />
               </IconButton>
             </Box>
