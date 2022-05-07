@@ -7,6 +7,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import theme from '../utils/mui/theme';
 import createEmotionCache from '../utils/mui/createEmotionCache';
 import '../styles/globals.css';
+import '../styles/editor.css';
 import AppLayout from '../layouts/AppLayout';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';

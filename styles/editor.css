@@ -1,0 +1,24 @@
+.CodeMirror {
+  font-family: Roboto Mono !important;
+  font-size: 16px !important;
+}
+
+.md-editor {
+  box-shadow: none !important;
+  width: 100% !important;
+}
+
+.CodeMirror-sizer {
+  padding-top: 10px !important;
+  padding-left: 5px !important;
+}
+
+.md-editor-preview {
+  border-left: none !important;
+  height: 100% !important;
+  padding-bottom: 64px !important;
+}
+
+.md-editor-toolbar {
+  border-width: 0.1px !important;
+}
