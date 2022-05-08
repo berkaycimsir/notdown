@@ -1,0 +1,14 @@
+query GetNotes($authorId: ID!) {
+  getNotes(authorId: $authorId) {
+    id
+    markdown
+    title
+    isPublished
+    author {
+      id
+      fullName
+      username
+      email
+    }
+  }
+}

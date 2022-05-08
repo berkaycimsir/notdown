@@ -5,8 +5,23 @@
 
 
 import type { Context } from "./../schema/context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+  }
+}
 
 
 declare global {
@@ -27,6 +42,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenObjects {
@@ -41,13 +57,16 @@ export interface NexusGenObjects {
   Mutation: {};
   Note: { // root type
     authorId: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     isPublished: boolean; // Boolean!
     markdown: string; // String!
     title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: {};
   User: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     fullName: string; // String!
     id: number; // Int!
@@ -82,10 +101,12 @@ export interface NexusGenFieldTypes {
   Note: { // field return type
     author: NexusGenRootTypes['User']; // User!
     authorId: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     isPublished: boolean; // Boolean!
     markdown: string; // String!
     title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
     getNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
@@ -93,6 +114,7 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     fullName: string; // String!
     id: number; // Int!
@@ -117,10 +139,12 @@ export interface NexusGenFieldTypeNames {
   Note: { // field return type name
     author: 'User'
     authorId: 'Int'
+    createdAt: 'DateTime'
     id: 'Int'
     isPublished: 'Boolean'
     markdown: 'String'
     title: 'String'
+    updatedAt: 'DateTime'
   }
   Query: { // field return type name
     getNotes: 'Note'
@@ -128,6 +152,7 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
   }
   User: { // field return type name
+    createdAt: 'DateTime'
     email: 'String'
     fullName: 'String'
     id: 'Int'

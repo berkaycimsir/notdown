@@ -14,6 +14,8 @@ const NoteType = objectType({
     t.field(Note.isPublished);
     t.field(Note.author);
     t.field(Note.authorId);
+    t.field(Note.createdAt);
+    t.field(Note.updatedAt);
   },
 });
 

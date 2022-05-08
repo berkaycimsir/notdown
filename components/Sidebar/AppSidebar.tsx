@@ -78,8 +78,8 @@ const RouterIcons: Array<RouteIcon> = [
     outlined: <BookmarksOutlined sx={ROUTER_ICON_STYLES.outlined} />,
   },
   {
-    name: 'Stories',
-    pathname: '/stories',
+    name: 'Notes',
+    pathname: '/notes',
     filled: <ArticleRounded sx={ROUTER_ICON_STYLES.filled} />,
     outlined: <ArticleOutlined sx={ROUTER_ICON_STYLES.outlined} />,
   },

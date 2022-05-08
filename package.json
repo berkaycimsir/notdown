@@ -18,6 +18,7 @@
     "apollo-server-micro": "^3.6.7",
     "bcryptjs": "^2.4.3",
     "graphql": "^16.4.0",
+    "graphql-scalars": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
     "micro": "^9.3.4",
     "next": "latest",

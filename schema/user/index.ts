@@ -12,6 +12,7 @@ const UserType = objectType({
     t.field(User.fullName);
     t.field(User.email);
     t.field(User.username);
+    t.field(User.createdAt);
   },
 });
 

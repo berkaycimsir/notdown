@@ -13,6 +13,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: any;
 };
 
 export enum AuthErrors {
@@ -66,10 +68,12 @@ export type Note = {
   __typename?: 'Note';
   author: User;
   authorId: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   isPublished: Scalars['Boolean'];
   markdown: Scalars['String'];
   title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export enum NoteErrors {
@@ -95,6 +99,7 @@ export type QueryHelloArgs = {
 
 export type User = {
   __typename?: 'User';
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
@@ -109,6 +114,13 @@ export type CreateNoteMutationVariables = Exact<{
 
 
 export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number } | null } };
+
+export type GetNotesQueryVariables = Exact<{
+  authorId: Scalars['ID'];
+}>;
+
+
+export type GetNotesQuery = { __typename?: 'Query', getNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, isPublished: boolean, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
 
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -173,6 +185,50 @@ export function useCreateNoteMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateNoteMutationHookResult = ReturnType<typeof useCreateNoteMutation>;
 export type CreateNoteMutationResult = Apollo.MutationResult<CreateNoteMutation>;
 export type CreateNoteMutationOptions = Apollo.BaseMutationOptions<CreateNoteMutation, CreateNoteMutationVariables>;
+export const GetNotesDocument = gql`
+    query GetNotes($authorId: ID!) {
+  getNotes(authorId: $authorId) {
+    id
+    markdown
+    title
+    isPublished
+    author {
+      id
+      fullName
+      username
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetNotesQuery__
+ *
+ * To run a query within a React component, call `useGetNotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotesQuery({
+ *   variables: {
+ *      authorId: // value for 'authorId'
+ *   },
+ * });
+ */
+export function useGetNotesQuery(baseOptions: Apollo.QueryHookOptions<GetNotesQuery, GetNotesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, options);
+      }
+export function useGetNotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotesQuery, GetNotesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, options);
+        }
+export type GetNotesQueryHookResult = ReturnType<typeof useGetNotesQuery>;
+export type GetNotesLazyQueryHookResult = ReturnType<typeof useGetNotesLazyQuery>;
+export type GetNotesQueryResult = Apollo.QueryResult<GetNotesQuery, GetNotesQueryVariables>;
 export const SignInDocument = gql`
     mutation SignIn($username: String, $email: String, $password: String!) {
   signIn(username: $username, email: $email, password: $password) {

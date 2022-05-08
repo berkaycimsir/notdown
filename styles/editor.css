@@ -1,11 +1,13 @@
 .CodeMirror {
   font-family: Roboto Mono !important;
-  font-size: 16px !important;
+  font-size: 15px !important;
 }
 
 .md-editor {
   box-shadow: none !important;
   width: 100% !important;
+  border-top: 0.1px solid #ddd;
+  border-radius: none !important;
 }
 
 .CodeMirror-sizer {
@@ -17,8 +19,10 @@
   border-left: none !important;
   height: 100% !important;
   padding-bottom: 64px !important;
+  font-family: Lora !important;
 }
 
 .md-editor-toolbar {
   border-width: 0.1px !important;
+  display: none !important;
 }
