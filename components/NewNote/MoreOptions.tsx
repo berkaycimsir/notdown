@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
 import { MoreHorizRounded } from '@mui/icons-material';
 import { styled, experimental_sx as sx } from '@mui/material';
 import { grey } from '@mui/material/colors';
