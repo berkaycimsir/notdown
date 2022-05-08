@@ -14,6 +14,7 @@ import { useToastsContext } from '../../contexts/toasts';
 import { NoteErrors, useCreateNoteMutation } from '../../generated/graphql';
 import useMe from '../../hooks/useMe';
 import { useEditorStateStore } from '../../store/editor-state';
+import MoreOptions from './MoreOptions';
 
 const StyledContainer = styled(Box)(
   sx({
@@ -52,43 +53,47 @@ const EditorHeader = () => {
 
   const [createNote, { loading }] = useCreateNoteMutation();
 
-  const onSaveButtonClick = React.useCallback(async () => {
-    if (!me) return;
+  const onSaveButtonClick = React.useCallback(
+    async (_: any, isPublished: boolean = false) => {
+      if (!me) return;
 
-    if (title === '' || markdown === '') {
-      showToast({
-        type: 'error',
-        message: 'Oops, there are still blank fields',
+      if (title === '' || markdown === '') {
+        showToast({
+          type: 'error',
+          message: 'Oops, there are still blank fields',
+        });
+        return;
+      }
+
+      const { data } = await createNote({
+        variables: {
+          title,
+          markdown,
+          userId: String(me.id),
+          isPublished,
+        },
       });
-      return;
-    }
 
-    const { data } = await createNote({
-      variables: {
-        title,
-        markdown,
-        userId: String(me.id),
-      },
-    });
+      const error = data?.createNote?.error;
+      const errorMessage =
+        error === NoteErrors.UserDoesNotExists &&
+        "Couldn't find the author. Please try again!";
 
-    const error = data?.createNote?.error;
-    const errorMessage =
-      error === NoteErrors.UserDoesNotExists &&
-      "Couldn't find the author. Please try again!";
-
-    if (!error) {
-      showToast({
-        type: error ? 'error' : 'success',
-        message: errorMessage || 'Your note is successfully saved.',
-      });
-      clear();
-    }
-  }, [createNote, markdown, me, showToast, title, clear]);
+      if (!error) {
+        showToast({
+          type: error ? 'error' : 'success',
+          message: errorMessage || 'Your note is successfully saved.',
+        });
+        clear();
+      }
+    },
+    [createNote, markdown, me, showToast, title, clear]
+  );
 
   return (
     <StyledContainer>
       <IconButton size="small">
-        <ArrowBackRounded onClick={() => router.push('/')} />
+        <ArrowBackRounded onClick={() => router.back()} />
       </IconButton>
       <StyledDraftText variant="subtitle1">
         Draft in {me?.username}
@@ -97,7 +102,7 @@ const EditorHeader = () => {
       <div style={{ flex: 1 }} />
 
       <StyledButton
-        onClick={onSaveButtonClick}
+        onClick={(e) => onSaveButtonClick(e, false)}
         disableElevation
         disableFocusRipple
         disableRipple
@@ -109,9 +114,7 @@ const EditorHeader = () => {
         Save
       </StyledButton>
 
-      <IconButton size="small">
-        <MoreHorizRounded />
-      </IconButton>
+      <MoreOptions onSaveButtonClick={onSaveButtonClick} />
     </StyledContainer>
   );
 };

@@ -1,5 +1,15 @@
-mutation CreateNote($title: String!, $markdown: String!, $userId: ID!) {
-  createNote(title: $title, markdown: $markdown, userId: $userId) {
+mutation CreateNote(
+  $title: String!
+  $markdown: String!
+  $userId: ID!
+  $isPublished: Boolean!
+) {
+  createNote(
+    title: $title
+    markdown: $markdown
+    userId: $userId
+    isPublished: $isPublished
+  ) {
     note {
       id
     }

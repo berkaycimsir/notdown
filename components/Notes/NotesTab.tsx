@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
 import SavedNotes from './Saved';
+import PublishedNotes from './Published';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '0.5px solid #ddd',
@@ -63,7 +64,7 @@ const NotesTab = () => {
         </StyledTabs>
         <Box sx={{ p: 2 }} />
         {value === 0 && <SavedNotes />}
-        {value === 1 && 'published'}
+        {value === 1 && <PublishedNotes />}
         {value === 2 && 'responses'}
       </Box>
     </Box>

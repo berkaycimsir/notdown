@@ -1,14 +1,26 @@
-query GetNotes($authorId: ID!) {
-  getNotes(authorId: $authorId) {
+fragment NotesQueryNote on Note {
+  id
+  markdown
+  title
+  isPublished
+  updatedAt
+  createdAt
+  author {
     id
-    markdown
-    title
-    isPublished
-    author {
-      id
-      fullName
-      username
-      email
-    }
+    fullName
+    username
+    email
+  }
+}
+
+query GetSavedNotes($authorId: ID!) {
+  getSavedNotes(authorId: $authorId) {
+    ...NotesQueryNote
+  }
+}
+
+query GetPublishedNotes($authorId: ID!) {
+  getPublishedNotes(authorId: $authorId) {
+    ...NotesQueryNote
   }
 }

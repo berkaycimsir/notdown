@@ -7,6 +7,7 @@ import {
   Box,
 } from '@mui/material';
 import { green } from '@mui/material/colors';
+import { useRouter } from 'next/router';
 import React from 'react';
 import NotesTab from '../../components/Notes/NotesTab';
 
@@ -34,6 +35,8 @@ const StyledButton = styled(Button)(
 );
 
 const Notes = () => {
+  const router = useRouter();
+
   return (
     <Container maxWidth="md">
       <StyledTopContainer>
@@ -41,6 +44,7 @@ const Notes = () => {
           Your Notes
         </Typography>
         <StyledButton
+          onClick={() => router.push('/new')}
           disableElevation
           disableFocusRipple
           disableRipple

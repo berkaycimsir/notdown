@@ -109,7 +109,8 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
-    getNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    getPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    getSavedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     hello: string; // String!
     me: NexusGenRootTypes['User'] | null; // User
   }
@@ -147,7 +148,8 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Query: { // field return type name
-    getNotes: 'Note'
+    getPublishedNotes: 'Note'
+    getSavedNotes: 'Note'
     hello: 'String'
     me: 'User'
   }
@@ -163,6 +165,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     createNote: { // args
+      isPublished: boolean; // Boolean!
       markdown: string; // String!
       title: string; // String!
       userId: string; // ID!
@@ -180,7 +183,10 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
-    getNotes: { // args
+    getPublishedNotes: { // args
+      authorId: string; // ID!
+    }
+    getSavedNotes: { // args
       authorId: string; // ID!
     }
     hello: { // args

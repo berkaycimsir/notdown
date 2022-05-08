@@ -1,4 +1,4 @@
-import { mutationField, nonNull, stringArg } from 'nexus';
+import { booleanArg, mutationField, nonNull, stringArg } from 'nexus';
 import { compare, hash } from '../../utils/password';
 import { generate } from '../../utils/token';
 import { AuthErrors } from './enum';
