@@ -88,6 +88,7 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Query: { // field return type
+    getNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     hello: string; // String!
     me: NexusGenRootTypes['User'] | null; // User
   }
@@ -122,6 +123,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Query: { // field return type name
+    getNotes: 'Note'
     hello: 'String'
     me: 'User'
   }
@@ -153,6 +155,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getNotes: { // args
+      authorId: string; // ID!
+    }
     hello: { // args
       name: string; // String!
     }

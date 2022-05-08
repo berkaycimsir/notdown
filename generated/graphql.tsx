@@ -78,8 +78,14 @@ export enum NoteErrors {
 
 export type Query = {
   __typename?: 'Query';
+  getNotes?: Maybe<Array<Maybe<Note>>>;
   hello: Scalars['String'];
   me?: Maybe<User>;
+};
+
+
+export type QueryGetNotesArgs = {
+  authorId: Scalars['ID'];
 };
 
 

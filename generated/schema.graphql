@@ -38,6 +38,7 @@ enum NoteErrors {
 }
 
 type Query {
+  getNotes(authorId: ID!): [Note]
   hello(name: String!): String!
   me: User
 }

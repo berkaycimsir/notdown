@@ -2,6 +2,7 @@ import { Note } from 'nexus-prisma';
 import { objectType } from 'nexus';
 import { NoteMutation } from './mutation';
 import { NoteEnums } from './enum';
+import { NoteQuery } from './query';
 
 const NoteType = objectType({
   name: Note.$name,
@@ -31,6 +32,7 @@ const CreateNoteMutationReturnType = objectType({
 export const NoteTypes = [
   NoteType,
   CreateNoteMutationReturnType,
-  NoteMutation,
+  ...NoteMutation,
+  ...NoteQuery,
   ...NoteEnums,
 ];
