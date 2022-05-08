@@ -13,9 +13,28 @@ type AuthMutationReturnType {
   token: String
 }
 
+type CreateNoteMutationReturnType {
+  error: NoteErrors
+  note: Note
+}
+
 type Mutation {
+  createNote(markdown: String!, title: String!, userId: ID!): CreateNoteMutationReturnType!
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
   signIn(email: String, password: String!, username: String): AuthMutationReturnType!
+}
+
+type Note {
+  author: User!
+  authorId: Int!
+  id: Int!
+  isPublished: Boolean!
+  markdown: String!
+  title: String!
+}
+
+enum NoteErrors {
+  USER_DOES_NOT_EXISTS
 }
 
 type Query {

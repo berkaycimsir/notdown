@@ -1,6 +1,7 @@
 import path from 'path';
-import { makeSchema, nonNull, objectType, queryField, stringArg } from 'nexus';
+import { makeSchema, nonNull, queryField, stringArg } from 'nexus';
 import { UserTypes } from './user';
+import { NoteTypes } from './note';
 
 const HelloQuery = queryField('hello', {
   type: nonNull('String'),
@@ -11,7 +12,7 @@ const HelloQuery = queryField('hello', {
 });
 
 export const schema = makeSchema({
-  types: [HelloQuery, ...UserTypes],
+  types: [HelloQuery, ...UserTypes, ...NoteTypes],
   outputs: {
     typegen: path.join(process.cwd(), 'generated', 'nexus-typegen.ts'),
     schema: path.join(process.cwd(), 'generated', 'schema.graphql'),

@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["dataproxy"]
 }
 
@@ -13,9 +13,19 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
   username String @unique
   fullName String
-  password String 
+  password String
+  notes    Note[]
+}
+
+model Note {
+  id          Int     @id @default(autoincrement())
+  markdown    String
+  title       String
+  isPublished Boolean @default(false)
+  author      User    @relation(fields: [authorId], references: [id])
+  authorId    Int
 }

@@ -27,10 +27,24 @@ export type AuthMutationReturnType = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type CreateNoteMutationReturnType = {
+  __typename?: 'CreateNoteMutationReturnType';
+  error?: Maybe<NoteErrors>;
+  note?: Maybe<Note>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createNote: CreateNoteMutationReturnType;
   createUser: AuthMutationReturnType;
   signIn: AuthMutationReturnType;
+};
+
+
+export type MutationCreateNoteArgs = {
+  markdown: Scalars['String'];
+  title: Scalars['String'];
+  userId: Scalars['ID'];
 };
 
 
@@ -47,6 +61,20 @@ export type MutationSignInArgs = {
   password: Scalars['String'];
   username?: InputMaybe<Scalars['String']>;
 };
+
+export type Note = {
+  __typename?: 'Note';
+  author: User;
+  authorId: Scalars['Int'];
+  id: Scalars['Int'];
+  isPublished: Scalars['Boolean'];
+  markdown: Scalars['String'];
+  title: Scalars['String'];
+};
+
+export enum NoteErrors {
+  UserDoesNotExists = 'USER_DOES_NOT_EXISTS'
+}
 
 export type Query = {
   __typename?: 'Query';

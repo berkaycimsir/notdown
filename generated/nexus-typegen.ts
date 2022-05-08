@@ -18,6 +18,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   AuthErrors: "incorrect-password" | "incorrect-username-or-email" | "username-or-email-already-exists"
+  NoteErrors: "user-does-not-exists"
 }
 
 export interface NexusGenScalars {
@@ -33,7 +34,18 @@ export interface NexusGenObjects {
     error?: NexusGenEnums['AuthErrors'] | null; // AuthErrors
     token?: string | null; // String
   }
+  CreateNoteMutationReturnType: { // root type
+    error?: NexusGenEnums['NoteErrors'] | null; // NoteErrors
+    note?: NexusGenRootTypes['Note'] | null; // Note
+  }
   Mutation: {};
+  Note: { // root type
+    authorId: number; // Int!
+    id: number; // Int!
+    isPublished: boolean; // Boolean!
+    markdown: string; // String!
+    title: string; // String!
+  }
   Query: {};
   User: { // root type
     email: string; // String!
@@ -58,9 +70,22 @@ export interface NexusGenFieldTypes {
     error: NexusGenEnums['AuthErrors'] | null; // AuthErrors
     token: string | null; // String
   }
+  CreateNoteMutationReturnType: { // field return type
+    error: NexusGenEnums['NoteErrors'] | null; // NoteErrors
+    note: NexusGenRootTypes['Note'] | null; // Note
+  }
   Mutation: { // field return type
+    createNote: NexusGenRootTypes['CreateNoteMutationReturnType']; // CreateNoteMutationReturnType!
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+  }
+  Note: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    authorId: number; // Int!
+    id: number; // Int!
+    isPublished: boolean; // Boolean!
+    markdown: string; // String!
+    title: string; // String!
   }
   Query: { // field return type
     hello: string; // String!
@@ -79,9 +104,22 @@ export interface NexusGenFieldTypeNames {
     error: 'AuthErrors'
     token: 'String'
   }
+  CreateNoteMutationReturnType: { // field return type name
+    error: 'NoteErrors'
+    note: 'Note'
+  }
   Mutation: { // field return type name
+    createNote: 'CreateNoteMutationReturnType'
     createUser: 'AuthMutationReturnType'
     signIn: 'AuthMutationReturnType'
+  }
+  Note: { // field return type name
+    author: 'User'
+    authorId: 'Int'
+    id: 'Int'
+    isPublished: 'Boolean'
+    markdown: 'String'
+    title: 'String'
   }
   Query: { // field return type name
     hello: 'String'
@@ -97,6 +135,11 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createNote: { // args
+      markdown: string; // String!
+      title: string; // String!
+      userId: string; // ID!
+    }
     createUser: { // args
       email: string; // String!
       fullName: string; // String!
