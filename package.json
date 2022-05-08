@@ -28,7 +28,8 @@
     "react-dom": "latest",
     "react-hook-form": "^7.30.0",
     "react-spinners": "^0.11.0",
-    "store": "^2.0.12"
+    "store": "^2.0.12",
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",

@@ -12,8 +12,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useToastsContext } from '../../contexts/toasts';
 import { NoteErrors, useCreateNoteMutation } from '../../generated/graphql';
-import useEditorState from '../../hooks/useEditorState';
 import useMe from '../../hooks/useMe';
+import { useEditorStateStore } from '../../store/editor-state';
 
 const StyledContainer = styled(Box)(
   sx({
@@ -46,7 +46,7 @@ const StyledButton = styled(LoadingButton)(
 
 const EditorHeader = () => {
   const { me } = useMe();
-  const { editorState } = useEditorState();
+  const { title, markdown, clear } = useEditorStateStore();
   const { showToast } = useToastsContext();
   const router = useRouter();
 
@@ -55,9 +55,18 @@ const EditorHeader = () => {
   const onSaveButtonClick = React.useCallback(async () => {
     if (!me) return;
 
+    if (title === '' || markdown === '') {
+      showToast({
+        type: 'error',
+        message: 'Oops, there are still blank fields',
+      });
+      return;
+    }
+
     const { data } = await createNote({
       variables: {
-        ...editorState,
+        title,
+        markdown,
         userId: String(me.id),
       },
     });
@@ -72,8 +81,9 @@ const EditorHeader = () => {
         type: error ? 'error' : 'success',
         message: errorMessage || 'Your note is successfully saved.',
       });
+      clear();
     }
-  }, [createNote, editorState, me, showToast]);
+  }, [createNote, markdown, me, showToast, title, clear]);
 
   return (
     <StyledContainer>
@@ -83,7 +93,9 @@ const EditorHeader = () => {
       <StyledDraftText variant="subtitle1">
         Draft in {me?.username}
       </StyledDraftText>
+
       <div style={{ flex: 1 }} />
+
       <StyledButton
         onClick={onSaveButtonClick}
         disableElevation
@@ -96,6 +108,7 @@ const EditorHeader = () => {
       >
         Save
       </StyledButton>
+
       <IconButton size="small">
         <MoreHorizRounded />
       </IconButton>

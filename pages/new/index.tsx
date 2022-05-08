@@ -2,18 +2,25 @@ import type { NextPage } from 'next';
 import React from 'react';
 import Editor from '../../components/Editor';
 import Title from '../../components/NewNote/Title';
-import useEditorState from '../../hooks/useEditorState';
 import { Box } from '@mui/material';
 import EditorHeader from '../../components/NewNote/Header';
+import { useEditorStateStore } from '../../store/editor-state';
 
 const New: NextPage = () => {
-  const { markdownValue, onMarkdownChange } = useEditorState();
+  const { markdown, setMarkdown } = useEditorStateStore();
+
+  const onMarkdownChange = React.useCallback(
+    (_: any, __: any, value: any) => {
+      setMarkdown(value);
+    },
+    [setMarkdown]
+  );
 
   return (
     <Box>
       <EditorHeader />
       <Title />
-      <Editor value={markdownValue} onChange={onMarkdownChange} />
+      <Editor value={markdown} onChange={onMarkdownChange} />
     </Box>
   );
 };

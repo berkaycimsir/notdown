@@ -1,5 +1,4 @@
 import React from 'react';
-import useEditorState from '../../hooks/useEditorState';
 import {
   Box,
   Divider,
@@ -7,6 +6,7 @@ import {
   InputBase,
   styled,
 } from '@mui/material';
+import { useEditorStateStore } from '../../store/editor-state';
 
 const StyledContainer = styled(Box)(
   sx({
@@ -36,7 +36,14 @@ const StyledInput = styled(InputBase)(
 );
 
 const Title: React.FC = () => {
-  const { title, onTitleChange } = useEditorState();
+  const { title, setTitle } = useEditorStateStore();
+
+  const onTitleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      setTitle(e.target.value);
+    },
+    [setTitle]
+  );
 
   return (
     <StyledContainer>
