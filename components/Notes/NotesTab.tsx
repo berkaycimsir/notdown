@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
 import SavedNotes from './Saved';
 import PublishedNotes from './Published';
+import usePersistState from '../../hooks/usePersistState';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '0.5px solid #ddd',
@@ -44,10 +45,15 @@ const StyledTab = styled((props: StyledTabProps) => (
 }));
 
 const NotesTab = () => {
-  const [value, setValue] = React.useState(0);
+  const [{ value }, setValue] = usePersistState<{ value: number }>(
+    'notdown-notes-tab-value',
+    {
+      value: 0,
+    }
+  );
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+    setValue({ value: newValue });
   };
 
   return (
