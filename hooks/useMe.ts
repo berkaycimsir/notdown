@@ -3,7 +3,7 @@ import React from 'react';
 import { MeQuery, useMeQuery, User } from '../generated/graphql';
 
 type ReturnType = {
-  me: User | null | undefined;
+  me: MeQuery['me'];
   loading: boolean;
   refetch: () => Promise<ApolloQueryResult<MeQuery>>;
 };
