@@ -10,6 +10,9 @@ import {
 import { green } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useToastsContext } from '../../contexts/toasts';
+import { NoteErrors, useCreateNoteMutation } from '../../generated/graphql';
+import useEditorState from '../../hooks/useEditorState';
 import useMe from '../../hooks/useMe';
 
 const StyledContainer = styled(Box)(
@@ -43,7 +46,34 @@ const StyledButton = styled(LoadingButton)(
 
 const EditorHeader = () => {
   const { me } = useMe();
+  const { editorState } = useEditorState();
+  const { showToast } = useToastsContext();
   const router = useRouter();
+
+  const [createNote, { loading }] = useCreateNoteMutation();
+
+  const onSaveButtonClick = React.useCallback(async () => {
+    if (!me) return;
+
+    const { data } = await createNote({
+      variables: {
+        ...editorState,
+        userId: String(me.id),
+      },
+    });
+
+    const error = data?.createNote?.error;
+    const errorMessage =
+      error === NoteErrors.UserDoesNotExists &&
+      "Couldn't find the author. Please try again!";
+
+    if (!error) {
+      showToast({
+        type: error ? 'error' : 'success',
+        message: errorMessage || 'Your note is successfully saved.',
+      });
+    }
+  }, [createNote, editorState, me, showToast]);
 
   return (
     <StyledContainer>
@@ -55,14 +85,16 @@ const EditorHeader = () => {
       </StyledDraftText>
       <div style={{ flex: 1 }} />
       <StyledButton
+        onClick={onSaveButtonClick}
         disableElevation
         disableFocusRipple
         disableRipple
         disableTouchRipple
+        loading={loading}
         size="small"
         variant="contained"
       >
-        Publish
+        Save
       </StyledButton>
       <IconButton size="small">
         <MoreHorizRounded />
