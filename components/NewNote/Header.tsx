@@ -11,9 +11,14 @@ import { green } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useToastsContext } from '../../contexts/toasts';
-import { NoteErrors, useCreateNoteMutation } from '../../generated/graphql';
+import { useCreateNoteMutation } from '../../generated/graphql';
 import useMe from '../../hooks/useMe';
 import { useEditorStateStore } from '../../store/editor-state';
+import {
+  getErrorMessage,
+  updatePublishedNotes,
+  updateSavedNotes,
+} from './helpers';
 import MoreOptions from './MoreOptions';
 
 const StyledContainer = styled(Box)(
@@ -78,20 +83,22 @@ const EditorHeader = () => {
           userId: String(me.id),
           isPublished,
         },
+        update: (_, { data: mutationData }) => {
+          const createdNote = mutationData?.createNote.note;
+          if (!createdNote) return;
+          if (isPublished) updatePublishedNotes(String(me.id), createdNote);
+          if (!isPublished) updateSavedNotes(String(me.id), createdNote);
+        },
       });
 
       const error = data?.createNote?.error;
-      const errorMessage =
-        error === NoteErrors.UserDoesNotExists &&
-        "Couldn't find the author. Please try again!";
+
+      showToast({
+        type: error ? 'error' : 'success',
+        message: getErrorMessage(error, isPublished),
+      });
 
       if (!error) {
-        showToast({
-          type: error ? 'error' : 'success',
-          message:
-            errorMessage ||
-            `Your note is successfully ${isPublished ? 'published' : 'saved'}.`,
-        });
         clear();
         router.push(`/notes/${data?.createNote?.note?.id}`);
       }

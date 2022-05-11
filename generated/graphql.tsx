@@ -115,6 +115,8 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
+
 export type CreateNoteMutationVariables = Exact<{
   title: Scalars['String'];
   markdown: Scalars['String'];
@@ -124,7 +126,7 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null } };
 
 export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
 
@@ -166,6 +168,23 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string } | null };
 
+export const CreateNoteMutationNoteFragmentDoc = gql`
+    fragment CreateNoteMutationNote on Note {
+  id
+  markdown
+  title
+  summary
+  isPublished
+  updatedAt
+  createdAt
+  author {
+    id
+    fullName
+    username
+    email
+  }
+}
+    `;
 export const NotesQueryNoteFragmentDoc = gql`
     fragment NotesQueryNote on Note {
   id
@@ -193,12 +212,12 @@ export const CreateNoteDocument = gql`
     isPublished: $isPublished
   ) {
     note {
-      id
+      ...CreateNoteMutationNote
     }
     error
   }
 }
-    `;
+    ${CreateNoteMutationNoteFragmentDoc}`;
 export type CreateNoteMutationFn = Apollo.MutationFunction<CreateNoteMutation, CreateNoteMutationVariables>;
 
 /**
