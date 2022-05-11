@@ -2,6 +2,7 @@ fragment NotesQueryNote on Note {
   id
   markdown
   title
+  summary
   isPublished
   updatedAt
   createdAt

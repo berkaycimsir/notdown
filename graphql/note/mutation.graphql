@@ -1,12 +1,14 @@
 mutation CreateNote(
   $title: String!
   $markdown: String!
+  $summary: String!
   $userId: ID!
   $isPublished: Boolean!
 ) {
   createNote(
     title: $title
     markdown: $markdown
+    summary: $summary
     userId: $userId
     isPublished: $isPublished
   ) {

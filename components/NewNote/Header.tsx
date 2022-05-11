@@ -47,7 +47,7 @@ const StyledButton = styled(LoadingButton)(
 
 const EditorHeader = () => {
   const { me } = useMe();
-  const { title, markdown, clear } = useEditorStateStore();
+  const { title, markdown, summary, clear } = useEditorStateStore();
   const { showToast } = useToastsContext();
   const router = useRouter();
 
@@ -69,6 +69,7 @@ const EditorHeader = () => {
         variables: {
           title,
           markdown,
+          summary,
           userId: String(me.id),
           isPublished,
         },

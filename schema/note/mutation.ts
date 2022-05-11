@@ -6,10 +6,15 @@ const CreateNoteMutation = mutationField('createNote', {
   args: {
     title: nonNull(stringArg()),
     markdown: nonNull(stringArg()),
+    summary: nonNull(stringArg()),
     userId: nonNull(idArg()),
     isPublished: nonNull(booleanArg()),
   },
-  resolve: async (_, { title, markdown, userId, isPublished }, { prisma }) => {
+  resolve: async (
+    _,
+    { title, markdown, summary, userId, isPublished },
+    { prisma }
+  ) => {
     const user = await prisma.user.findFirst({
       where: {
         id: parseInt(userId),
@@ -27,6 +32,7 @@ const CreateNoteMutation = mutationField('createNote', {
       data: {
         title,
         markdown,
+        summary,
         authorId: parseInt(userId),
         isPublished,
       },

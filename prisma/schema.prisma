@@ -26,6 +26,7 @@ model Note {
   id          Int      @id @default(autoincrement())
   markdown    String
   title       String
+  summary     String
   isPublished Boolean  @default(false)
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int

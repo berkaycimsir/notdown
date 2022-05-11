@@ -23,27 +23,26 @@ const StyledIndicator = styled(Divider)(
     borderWidth: 2,
     borderStartEndRadius: 8,
     borderEndEndRadius: 8,
-    height: 54,
+    height: 36,
     mr: 2,
   })
 );
 
 const StyledInput = styled(InputBase)(
   sx({
-    fontSize: 32,
+    fontSize: 18,
     fontStyle: 'italic',
-    fontWeight: 800,
   })
 );
 
-const Title: React.FC = () => {
-  const { title, setTitle } = useEditorStateStore();
+const Summary: React.FC = () => {
+  const { summary, setSummary } = useEditorStateStore();
 
-  const onTitleChange = React.useCallback(
+  const onSummaryChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      setTitle(e.target.value);
+      setSummary(e.target.value);
     },
-    [setTitle]
+    [setSummary]
   );
 
   return (
@@ -53,13 +52,14 @@ const Title: React.FC = () => {
         fullWidth
         spellCheck={false}
         autoComplete="off"
-        onChange={onTitleChange}
-        value={title}
-        name="title"
-        placeholder="Title"
+        onChange={onSummaryChange}
+        value={summary}
+        name="summary"
+        placeholder="Summary"
+        multiline
       />
     </StyledContainer>
   );
 };
 
-export default Title;
+export default Summary;

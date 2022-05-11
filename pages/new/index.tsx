@@ -5,6 +5,7 @@ import Title from '../../components/NewNote/Title';
 import { Box } from '@mui/material';
 import EditorHeader from '../../components/NewNote/Header';
 import { useEditorStateStore } from '../../store/editor-state';
+import Summary from '../../components/NewNote/Summary';
 
 const New: NextPage = () => {
   const { markdown, setMarkdown } = useEditorStateStore();
@@ -20,6 +21,7 @@ const New: NextPage = () => {
     <Box>
       <EditorHeader />
       <Title />
+      <Summary />
       <Editor value={markdown} onChange={onMarkdownChange} />
     </Box>
   );
