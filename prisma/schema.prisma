@@ -27,6 +27,7 @@ model Note {
   markdown    String
   title       String
   summary     String
+  tags        String[]
   isPublished Boolean  @default(false)
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int

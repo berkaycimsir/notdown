@@ -1,4 +1,11 @@
-import { booleanArg, idArg, mutationField, nonNull, stringArg } from 'nexus';
+import {
+  booleanArg,
+  idArg,
+  mutationField,
+  nonNull,
+  stringArg,
+  list,
+} from 'nexus';
 import { NoteErrors } from './enum';
 
 const CreateNoteMutation = mutationField('createNote', {
@@ -7,12 +14,13 @@ const CreateNoteMutation = mutationField('createNote', {
     title: nonNull(stringArg()),
     markdown: nonNull(stringArg()),
     summary: nonNull(stringArg()),
+    tags: nonNull(list(stringArg())),
     userId: nonNull(idArg()),
     isPublished: nonNull(booleanArg()),
   },
   resolve: async (
     _,
-    { title, markdown, summary, userId, isPublished },
+    { title, markdown, summary, tags, userId, isPublished },
     { prisma }
   ) => {
     const user = await prisma.user.findFirst({
@@ -33,6 +41,7 @@ const CreateNoteMutation = mutationField('createNote', {
         title,
         markdown,
         summary,
+        tags,
         authorId: parseInt(userId),
         isPublished,
       },

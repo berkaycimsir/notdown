@@ -6,6 +6,7 @@ fragment CreateNoteMutationNote on Note {
   isPublished
   updatedAt
   createdAt
+  tags
   author {
     id
     fullName
@@ -18,6 +19,7 @@ mutation CreateNote(
   $title: String!
   $markdown: String!
   $summary: String!
+  $tags: [String!]!
   $userId: ID!
   $isPublished: Boolean!
 ) {
@@ -25,6 +27,7 @@ mutation CreateNote(
     title: $title
     markdown: $markdown
     summary: $summary
+    tags: $tags
     userId: $userId
     isPublished: $isPublished
   ) {

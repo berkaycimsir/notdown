@@ -6,6 +6,7 @@ fragment NotesQueryNote on Note {
   isPublished
   updatedAt
   createdAt
+  tags
   author {
     id
     fullName

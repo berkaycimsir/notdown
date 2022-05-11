@@ -47,6 +47,7 @@ export type MutationCreateNoteArgs = {
   isPublished: Scalars['Boolean'];
   markdown: Scalars['String'];
   summary: Scalars['String'];
+  tags: Array<InputMaybe<Scalars['String']>>;
   title: Scalars['String'];
   userId: Scalars['ID'];
 };
@@ -75,6 +76,7 @@ export type Note = {
   isPublished: Scalars['Boolean'];
   markdown: Scalars['String'];
   summary: Scalars['String'];
+  tags: Array<Scalars['String']>;
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
@@ -115,34 +117,35 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
+export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
 
 export type CreateNoteMutationVariables = Exact<{
   title: Scalars['String'];
   markdown: Scalars['String'];
   summary: Scalars['String'];
+  tags: Array<Scalars['String']> | Scalars['String'];
   userId: Scalars['ID'];
   isPublished: Scalars['Boolean'];
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null } };
 
-export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
+export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
 
 export type GetSavedNotesQueryVariables = Exact<{
   authorId: Scalars['ID'];
 }>;
 
 
-export type GetSavedNotesQuery = { __typename?: 'Query', getSavedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
+export type GetSavedNotesQuery = { __typename?: 'Query', getSavedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
 
 export type GetPublishedNotesQueryVariables = Exact<{
   authorId: Scalars['ID'];
 }>;
 
 
-export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
+export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
 
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -177,6 +180,7 @@ export const CreateNoteMutationNoteFragmentDoc = gql`
   isPublished
   updatedAt
   createdAt
+  tags
   author {
     id
     fullName
@@ -194,6 +198,7 @@ export const NotesQueryNoteFragmentDoc = gql`
   isPublished
   updatedAt
   createdAt
+  tags
   author {
     id
     fullName
@@ -203,11 +208,12 @@ export const NotesQueryNoteFragmentDoc = gql`
 }
     `;
 export const CreateNoteDocument = gql`
-    mutation CreateNote($title: String!, $markdown: String!, $summary: String!, $userId: ID!, $isPublished: Boolean!) {
+    mutation CreateNote($title: String!, $markdown: String!, $summary: String!, $tags: [String!]!, $userId: ID!, $isPublished: Boolean!) {
   createNote(
     title: $title
     markdown: $markdown
     summary: $summary
+    tags: $tags
     userId: $userId
     isPublished: $isPublished
   ) {
@@ -236,6 +242,7 @@ export type CreateNoteMutationFn = Apollo.MutationFunction<CreateNoteMutation, C
  *      title: // value for 'title'
  *      markdown: // value for 'markdown'
  *      summary: // value for 'summary'
+ *      tags: // value for 'tags'
  *      userId: // value for 'userId'
  *      isPublished: // value for 'isPublished'
  *   },

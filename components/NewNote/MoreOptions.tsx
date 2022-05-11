@@ -6,6 +6,7 @@ import { MoreHorizRounded } from '@mui/icons-material';
 import { styled, experimental_sx as sx } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { useEditorStateStore } from '../../store/editor-state';
+import Tags from './Tags';
 
 const IndicatorStyles = {
   minWidth: 200,
@@ -48,6 +49,8 @@ type Props = {
 const MoreOptions: React.FC<Props> = ({ onSaveButtonClick }) => {
   const { clear } = useEditorStateStore();
 
+  const [editingTags, setEditingTags] = React.useState<boolean>(false);
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -86,15 +89,27 @@ const MoreOptions: React.FC<Props> = ({ onSaveButtonClick }) => {
           horizontal: 'right',
         }}
       >
-        <StyledButton
-          onClick={(e) => onSaveButtonClick(e, true)}
-          variant="subtitle2"
-        >
-          Publish
-        </StyledButton>
-        <StyledButton onClick={() => clear()} variant="subtitle2">
-          Clear editor
-        </StyledButton>
+        {editingTags ? (
+          <Tags setEditingTags={setEditingTags} />
+        ) : (
+          <>
+            <StyledButton
+              onClick={(e) => onSaveButtonClick(e, true)}
+              variant="subtitle2"
+            >
+              Publish
+            </StyledButton>
+            <StyledButton
+              onClick={() => setEditingTags(true)}
+              variant="subtitle2"
+            >
+              Change tags
+            </StyledButton>
+            <StyledButton onClick={() => clear()} variant="subtitle2">
+              Clear editor
+            </StyledButton>
+          </>
+        )}
       </Popover>
     </div>
   );

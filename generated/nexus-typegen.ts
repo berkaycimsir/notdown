@@ -62,6 +62,7 @@ export interface NexusGenObjects {
     isPublished: boolean; // Boolean!
     markdown: string; // String!
     summary: string; // String!
+    tags: string[]; // [String!]!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -107,6 +108,7 @@ export interface NexusGenFieldTypes {
     isPublished: boolean; // Boolean!
     markdown: string; // String!
     summary: string; // String!
+    tags: string[]; // [String!]!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -147,6 +149,7 @@ export interface NexusGenFieldTypeNames {
     isPublished: 'Boolean'
     markdown: 'String'
     summary: 'String'
+    tags: 'String'
     title: 'String'
     updatedAt: 'DateTime'
   }
@@ -171,6 +174,7 @@ export interface NexusGenArgTypes {
       isPublished: boolean; // Boolean!
       markdown: string; // String!
       summary: string; // String!
+      tags: Array<string | null>; // [String]!
       title: string; // String!
       userId: string; // ID!
     }
