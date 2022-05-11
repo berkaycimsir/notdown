@@ -14,7 +14,7 @@ const CreateNoteMutation = mutationField('createNote', {
     title: nonNull(stringArg()),
     markdown: nonNull(stringArg()),
     summary: nonNull(stringArg()),
-    tags: nonNull(list(stringArg())),
+    tags: nonNull(list(nonNull(stringArg()))),
     userId: nonNull(idArg()),
     isPublished: nonNull(booleanArg()),
   },

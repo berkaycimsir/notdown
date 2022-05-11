@@ -47,7 +47,7 @@ export type MutationCreateNoteArgs = {
   isPublished: Scalars['Boolean'];
   markdown: Scalars['String'];
   summary: Scalars['String'];
-  tags: Array<InputMaybe<Scalars['String']>>;
+  tags: Array<Scalars['String']>;
   title: Scalars['String'];
   userId: Scalars['ID'];
 };

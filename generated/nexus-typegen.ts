@@ -174,7 +174,7 @@ export interface NexusGenArgTypes {
       isPublished: boolean; // Boolean!
       markdown: string; // String!
       summary: string; // String!
-      tags: Array<string | null>; // [String]!
+      tags: string[]; // [String!]!
       title: string; // String!
       userId: string; // ID!
     }
