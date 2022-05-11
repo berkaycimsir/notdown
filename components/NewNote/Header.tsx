@@ -53,11 +53,16 @@ const EditorHeader = () => {
 
   const [createNote, { loading }] = useCreateNoteMutation();
 
+  const isEmpty = React.useMemo(
+    () => title === '' || markdown === '' || summary === '',
+    [title, markdown, summary]
+  );
+
   const onSaveButtonClick = React.useCallback(
     async (_: any, isPublished: boolean = false) => {
       if (!me) return;
 
-      if (title === '' || markdown === '') {
+      if (isEmpty) {
         showToast({
           type: 'error',
           message: 'Oops, there are still blank fields',
@@ -83,12 +88,25 @@ const EditorHeader = () => {
       if (!error) {
         showToast({
           type: error ? 'error' : 'success',
-          message: errorMessage || 'Your note is successfully saved.',
+          message:
+            errorMessage ||
+            `Your note is successfully ${isPublished ? 'published' : 'saved'}.`,
         });
         clear();
+        router.push(`/notes/${data?.createNote?.note?.id}`);
       }
     },
-    [createNote, markdown, me, showToast, title, clear]
+    [
+      me,
+      isEmpty,
+      createNote,
+      title,
+      markdown,
+      summary,
+      showToast,
+      clear,
+      router,
+    ]
   );
 
   return (
