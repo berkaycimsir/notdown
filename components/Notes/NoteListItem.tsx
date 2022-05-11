@@ -6,6 +6,7 @@ import {
   styled,
   experimental_sx as sx,
 } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { NotesQueryNoteFragment } from '../../generated/graphql';
@@ -34,6 +35,25 @@ const StyledDivider = styled(Divider)(
   })
 );
 
+const StyledTags = styled(Typography)(
+  sx({
+    mt: 1.5,
+    color: grey[700],
+    cursor: 'pointer',
+    display: 'inline',
+    mr: 1,
+    ':hover': {
+      color: grey[900],
+    },
+  })
+);
+
+const StyledSummaryText = styled(Typography)(
+  sx({
+    wordBreak: 'break-all',
+  })
+);
+
 const NoteListItem: React.FC<Props> = ({ shouldRenderDivider, note }) => {
   const router = useRouter();
 
@@ -52,13 +72,19 @@ const NoteListItem: React.FC<Props> = ({ shouldRenderDivider, note }) => {
           primary={note?.title}
           secondary={
             <React.Fragment>
-              <Typography variant="subtitle2" color="text.secondary">
-                {note?.summary.slice(0, 140)}...
-              </Typography>
+              <StyledSummaryText variant="subtitle2" color="text.secondary">
+                {note?.summary.slice(0, 320)}
+                {Number(note?.summary.length) > 320 && '...'}
+              </StyledSummaryText>
             </React.Fragment>
           }
         />
       </ListItem>
+      {note?.tags.map((tag) => (
+        <StyledTags variant="caption" key={tag}>
+          #{tag}
+        </StyledTags>
+      ))}
       <StyledInfoText variant="subtitle2">
         Last edited {timeAgo(note?.updatedAt)} ·{' '}
         {readingTime(String(note?.markdown))} min read (

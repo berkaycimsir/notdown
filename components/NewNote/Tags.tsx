@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { grey, red } from '@mui/material/colors';
 import { useEditorStateStore } from '../../store/editor-state';
+import { isOnlySpaces } from '../../utils/string';
 
 const StyledInfoText = styled(Typography)(
   sx({
@@ -79,7 +80,7 @@ const Tags: React.FC<Props> = ({ setEditingTags }) => {
     (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const alreadyExists = tags.find((tag) => tag === tagValue);
-        if (alreadyExists) return;
+        if (alreadyExists || isOnlySpaces(tagValue)) return;
         setTags([...tags, tagValue]);
         setTagValue('');
       }
