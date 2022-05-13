@@ -6,12 +6,10 @@ import {
   BookmarksRounded,
   EditOutlined,
   EditRounded,
-  Face,
   Notifications,
   NotificationsNoneRounded,
 } from '@mui/icons-material';
 import {
-  Avatar,
   Box,
   Divider,
   experimental_sx as sx,
@@ -28,6 +26,7 @@ import HomeFilled from '../../assets/svg/homeFilled.svg';
 import HomeOutlined from '../../assets/svg/homeOutlined.svg';
 import { CustomModalTypes, useModalContext } from '../../contexts/modal';
 import useMe from '../../hooks/useMe';
+import ProfileButton from './ProfileButton';
 
 const SIDEBAR_BORDER_COLOR = 'rgba(230, 230, 230, 1)';
 const ROUTER_ICON_DIMENSIONS = { width: 28, height: 28 };
@@ -127,11 +126,6 @@ const StyledRouterIconButton = styled(IconButton, {
   });
 });
 
-const StyledProfileImage = styled(Avatar)({
-  width: 36,
-  height: 36,
-});
-
 const AppSidebar: React.FC = () => {
   const router = useRouter();
   const { me } = useMe();
@@ -177,13 +171,7 @@ const AppSidebar: React.FC = () => {
       <div style={{ flex: 1 }} />
 
       <Tooltip title="Profile" placement="left">
-        <IconButton onClick={() => onRouteIconClick('/profile')} size="small">
-          {me ? (
-            <StyledProfileImage src="https://avatars.githubusercontent.com/u/47090177?v=4" />
-          ) : (
-            <Face sx={{ fontSize: 28 }} />
-          )}
-        </IconButton>
+        <ProfileButton navigateToProfile={() => onRouteIconClick('/profile')} />
       </Tooltip>
     </StyledSidebar>
   );
