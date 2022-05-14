@@ -151,6 +151,7 @@ const SignIn = () => {
           render={({ field, formState: { errors } }) => (
             <Input
               fullWidth
+              autoFocus
               hasError={Boolean(errors.usernameOrEmail)}
               errorText="This field is required"
               startIcon={<PersonRounded fontSize="small" />}

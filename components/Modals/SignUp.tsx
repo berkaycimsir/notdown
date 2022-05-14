@@ -155,6 +155,7 @@ const SignUp = () => {
           render={({ field, formState: { errors } }) => (
             <Input
               fullWidth
+              autoFocus
               hasError={Boolean(errors.fullName)}
               errorText="This field is required"
               startIcon={<PersonRounded fontSize="small" />}
