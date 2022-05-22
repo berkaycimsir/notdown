@@ -36,4 +36,22 @@ const GetPublishedNotesQuery = queryField('getPublishedNotes', {
   },
 });
 
-export const NoteQuery = [GetSavedNotesQuery, GetPublishedNotesQuery];
+const GetAllPublishedNotes = queryField('getAllPublishedNotes', {
+  type: list('Note'),
+  resolve: async (_, __, { prisma }) => {
+    return await prisma.note.findMany({
+      where: {
+        isPublished: { equals: true },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  },
+});
+
+export const NoteQuery = [
+  GetSavedNotesQuery,
+  GetPublishedNotesQuery,
+  GetAllPublishedNotes,
+];

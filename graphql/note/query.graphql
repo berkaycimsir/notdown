@@ -26,3 +26,9 @@ query GetPublishedNotes($authorId: ID!) {
     ...NotesQueryNote
   }
 }
+
+query GetAllPublishedNotes {
+  getAllPublishedNotes {
+    ...NotesQueryNote
+  }
+}

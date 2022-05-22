@@ -1,9 +1,14 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import useMe from '../hooks/useMe';
+import HomeNotesTab from '../components/Home/HomeNotesTab';
+import { Container } from '@mui/material';
 
 const Home: NextPage = () => {
-  return <div>home</div>;
+  return (
+    <Container maxWidth="md">
+      <HomeNotesTab />
+    </Container>
+  );
 };
 
 export default Home;

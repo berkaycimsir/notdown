@@ -87,6 +87,7 @@ export enum NoteErrors {
 
 export type Query = {
   __typename?: 'Query';
+  getAllPublishedNotes?: Maybe<Array<Maybe<Note>>>;
   getPublishedNotes?: Maybe<Array<Maybe<Note>>>;
   getSavedNotes?: Maybe<Array<Maybe<Note>>>;
   hello: Scalars['String'];
@@ -146,6 +147,11 @@ export type GetPublishedNotesQueryVariables = Exact<{
 
 
 export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
+
+export type GetAllPublishedNotesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPublishedNotesQuery = { __typename?: 'Query', getAllPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
 
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -325,6 +331,40 @@ export function useGetPublishedNotesLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetPublishedNotesQueryHookResult = ReturnType<typeof useGetPublishedNotesQuery>;
 export type GetPublishedNotesLazyQueryHookResult = ReturnType<typeof useGetPublishedNotesLazyQuery>;
 export type GetPublishedNotesQueryResult = Apollo.QueryResult<GetPublishedNotesQuery, GetPublishedNotesQueryVariables>;
+export const GetAllPublishedNotesDocument = gql`
+    query GetAllPublishedNotes {
+  getAllPublishedNotes {
+    ...NotesQueryNote
+  }
+}
+    ${NotesQueryNoteFragmentDoc}`;
+
+/**
+ * __useGetAllPublishedNotesQuery__
+ *
+ * To run a query within a React component, call `useGetAllPublishedNotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllPublishedNotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllPublishedNotesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllPublishedNotesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPublishedNotesQuery, GetAllPublishedNotesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllPublishedNotesQuery, GetAllPublishedNotesQueryVariables>(GetAllPublishedNotesDocument, options);
+      }
+export function useGetAllPublishedNotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPublishedNotesQuery, GetAllPublishedNotesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllPublishedNotesQuery, GetAllPublishedNotesQueryVariables>(GetAllPublishedNotesDocument, options);
+        }
+export type GetAllPublishedNotesQueryHookResult = ReturnType<typeof useGetAllPublishedNotesQuery>;
+export type GetAllPublishedNotesLazyQueryHookResult = ReturnType<typeof useGetAllPublishedNotesLazyQuery>;
+export type GetAllPublishedNotesQueryResult = Apollo.QueryResult<GetAllPublishedNotesQuery, GetAllPublishedNotesQueryVariables>;
 export const SignInDocument = gql`
     mutation SignIn($username: String, $email: String, $password: String!) {
   signIn(username: $username, email: $email, password: $password) {
