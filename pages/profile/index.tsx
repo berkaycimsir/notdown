@@ -15,6 +15,7 @@ const Profile = () => {
       preset: UploadPresets.PROFILE_IMAGE,
       folder: UploadFolders.PROFILE_IMAGE,
       onSuccess: (file) => {
+        console.log(file);
         showToast({
           type: 'success',
           message: 'Your file was uploaded successfully',

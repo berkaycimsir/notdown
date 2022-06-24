@@ -13,13 +13,14 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  fullName  String
-  password  String
-  notes     Note[]
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  username     String   @unique
+  fullName     String
+  password     String
+  notes        Note[]
+  profileImage String?
+  createdAt    DateTime @default(now())
 }
 
 model Note {
