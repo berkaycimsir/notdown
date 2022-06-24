@@ -1,4 +1,4 @@
-import { schema } from '../../schema/index';
+import { schema } from '../../graphql/schema/index';
 import {
   ApolloServerPluginLandingPageDisabled,
   ApolloServerPluginLandingPageGraphQLPlayground,
@@ -6,7 +6,7 @@ import {
 import { ApolloServer } from 'apollo-server-micro';
 import { MicroRequest } from 'apollo-server-micro/dist/types';
 import { ServerResponse } from 'http';
-import { context } from '../../schema/context';
+import { context } from '../../graphql/schema/context';
 
 const apolloServer = new ApolloServer({
   schema,

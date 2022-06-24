@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
 import React from 'react';
-import Editor from '../../components/Editor';
-import Title from '../../components/NewNote/Title';
+import Editor from '../../components/ui/Editor';
+import Title from '../../components/ui/NewNote/Title';
 import { Box } from '@mui/material';
-import EditorHeader from '../../components/NewNote/Header';
+import EditorHeader from '../../components/ui/NewNote/Header';
 import { useEditorStateStore } from '../../store/editor-state';
-import Summary from '../../components/NewNote/Summary';
+import Summary from '../../components/ui/NewNote/Summary';
 
 const New: NextPage = () => {
   const { markdown, setMarkdown } = useEditorStateStore();

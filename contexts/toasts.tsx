@@ -1,7 +1,7 @@
 import { AlertProps, SnackbarProps } from '@mui/material';
 import React from 'react';
 import { createContext, useContext } from 'react';
-import ToastNotification from '../components/ToastNotification';
+import ToastNotification from '../components/ui/ToastNotification';
 
 type ToastProps = {
   type: AlertProps['severity'];

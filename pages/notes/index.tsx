@@ -9,7 +9,7 @@ import {
 import { green } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import React from 'react';
-import NotesTab from '../../components/Notes/NotesTab';
+import NotesTab from '../../components/ui/Notes/NotesTab';
 
 const StyledTopContainer = styled(Box)(
   sx({

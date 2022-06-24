@@ -1,27 +1,13 @@
-import {
-  Container,
-  Divider,
-  Typography,
-  Box,
-  Button,
-  styled,
-  experimental_sx as sx,
-} from '@mui/material';
+import { Container, Divider, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React from 'react';
-import Input from '../../components/Input';
-import ProfilePageInputField from '../../components/Profile/Field';
-import UpdateProfileImage from '../../components/Profile/UpdateProfileImage';
-import { useToastsContext } from '../../contexts/toasts';
-import { useUpdateUserProfileImageMutation } from '../../generated/graphql';
+import ProfilePageInputField from '../../components/ui/Profile/Field';
+import UpdateProfileImage from '../../components/ui/Profile/UpdateProfileImage';
 import useMe from '../../hooks/useMe';
 import { cloud } from '../../utils/file/cloudinary';
-import { UploadFolders, UploadPresets } from '../../utils/file/types';
-import { uploadImage } from '../../utils/file/upload';
 
 const Profile = () => {
   const { me } = useMe();
-
   const profileImage = cloud.image(me?.profileImage as string).toURL();
 
   return (

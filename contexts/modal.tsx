@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import SignIn from '../components/Modals/SignIn';
-import SignUp from '../components/Modals/SignUp';
+import SignIn from '../components/ui/Modals/SignIn';
+import SignUp from '../components/ui/Modals/SignUp';
 import useBreakPoints from '../hooks/useBreakPoints';
 import { Close } from '@mui/icons-material';
 import {
