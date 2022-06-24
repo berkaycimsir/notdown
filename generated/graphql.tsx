@@ -40,6 +40,7 @@ export type Mutation = {
   createNote: CreateNoteMutationReturnType;
   createUser: AuthMutationReturnType;
   signIn: AuthMutationReturnType;
+  updateUserProfileImage?: Maybe<User>;
 };
 
 
@@ -65,6 +66,12 @@ export type MutationSignInArgs = {
   email?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateUserProfileImageArgs = {
+  imageId: Scalars['String'];
+  userId: Scalars['Int'];
 };
 
 export type Note = {
@@ -115,6 +122,7 @@ export type User = {
   email: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
+  profileImage?: Maybe<Scalars['String']>;
   username: Scalars['String'];
 };
 
@@ -172,10 +180,18 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthMutationReturnType', token?: string | null, error?: AuthErrors | null } };
 
+export type UpdateUserProfileImageMutationVariables = Exact<{
+  imageId: Scalars['String'];
+  userId: Scalars['Int'];
+}>;
+
+
+export type UpdateUserProfileImageMutation = { __typename?: 'Mutation', updateUserProfileImage?: { __typename?: 'User', id: number, profileImage?: string | null } | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
 export const CreateNoteMutationNoteFragmentDoc = gql`
     fragment CreateNoteMutationNote on Note {
@@ -443,6 +459,41 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const UpdateUserProfileImageDocument = gql`
+    mutation UpdateUserProfileImage($imageId: String!, $userId: Int!) {
+  updateUserProfileImage(imageId: $imageId, userId: $userId) {
+    id
+    profileImage
+  }
+}
+    `;
+export type UpdateUserProfileImageMutationFn = Apollo.MutationFunction<UpdateUserProfileImageMutation, UpdateUserProfileImageMutationVariables>;
+
+/**
+ * __useUpdateUserProfileImageMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserProfileImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserProfileImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserProfileImageMutation, { data, loading, error }] = useUpdateUserProfileImageMutation({
+ *   variables: {
+ *      imageId: // value for 'imageId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpdateUserProfileImageMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileImageMutation, UpdateUserProfileImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserProfileImageMutation, UpdateUserProfileImageMutationVariables>(UpdateUserProfileImageDocument, options);
+      }
+export type UpdateUserProfileImageMutationHookResult = ReturnType<typeof useUpdateUserProfileImageMutation>;
+export type UpdateUserProfileImageMutationResult = Apollo.MutationResult<UpdateUserProfileImageMutation>;
+export type UpdateUserProfileImageMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileImageMutation, UpdateUserProfileImageMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -450,6 +501,7 @@ export const MeDocument = gql`
     fullName
     username
     email
+    profileImage
   }
 }
     `;

@@ -27,6 +27,7 @@ type Mutation {
   createNote(isPublished: Boolean!, markdown: String!, summary: String!, tags: [String!]!, title: String!, userId: ID!): CreateNoteMutationReturnType!
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
   signIn(email: String, password: String!, username: String): AuthMutationReturnType!
+  updateUserProfileImage(imageId: String!, userId: Int!): User
 }
 
 type Note {
@@ -59,5 +60,6 @@ type User {
   email: String!
   fullName: String!
   id: Int!
+  profileImage: String
   username: String!
 }

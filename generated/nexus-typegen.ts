@@ -72,6 +72,7 @@ export interface NexusGenObjects {
     email: string; // String!
     fullName: string; // String!
     id: number; // Int!
+    profileImage?: string | null; // String
     username: string; // String!
   }
 }
@@ -99,6 +100,7 @@ export interface NexusGenFieldTypes {
     createNote: NexusGenRootTypes['CreateNoteMutationReturnType']; // CreateNoteMutationReturnType!
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+    updateUserProfileImage: NexusGenRootTypes['User'] | null; // User
   }
   Note: { // field return type
     author: NexusGenRootTypes['User']; // User!
@@ -124,6 +126,7 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     fullName: string; // String!
     id: number; // Int!
+    profileImage: string | null; // String
     username: string; // String!
   }
 }
@@ -141,6 +144,7 @@ export interface NexusGenFieldTypeNames {
     createNote: 'CreateNoteMutationReturnType'
     createUser: 'AuthMutationReturnType'
     signIn: 'AuthMutationReturnType'
+    updateUserProfileImage: 'User'
   }
   Note: { // field return type name
     author: 'User'
@@ -166,6 +170,7 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     fullName: 'String'
     id: 'Int'
+    profileImage: 'String'
     username: 'String'
   }
 }
@@ -190,6 +195,10 @@ export interface NexusGenArgTypes {
       email?: string | null; // String
       password: string; // String!
       username?: string | null; // String
+    }
+    updateUserProfileImage: { // args
+      imageId: string; // String!
+      userId: number; // Int!
     }
   }
   Query: {

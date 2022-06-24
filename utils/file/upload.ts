@@ -6,7 +6,7 @@ type UploadImageArgs = {
   file: File;
   preset: UploadPresets;
   folder: UploadFolders;
-  onSuccess?: (file: CloudinaryFile) => void;
+  onSuccess?: (file: CloudinaryFile) => Promise<void>;
   onFail?: () => void;
 };
 
@@ -25,8 +25,9 @@ const uploadImage = async ({
 
   const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
 
-  if (response.status === 200) onSuccess?.(response.data as CloudinaryFile);
-  else onFail?.();
+  if (response.status === 200) {
+    await onSuccess?.(response.data as CloudinaryFile);
+  } else onFail?.();
 };
 
 export { uploadImage };

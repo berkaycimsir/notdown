@@ -21,3 +21,10 @@ mutation SignUp(
     error
   }
 }
+
+mutation UpdateUserProfileImage($imageId: String!, $userId: Int!) {
+  updateUserProfileImage(imageId: $imageId, userId: $userId) {
+    id
+    profileImage
+  }
+}

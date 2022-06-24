@@ -8,10 +8,11 @@ type ReturnType = {
   loading: boolean;
   refetch: () => Promise<ApolloQueryResult<MeQuery>>;
   signOut: () => Promise<void>;
+  updateMeQuery: (newData: MeQuery) => void;
 };
 
 const useMe = (): ReturnType => {
-  const { data, loading, refetch } = useMeQuery();
+  const { data, loading, refetch, updateQuery } = useMeQuery();
 
   const me = React.useMemo(() => data?.me, [data?.me]);
 
@@ -20,7 +21,11 @@ const useMe = (): ReturnType => {
     await refetch();
   }, [refetch]);
 
-  return { me, loading, refetch, signOut };
+  const updateMeQuery = (newData: MeQuery) => {
+    updateQuery((prev) => ({ ...prev, ...newData }));
+  };
+
+  return { me, loading, refetch, signOut, updateMeQuery };
 };
 
 export default useMe;

@@ -1,21 +1,45 @@
 import React from 'react';
 import { useToastsContext } from '../../contexts/toasts';
+import { useUpdateUserProfileImageMutation } from '../../generated/graphql';
 import useMe from '../../hooks/useMe';
 import { UploadFolders, UploadPresets } from '../../utils/file/types';
 import { uploadImage } from '../../utils/file/upload';
 
 const Profile = () => {
-  const { me, loading } = useMe();
+  const { me, updateMeQuery } = useMe();
   const [file, setFile] = React.useState<File | undefined>();
   const { showToast } = useToastsContext();
+  const [updateUserProfileImage] = useUpdateUserProfileImageMutation({});
 
   const onUpload = async () => {
+    if (!me) return;
     await uploadImage({
       file: file as File,
       preset: UploadPresets.PROFILE_IMAGE,
       folder: UploadFolders.PROFILE_IMAGE,
-      onSuccess: (file) => {
-        console.log(file);
+      onSuccess: async (file) => {
+        await updateUserProfileImage({
+          variables: {
+            userId: me.id,
+            imageId: file.public_id,
+          },
+          optimisticResponse: {
+            updateUserProfileImage: {
+              id: me.id,
+              profileImage: file.public_id,
+            },
+          },
+          update: (_, { data }) => {
+            const newImage = data?.updateUserProfileImage?.profileImage;
+            if (!newImage) return;
+            updateMeQuery({
+              me: {
+                ...me,
+                profileImage: newImage,
+              },
+            });
+          },
+        });
         showToast({
           type: 'success',
           message: 'Your file was uploaded successfully',

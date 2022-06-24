@@ -1,4 +1,11 @@
-import { booleanArg, mutationField, nonNull, stringArg } from 'nexus';
+import {
+  booleanArg,
+  intArg,
+  mutationField,
+  nonNull,
+  nullable,
+  stringArg,
+} from 'nexus';
 import { compare, hash } from '../../utils/password';
 import { generate } from '../../utils/token';
 import { AuthErrors } from './enum';
@@ -80,4 +87,28 @@ const SignInMutation = mutationField('signIn', {
   },
 });
 
-export const UserMutation = [CreateUserMutation, SignInMutation];
+const UpdateUserProfileImageMutation = mutationField('updateUserProfileImage', {
+  type: nullable('User'),
+  args: {
+    userId: nonNull(intArg()),
+    imageId: nonNull(stringArg()),
+  },
+  resolve: async (_, { userId, imageId }, { prisma }) => {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { profileImage: imageId },
+    });
+
+    if (!updatedUser) {
+      return null;
+    }
+
+    return updatedUser;
+  },
+});
+
+export const UserMutation = [
+  CreateUserMutation,
+  SignInMutation,
+  UpdateUserProfileImageMutation,
+];

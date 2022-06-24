@@ -14,6 +14,7 @@ import { grey, red } from '@mui/material/colors';
 import useMe from '../../hooks/useMe';
 import { useRouter } from 'next/router';
 import { CustomModalTypes, useModalContext } from '../../contexts/modal';
+import { cloud } from '../../utils/file/cloudinary';
 
 const StyledButton = styled(Typography)(
   sx({
@@ -70,6 +71,8 @@ const ProfileButton: React.FC<Props> = ({ navigateToProfile }) => {
   const open = React.useMemo(() => Boolean(anchorEl), [anchorEl]);
   const id = React.useMemo(() => (open ? 'simple-popover' : undefined), [open]);
 
+  const profileImage = cloud.image(me?.profileImage as string).toURL();
+
   const onSignOutButtonClick = React.useCallback(async () => {
     await signOut();
     setAnchorEl(null);
@@ -80,7 +83,7 @@ const ProfileButton: React.FC<Props> = ({ navigateToProfile }) => {
     <div>
       <IconButton aria-describedby={id} onClick={handleClick} size="small">
         {me ? (
-          <StyledProfileImage src="https://avatars.githubusercontent.com/u/47090177?v=4" />
+          <StyledProfileImage src={profileImage} />
         ) : (
           <Face sx={{ fontSize: 28 }} />
         )}
@@ -112,7 +115,7 @@ const ProfileButton: React.FC<Props> = ({ navigateToProfile }) => {
         <Divider />
 
         <StyledProfileButton onClick={navigateToProfile}>
-          <StyledProfileImage src="https://avatars.githubusercontent.com/u/47090177?v=4" />
+          <StyledProfileImage src={profileImage} />
           <Box ml={2}>
             <Typography fontWeight="normal" variant="subtitle2">
               {me?.fullName}
