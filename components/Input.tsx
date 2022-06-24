@@ -67,17 +67,20 @@ interface Props extends Omit<InputBaseProps, 'size'> {
   onEndIconClick?: () => void;
 }
 
-const Input: React.FC<Props> = ({
-  variant = 'outlined',
-  startIcon,
-  size = 'small',
-  fullWidth = false,
-  onEndIconClick,
-  hasError = false,
-  errorText = '',
-  endIcon,
-  ...props
-}) => {
+const Input = React.forwardRef<HTMLInputElement, Props>(function Input(
+  {
+    variant = 'outlined',
+    startIcon,
+    size = 'small',
+    fullWidth = false,
+    onEndIconClick,
+    hasError = false,
+    errorText = '',
+    endIcon,
+    ...props
+  },
+  ref
+) {
   return (
     <>
       <StyledInputContainer
@@ -94,7 +97,7 @@ const Input: React.FC<Props> = ({
             </IconButton>
           </Box>
         )}
-        <StyledInput $size={size} {...props} />
+        <StyledInput inputProps={{ ref }} $size={size} {...props} />
         {endIcon && (
           <>
             <Divider sx={{ height: 22, mr: 1 }} orientation="vertical" />
@@ -113,6 +116,6 @@ const Input: React.FC<Props> = ({
       )}
     </>
   );
-};
+});
 
 export default Input;
