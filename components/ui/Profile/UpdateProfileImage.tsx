@@ -2,6 +2,7 @@ import { CameraAltRounded } from '@mui/icons-material';
 import { Box, Typography, ButtonBase, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React, { useRef } from 'react';
+import { ClipLoader } from 'react-spinners';
 import { useToastsContext } from '../../../contexts/toasts';
 import { useUpdateUserProfileImageMutation } from '../../../generated/graphql';
 import useMe from '../../../hooks/useMe';
@@ -73,17 +74,20 @@ type Props = {
 
 const UpdateProfileImage: React.FC<Props> = ({ profileImage }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = React.useState(false);
   const { me, updateMeQuery } = useMe();
   const { showToast } = useToastsContext();
   const [updateUserProfileImage] = useUpdateUserProfileImageMutation({});
 
   const onUpload = async (files: FileList | null) => {
     if (!me || !files) return;
+    setLoading(true);
     await uploadImage({
       file: files[0] as File,
       preset: UploadPresets.PROFILE_IMAGE,
       folder: UploadFolders.PROFILE_IMAGE,
       onSuccess: async (file) => {
+        setLoading(false);
         await updateUserProfileImage({
           variables: {
             userId: me.id,
@@ -155,7 +159,11 @@ const UpdateProfileImage: React.FC<Props> = ({ profileImage }) => {
           <ImageSrc style={{ backgroundImage: `url(${profileImage})` }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <CameraIconWrapper>
-            <CameraAltRounded htmlColor={grey[200]} />
+            {loading ? (
+              <ClipLoader color={grey[200]} />
+            ) : (
+              <CameraAltRounded htmlColor={grey[200]} />
+            )}
           </CameraIconWrapper>
         </ImageButton>
 

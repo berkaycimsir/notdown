@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 export const NOTDOWN_TOKEN_KEY = 'token';
 
 type GenerateArgs = {
-  payload: User;
+  payload: { userId: number };
   options: jwt.SignOptions;
 };
 

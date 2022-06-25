@@ -44,7 +44,10 @@ const CreateUserMutation = mutationField('createUser', {
     });
 
     return {
-      token: generate({ payload: createdUser, options: { expiresIn: '12h' } }),
+      token: generate({
+        payload: { userId: createdUser.id },
+        options: { expiresIn: '12h' },
+      }),
       error: null,
     };
   },
@@ -81,7 +84,10 @@ const SignInMutation = mutationField('signIn', {
     }
 
     return {
-      token: generate({ payload: user, options: { expiresIn: '12h' } }),
+      token: generate({
+        payload: { userId: user.id },
+        options: { expiresIn: '12h' },
+      }),
       error: null,
     };
   },
