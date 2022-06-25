@@ -16,6 +16,7 @@
     "@prisma/client": "3.4.2",
     "@svgr/webpack": "^6.2.1",
     "@uiw/react-markdown-editor": "^4.0.3",
+    "@uiw/react-markdown-preview": "^4.0.18",
     "apollo-server-core": "^3.6.7",
     "apollo-server-micro": "^3.6.7",
     "axios": "^0.27.2",

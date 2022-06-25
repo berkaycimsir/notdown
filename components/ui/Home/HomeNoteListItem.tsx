@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { NotesQueryNoteFragment } from '../../../generated/graphql';
 import { formatCreatedAt } from '../../../utils/date';
+import { cloud } from '../../../utils/file/cloudinary';
 import { readingTime } from '../../../utils/markdown';
 
 type Props = {
@@ -101,7 +102,9 @@ const HomeNoteListItem: React.FC<Props> = ({ shouldRenderDivider, note }) => {
   return (
     <>
       <StyledAuthorContainer>
-        <StyledProfileImage src="https://avatars.githubusercontent.com/u/47090177?v=4" />
+        <StyledProfileImage
+          src={cloud.image(note?.author.profileImage as string).toURL()}
+        />
         <StyledAuthorName>{note?.author.fullName}</StyledAuthorName>
         <StyledNoteCreatedAtText>
           · {formatCreatedAt(note?.createdAt)}

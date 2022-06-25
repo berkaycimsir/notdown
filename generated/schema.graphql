@@ -49,6 +49,7 @@ enum NoteErrors {
 
 type Query {
   getAllPublishedNotes: [Note]
+  getNoteById(noteId: Int!): Note
   getPublishedNotes(authorId: ID!): [Note]
   getSavedNotes(authorId: ID!): [Note]
   hello(name: String!): String!

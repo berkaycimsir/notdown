@@ -12,6 +12,7 @@ fragment CreateNoteMutationNote on Note {
     fullName
     username
     email
+    profileImage
   }
 }
 

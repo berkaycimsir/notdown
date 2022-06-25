@@ -12,6 +12,7 @@ fragment NotesQueryNote on Note {
     fullName
     username
     email
+    profileImage
   }
 }
 
@@ -29,6 +30,12 @@ query GetPublishedNotes($authorId: ID!) {
 
 query GetAllPublishedNotes {
   getAllPublishedNotes {
+    ...NotesQueryNote
+  }
+}
+
+query GetNoteById($noteId: Int!) {
+  getNoteById(noteId: $noteId) {
     ...NotesQueryNote
   }
 }

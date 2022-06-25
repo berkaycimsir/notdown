@@ -13,6 +13,7 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';
 import { ModalContextProvider } from '../contexts/modal';
 import ToastsContextProvider from '../contexts/toasts';
+import { setHtmlDataColorMode } from '../utils/editor';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -22,6 +23,10 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  React.useEffect(() => {
+    setHtmlDataColorMode('light');
+  }, []);
 
   return (
     <CacheProvider value={emotionCache}>

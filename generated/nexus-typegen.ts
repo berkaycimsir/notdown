@@ -122,6 +122,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getAllPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    getNoteById: NexusGenRootTypes['Note'] | null; // Note
     getPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getSavedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     hello: string; // String!
@@ -166,6 +167,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getAllPublishedNotes: 'Note'
+    getNoteById: 'Note'
     getPublishedNotes: 'Note'
     getSavedNotes: 'Note'
     hello: 'String'
@@ -208,6 +210,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getNoteById: { // args
+      noteId: number; // Int!
+    }
     getPublishedNotes: { // args
       authorId: string; // ID!
     }

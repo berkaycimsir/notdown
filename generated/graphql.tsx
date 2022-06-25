@@ -95,10 +95,16 @@ export enum NoteErrors {
 export type Query = {
   __typename?: 'Query';
   getAllPublishedNotes?: Maybe<Array<Maybe<Note>>>;
+  getNoteById?: Maybe<Note>;
   getPublishedNotes?: Maybe<Array<Maybe<Note>>>;
   getSavedNotes?: Maybe<Array<Maybe<Note>>>;
   hello: Scalars['String'];
   me?: Maybe<User>;
+};
+
+
+export type QueryGetNoteByIdArgs = {
+  noteId: Scalars['Int'];
 };
 
 
@@ -133,7 +139,7 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
+export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } };
 
 export type CreateNoteMutationVariables = Exact<{
   title: Scalars['String'];
@@ -145,28 +151,35 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null } };
 
-export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } };
+export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } };
 
 export type GetSavedNotesQueryVariables = Exact<{
   authorId: Scalars['ID'];
 }>;
 
 
-export type GetSavedNotesQuery = { __typename?: 'Query', getSavedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
+export type GetSavedNotesQuery = { __typename?: 'Query', getSavedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
 
 export type GetPublishedNotesQueryVariables = Exact<{
   authorId: Scalars['ID'];
 }>;
 
 
-export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
+export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
 
 export type GetAllPublishedNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPublishedNotesQuery = { __typename?: 'Query', getAllPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string } } | null> | null };
+export type GetAllPublishedNotesQuery = { __typename?: 'Query', getAllPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+
+export type GetNoteByIdQueryVariables = Exact<{
+  noteId: Scalars['Int'];
+}>;
+
+
+export type GetNoteByIdQuery = { __typename?: 'Query', getNoteById?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
 
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -215,6 +228,7 @@ export const CreateNoteMutationNoteFragmentDoc = gql`
     fullName
     username
     email
+    profileImage
   }
 }
     `;
@@ -233,6 +247,7 @@ export const NotesQueryNoteFragmentDoc = gql`
     fullName
     username
     email
+    profileImage
   }
 }
     `;
@@ -388,6 +403,41 @@ export function useGetAllPublishedNotesLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetAllPublishedNotesQueryHookResult = ReturnType<typeof useGetAllPublishedNotesQuery>;
 export type GetAllPublishedNotesLazyQueryHookResult = ReturnType<typeof useGetAllPublishedNotesLazyQuery>;
 export type GetAllPublishedNotesQueryResult = Apollo.QueryResult<GetAllPublishedNotesQuery, GetAllPublishedNotesQueryVariables>;
+export const GetNoteByIdDocument = gql`
+    query GetNoteById($noteId: Int!) {
+  getNoteById(noteId: $noteId) {
+    ...NotesQueryNote
+  }
+}
+    ${NotesQueryNoteFragmentDoc}`;
+
+/**
+ * __useGetNoteByIdQuery__
+ *
+ * To run a query within a React component, call `useGetNoteByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNoteByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNoteByIdQuery({
+ *   variables: {
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useGetNoteByIdQuery(baseOptions: Apollo.QueryHookOptions<GetNoteByIdQuery, GetNoteByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, options);
+      }
+export function useGetNoteByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNoteByIdQuery, GetNoteByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, options);
+        }
+export type GetNoteByIdQueryHookResult = ReturnType<typeof useGetNoteByIdQuery>;
+export type GetNoteByIdLazyQueryHookResult = ReturnType<typeof useGetNoteByIdLazyQuery>;
+export type GetNoteByIdQueryResult = Apollo.QueryResult<GetNoteByIdQuery, GetNoteByIdQueryVariables>;
 export const SignInDocument = gql`
     mutation SignIn($username: String, $email: String, $password: String!) {
   signIn(username: $username, email: $email, password: $password) {

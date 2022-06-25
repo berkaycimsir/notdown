@@ -63,8 +63,8 @@ const HomeNotesTab = () => {
           onChange={handleChange}
           aria-label="ant example"
         >
-          <StyledTab label="Following" />
           <StyledTab label="Recommended" />
+          <StyledTab label="Following" />
         </StyledTabs>
         <Box sx={{ p: 2 }} />
         {value === 0 && <RecommendedNotes />}
