@@ -4,7 +4,7 @@ import { grey } from '@mui/material/colors';
 import React, { useRef } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useToastsContext } from '../../../contexts/toasts';
-import { useUpdateUserProfileImageMutation } from '../../../generated/graphql';
+import { useUpdateUserProfileMutation } from '../../../generated/graphql';
 import useMe from '../../../hooks/useMe';
 import { UploadPresets, UploadFolders } from '../../../utils/file/types';
 import { uploadImage } from '../../../utils/file/upload';
@@ -77,7 +77,7 @@ const UpdateProfileImage: React.FC<Props> = ({ profileImage }) => {
   const [loading, setLoading] = React.useState(false);
   const { me, updateMeQuery } = useMe();
   const { showToast } = useToastsContext();
-  const [updateUserProfileImage] = useUpdateUserProfileImageMutation({});
+  const [updateUserProfile] = useUpdateUserProfileMutation();
 
   const onUpload = async (files: FileList | null) => {
     if (!me || !files) return;
@@ -88,25 +88,22 @@ const UpdateProfileImage: React.FC<Props> = ({ profileImage }) => {
       folder: UploadFolders.PROFILE_IMAGE,
       onSuccess: async (file) => {
         setLoading(false);
-        await updateUserProfileImage({
+        const newUser = { ...me, profileImage: file.public_id };
+        updateUserProfile({
           variables: {
             userId: me.id,
-            imageId: file.public_id,
-          },
-          optimisticResponse: {
-            updateUserProfileImage: {
-              id: me.id,
+            newUser: {
               profileImage: file.public_id,
             },
           },
+          optimisticResponse: {
+            updateUserProfile: newUser,
+          },
           update: (_, { data }) => {
-            const newImage = data?.updateUserProfileImage?.profileImage;
+            const newImage = data?.updateUserProfile?.profileImage;
             if (!newImage) return;
             updateMeQuery({
-              me: {
-                ...me,
-                profileImage: newImage,
-              },
+              me: newUser,
             });
           },
         });

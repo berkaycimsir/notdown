@@ -1,4 +1,5 @@
 import { ApolloQueryResult } from '@apollo/client';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { MeQuery, useMeQuery, User } from '../generated/graphql';
 import { removeToken } from '../utils/token';
@@ -12,14 +13,16 @@ type ReturnType = {
 };
 
 const useMe = (): ReturnType => {
+  const router = useRouter();
   const { data, loading, refetch, updateQuery } = useMeQuery();
 
   const me = React.useMemo(() => data?.me, [data?.me]);
 
-  const signOut = React.useCallback(async () => {
+  const signOut = async () => {
     removeToken();
+    router.push('/');
     await refetch();
-  }, [refetch]);
+  };
 
   const updateMeQuery = (newData: MeQuery) => {
     updateQuery((prev) => ({ ...prev, ...newData }));

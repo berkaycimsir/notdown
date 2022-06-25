@@ -29,6 +29,12 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  UpdateUserNewUserInput: { // input type
+    email?: string | null; // String
+    fullName?: string | null; // String
+    profileImage?: string | null; // String
+    username?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -100,7 +106,7 @@ export interface NexusGenFieldTypes {
     createNote: NexusGenRootTypes['CreateNoteMutationReturnType']; // CreateNoteMutationReturnType!
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
-    updateUserProfileImage: NexusGenRootTypes['User'] | null; // User
+    updateUserProfile: NexusGenRootTypes['User'] | null; // User
   }
   Note: { // field return type
     author: NexusGenRootTypes['User']; // User!
@@ -144,7 +150,7 @@ export interface NexusGenFieldTypeNames {
     createNote: 'CreateNoteMutationReturnType'
     createUser: 'AuthMutationReturnType'
     signIn: 'AuthMutationReturnType'
-    updateUserProfileImage: 'User'
+    updateUserProfile: 'User'
   }
   Note: { // field return type name
     author: 'User'
@@ -196,8 +202,8 @@ export interface NexusGenArgTypes {
       password: string; // String!
       username?: string | null; // String
     }
-    updateUserProfileImage: { // args
-      imageId: string; // String!
+    updateUserProfile: { // args
+      newUser: NexusGenInputs['UpdateUserNewUserInput']; // UpdateUserNewUserInput!
       userId: number; // Int!
     }
   }
@@ -222,7 +228,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = keyof NexusGenEnums;
 

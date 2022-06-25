@@ -1,5 +1,7 @@
+import { merge } from 'lodash';
 import {
   booleanArg,
+  inputObjectType,
   intArg,
   mutationField,
   nonNull,
@@ -93,16 +95,20 @@ const SignInMutation = mutationField('signIn', {
   },
 });
 
-const UpdateUserProfileImageMutation = mutationField('updateUserProfileImage', {
+const UpdateUserProfile = mutationField('updateUserProfile', {
   type: nullable('User'),
   args: {
-    userId: nonNull(intArg()),
-    imageId: nonNull(stringArg()),
+    userId: nonNull('Int'),
+    newUser: nonNull('UpdateUserNewUserInput'),
   },
-  resolve: async (_, { userId, imageId }, { prisma }) => {
+  resolve: async (_, { userId, newUser }, { prisma }) => {
+    const user = await prisma.user.findFirst({ where: { id: userId } });
+
+    if (!user) return null;
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { profileImage: imageId },
+      data: merge(user, newUser),
     });
 
     if (!updatedUser) {
@@ -116,5 +122,5 @@ const UpdateUserProfileImageMutation = mutationField('updateUserProfileImage', {
 export const UserMutation = [
   CreateUserMutation,
   SignInMutation,
-  UpdateUserProfileImageMutation,
+  UpdateUserProfile,
 ];

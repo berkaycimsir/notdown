@@ -1,5 +1,5 @@
 import { User } from 'nexus-prisma';
-import { objectType } from 'nexus';
+import { inputObjectType, objectType } from 'nexus';
 import { UserMutation } from './mutation';
 import { UserEnums } from './enum';
 import { UserQuery } from './query';
@@ -17,6 +17,16 @@ const UserType = objectType({
   },
 });
 
+const UpdateUserNewUserInput = inputObjectType({
+  name: 'UpdateUserNewUserInput',
+  definition(t) {
+    t.nullable.string('fullName');
+    t.nullable.string('username');
+    t.nullable.string('email');
+    t.nullable.string('profileImage');
+  },
+});
+
 const AuthMutationReturnType = objectType({
   name: 'AuthMutationReturnType',
   definition(t) {
@@ -31,6 +41,7 @@ export const UserTypes = [
   UserType,
   UserQuery,
   AuthMutationReturnType,
+  UpdateUserNewUserInput,
   ...UserMutation,
   ...UserEnums,
 ];

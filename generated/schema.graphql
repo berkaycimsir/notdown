@@ -27,7 +27,7 @@ type Mutation {
   createNote(isPublished: Boolean!, markdown: String!, summary: String!, tags: [String!]!, title: String!, userId: ID!): CreateNoteMutationReturnType!
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
   signIn(email: String, password: String!, username: String): AuthMutationReturnType!
-  updateUserProfileImage(imageId: String!, userId: Int!): User
+  updateUserProfile(newUser: UpdateUserNewUserInput!, userId: Int!): User
 }
 
 type Note {
@@ -53,6 +53,13 @@ type Query {
   getSavedNotes(authorId: ID!): [Note]
   hello(name: String!): String!
   me: User
+}
+
+input UpdateUserNewUserInput {
+  email: String
+  fullName: String
+  profileImage: String
+  username: String
 }
 
 type User {

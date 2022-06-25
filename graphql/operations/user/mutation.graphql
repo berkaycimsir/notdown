@@ -22,9 +22,12 @@ mutation SignUp(
   }
 }
 
-mutation UpdateUserProfileImage($imageId: String!, $userId: Int!) {
-  updateUserProfileImage(imageId: $imageId, userId: $userId) {
+mutation updateUserProfile($newUser: UpdateUserNewUserInput!, $userId: Int!) {
+  updateUserProfile(newUser: $newUser, userId: $userId) {
     id
+    fullName
+    username
+    email
     profileImage
   }
 }
