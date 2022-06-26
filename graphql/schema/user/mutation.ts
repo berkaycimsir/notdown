@@ -119,8 +119,70 @@ const UpdateUserProfile = mutationField('updateUserProfile', {
   },
 });
 
+const FollowAuthor = mutationField('followAuthor', {
+  type: 'Boolean',
+  args: {
+    userId: nonNull(intArg()),
+    authorId: nonNull(intArg()),
+  },
+  resolve: async (_, { userId, authorId }, { prisma }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const author = await prisma.user.findUnique({ where: { id: authorId } });
+
+    if (!user || !author) return false;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        following: [authorId, ...user.following],
+      },
+    });
+
+    await prisma.user.update({
+      where: { id: authorId },
+      data: {
+        followers: [userId, ...author.followers],
+      },
+    });
+
+    return true;
+  },
+});
+
+const UnfollowAuthor = mutationField('unfollowAuthor', {
+  type: 'Boolean',
+  args: {
+    userId: nonNull(intArg()),
+    authorId: nonNull(intArg()),
+  },
+  resolve: async (_, { userId, authorId }, { prisma }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const author = await prisma.user.findUnique({ where: { id: authorId } });
+
+    if (!user || !author) return false;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        following: user.following.filter((id) => id !== authorId),
+      },
+    });
+
+    await prisma.user.update({
+      where: { id: authorId },
+      data: {
+        followers: author.followers.filter((id) => id !== userId),
+      },
+    });
+
+    return true;
+  },
+});
+
 export const UserMutation = [
   CreateUserMutation,
   SignInMutation,
   UpdateUserProfile,
+  FollowAuthor,
+  UnfollowAuthor,
 ];

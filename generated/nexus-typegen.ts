@@ -76,6 +76,8 @@ export interface NexusGenObjects {
   User: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
+    followers: number[]; // [Int!]!
+    following: number[]; // [Int!]!
     fullName: string; // String!
     id: number; // Int!
     profileImage?: string | null; // String
@@ -105,7 +107,9 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createNote: NexusGenRootTypes['CreateNoteMutationReturnType']; // CreateNoteMutationReturnType!
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+    followAuthor: boolean | null; // Boolean
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+    unfollowAuthor: boolean | null; // Boolean
     updateUserProfile: NexusGenRootTypes['User'] | null; // User
   }
   Note: { // field return type
@@ -133,12 +137,16 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
+    followers: number[]; // [Int!]!
+    following: number[]; // [Int!]!
     fullName: string; // String!
     id: number; // Int!
     latestNote: NexusGenRootTypes['Note'] | null; // Note
     notes: NexusGenRootTypes['Note'][]; // [Note!]!
     notesCount: number | null; // Int
     profileImage: string | null; // String
+    userFollowers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    userFollowing: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     username: string; // String!
   }
 }
@@ -155,7 +163,9 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createNote: 'CreateNoteMutationReturnType'
     createUser: 'AuthMutationReturnType'
+    followAuthor: 'Boolean'
     signIn: 'AuthMutationReturnType'
+    unfollowAuthor: 'Boolean'
     updateUserProfile: 'User'
   }
   Note: { // field return type name
@@ -183,12 +193,16 @@ export interface NexusGenFieldTypeNames {
   User: { // field return type name
     createdAt: 'DateTime'
     email: 'String'
+    followers: 'Int'
+    following: 'Int'
     fullName: 'String'
     id: 'Int'
     latestNote: 'Note'
     notes: 'Note'
     notesCount: 'Int'
     profileImage: 'String'
+    userFollowers: 'User'
+    userFollowing: 'User'
     username: 'String'
   }
 }
@@ -209,10 +223,18 @@ export interface NexusGenArgTypes {
       password: string; // String!
       username: string; // String!
     }
+    followAuthor: { // args
+      authorId: number; // Int!
+      userId: number; // Int!
+    }
     signIn: { // args
       email?: string | null; // String
       password: string; // String!
       username?: string | null; // String
+    }
+    unfollowAuthor: { // args
+      authorId: number; // Int!
+      userId: number; // Int!
     }
     updateUserProfile: { // args
       newUser: NexusGenInputs['UpdateUserNewUserInput']; // UpdateUserNewUserInput!

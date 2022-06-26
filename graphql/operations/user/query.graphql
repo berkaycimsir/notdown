@@ -18,6 +18,14 @@ query Me {
     username
     email
     profileImage
+    followers
+    following
+    userFollowers {
+      id
+    }
+    userFollowing {
+      id
+    }
     createdAt
   }
 }

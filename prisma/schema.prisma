@@ -21,6 +21,8 @@ model User {
   notes        Note[]
   profileImage String?
   createdAt    DateTime @default(now())
+  followers    Int[]
+  following    Int[]
 }
 
 model Note {

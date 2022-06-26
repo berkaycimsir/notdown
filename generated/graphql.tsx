@@ -39,7 +39,9 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNote: CreateNoteMutationReturnType;
   createUser: AuthMutationReturnType;
+  followAuthor?: Maybe<Scalars['Boolean']>;
   signIn: AuthMutationReturnType;
+  unfollowAuthor?: Maybe<Scalars['Boolean']>;
   updateUserProfile?: Maybe<User>;
 };
 
@@ -62,10 +64,22 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationFollowAuthorArgs = {
+  authorId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+
 export type MutationSignInArgs = {
   email?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUnfollowAuthorArgs = {
+  authorId: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 
@@ -145,12 +159,16 @@ export type User = {
   __typename?: 'User';
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
+  followers: Array<Scalars['Int']>;
+  following: Array<Scalars['Int']>;
   fullName: Scalars['String'];
   id: Scalars['Int'];
   latestNote?: Maybe<Note>;
   notes: Array<Note>;
   notesCount?: Maybe<Scalars['Int']>;
   profileImage?: Maybe<Scalars['String']>;
+  userFollowers?: Maybe<Array<Maybe<User>>>;
+  userFollowing?: Maybe<Array<Maybe<User>>>;
   username: Scalars['String'];
 };
 
@@ -230,12 +248,28 @@ export type UpdateUserProfileMutationVariables = Exact<{
 
 export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
+export type FollowAuthorMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  authorId: Scalars['Int'];
+}>;
+
+
+export type FollowAuthorMutation = { __typename?: 'Mutation', followAuthor?: boolean | null };
+
+export type UnfollowAuthorMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  authorId: Scalars['Int'];
+}>;
+
+
+export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: boolean | null };
+
 export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, createdAt: any } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, userFollowers?: Array<{ __typename?: 'User', id: number } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number } | null> | null } | null };
 
 export type GetAuthorsByNameQueryVariables = Exact<{
   searchString: Scalars['String'];
@@ -634,6 +668,70 @@ export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
 export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
 export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export const FollowAuthorDocument = gql`
+    mutation followAuthor($userId: Int!, $authorId: Int!) {
+  followAuthor(userId: $userId, authorId: $authorId)
+}
+    `;
+export type FollowAuthorMutationFn = Apollo.MutationFunction<FollowAuthorMutation, FollowAuthorMutationVariables>;
+
+/**
+ * __useFollowAuthorMutation__
+ *
+ * To run a mutation, you first call `useFollowAuthorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFollowAuthorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [followAuthorMutation, { data, loading, error }] = useFollowAuthorMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      authorId: // value for 'authorId'
+ *   },
+ * });
+ */
+export function useFollowAuthorMutation(baseOptions?: Apollo.MutationHookOptions<FollowAuthorMutation, FollowAuthorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FollowAuthorMutation, FollowAuthorMutationVariables>(FollowAuthorDocument, options);
+      }
+export type FollowAuthorMutationHookResult = ReturnType<typeof useFollowAuthorMutation>;
+export type FollowAuthorMutationResult = Apollo.MutationResult<FollowAuthorMutation>;
+export type FollowAuthorMutationOptions = Apollo.BaseMutationOptions<FollowAuthorMutation, FollowAuthorMutationVariables>;
+export const UnfollowAuthorDocument = gql`
+    mutation unfollowAuthor($userId: Int!, $authorId: Int!) {
+  unfollowAuthor(userId: $userId, authorId: $authorId)
+}
+    `;
+export type UnfollowAuthorMutationFn = Apollo.MutationFunction<UnfollowAuthorMutation, UnfollowAuthorMutationVariables>;
+
+/**
+ * __useUnfollowAuthorMutation__
+ *
+ * To run a mutation, you first call `useUnfollowAuthorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnfollowAuthorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unfollowAuthorMutation, { data, loading, error }] = useUnfollowAuthorMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      authorId: // value for 'authorId'
+ *   },
+ * });
+ */
+export function useUnfollowAuthorMutation(baseOptions?: Apollo.MutationHookOptions<UnfollowAuthorMutation, UnfollowAuthorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnfollowAuthorMutation, UnfollowAuthorMutationVariables>(UnfollowAuthorDocument, options);
+      }
+export type UnfollowAuthorMutationHookResult = ReturnType<typeof useUnfollowAuthorMutation>;
+export type UnfollowAuthorMutationResult = Apollo.MutationResult<UnfollowAuthorMutation>;
+export type UnfollowAuthorMutationOptions = Apollo.BaseMutationOptions<UnfollowAuthorMutation, UnfollowAuthorMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -642,6 +740,14 @@ export const MeDocument = gql`
     username
     email
     profileImage
+    followers
+    following
+    userFollowers {
+      id
+    }
+    userFollowing {
+      id
+    }
     createdAt
   }
 }

@@ -26,7 +26,9 @@ scalar DateTime
 type Mutation {
   createNote(isPublished: Boolean!, markdown: String!, summary: String!, tags: [String!]!, title: String!, userId: ID!): CreateNoteMutationReturnType!
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
+  followAuthor(authorId: Int!, userId: Int!): Boolean
   signIn(email: String, password: String!, username: String): AuthMutationReturnType!
+  unfollowAuthor(authorId: Int!, userId: Int!): Boolean
   updateUserProfile(newUser: UpdateUserNewUserInput!, userId: Int!): User
 }
 
@@ -68,11 +70,15 @@ input UpdateUserNewUserInput {
 type User {
   createdAt: DateTime!
   email: String!
+  followers: [Int!]!
+  following: [Int!]!
   fullName: String!
   id: Int!
   latestNote: Note
   notes: [Note!]!
   notesCount: Int
   profileImage: String
+  userFollowers: [User]
+  userFollowing: [User]
   username: String!
 }

@@ -1,5 +1,5 @@
 import { User } from 'nexus-prisma';
-import { inputObjectType, objectType } from 'nexus';
+import { inputObjectType, list, objectType } from 'nexus';
 import { UserMutation } from './mutation';
 import { UserEnums } from './enum';
 import { UserQuery } from './query';
@@ -15,6 +15,9 @@ const UserType = objectType({
     t.field(User.profileImage);
     t.field(User.createdAt);
     t.field(User.notes);
+    t.field(User.followers);
+    t.field(User.following);
+
     t.int('notesCount', {
       resolve: async (parent, _, { prisma }) => {
         return await prisma.note.count({
@@ -22,6 +25,7 @@ const UserType = objectType({
         });
       },
     });
+
     t.field('latestNote', {
       type: 'Note',
       resolve: async (parent, _, { prisma }) => {
@@ -29,6 +33,24 @@ const UserType = objectType({
           where: { authorId: parent.id, isPublished: true },
           take: 1,
           orderBy: { createdAt: 'desc' },
+        });
+      },
+    });
+
+    t.field('userFollowers', {
+      type: list('User'),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.user.findMany({
+          where: { id: { in: parent.followers } },
+        });
+      },
+    });
+
+    t.field('userFollowing', {
+      type: list('User'),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.user.findMany({
+          where: { id: { in: parent.following } },
         });
       },
     });

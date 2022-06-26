@@ -1,9 +1,4 @@
-import {
-  ArrowRight,
-  ArrowRightAltRounded,
-  ArrowRightOutlined,
-  MoreHorizRounded,
-} from '@mui/icons-material';
+import { ArrowRightAltRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
@@ -21,7 +16,9 @@ import {
 import { green, grey } from '@mui/material/colors';
 import React from 'react';
 import { GetAuthorsByNameUserFragment } from '../../../../generated/graphql';
+import useMe from '../../../../hooks/useMe';
 import { cloud } from '../../../../utils/file/cloudinary';
+import FollowButton from '../../Button/FollowButton';
 import HomeNoteListItem from '../../Home/HomeNoteListItem';
 
 const StyledButton = styled(LoadingButton)(
@@ -53,8 +50,9 @@ type Props = {
 };
 
 const AuthorCard: React.FC<Props> = ({ author }) => {
+  const { me } = useMe();
   const authorPicture = cloud.image(author.profileImage as string).toURL();
-
+  console.log(me);
   return (
     <Card sx={{ width: '100%', borderRadius: 2, my: 3 }} variant="outlined">
       <CardHeader
@@ -64,18 +62,7 @@ const AuthorCard: React.FC<Props> = ({ author }) => {
         subheaderTypographyProps={{
           sx: { cursor: 'pointer', ':hover': { textDecoration: 'underline' } },
         }}
-        action={
-          <StyledButton
-            disableElevation
-            disableFocusRipple
-            disableRipple
-            disableTouchRipple
-            size="small"
-            variant="contained"
-          >
-            Follow
-          </StyledButton>
-        }
+        action={me?.id !== author.id && <FollowButton authorId={author.id} />}
       />
       <Divider />
       <CardContent>
@@ -102,9 +89,11 @@ const AuthorCard: React.FC<Props> = ({ author }) => {
                 size="small"
                 endIcon={<ArrowRightAltRounded />}
               >
-                {Number(author.notesCount) - 1} more{' '}
-                {Number(author.notesCount) - 1 === 1 ? 'note' : 'notes'} from @
-                {author.username}
+                {Number(author.notesCount) - 1 > 0
+                  ? `${Number(author.notesCount) - 1} more ${
+                      Number(author.notesCount) - 1 === 1 ? 'note' : 'notes'
+                    } from @${author.username}`
+                  : `See more about @${author.username}`}
               </StyledMoreNotesButton>
             </Box>
           </Box>

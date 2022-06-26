@@ -31,3 +31,11 @@ mutation updateUserProfile($newUser: UpdateUserNewUserInput!, $userId: Int!) {
     profileImage
   }
 }
+
+mutation followAuthor($userId: Int!, $authorId: Int!) {
+  followAuthor(userId: $userId, authorId: $authorId)
+}
+
+mutation unfollowAuthor($userId: Int!, $authorId: Int!) {
+  unfollowAuthor(userId: $userId, authorId: $authorId)
+}
