@@ -45,3 +45,9 @@ query GetNotesByTitle($title: String!) {
     ...NotesQueryNote
   }
 }
+
+query GetNotesByFollowing($userFollowing: [Int!]!) {
+  getNotesByFollowing(userFollowing: $userFollowing) {
+    ...NotesQueryNote
+  }
+}

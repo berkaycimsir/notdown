@@ -3,6 +3,7 @@ import { green, red } from '@mui/material/colors';
 import { styled, experimental_sx as sx } from '@mui/material/styles';
 import { unionBy } from 'lodash';
 import React from 'react';
+import { CustomModalTypes, useModalContext } from '../../../contexts/modal';
 import {
   GetAuthorsByNameUserFragment,
   useFollowAuthorMutation,
@@ -39,11 +40,12 @@ const FollowButton: React.FC<Props> = ({ author }) => {
   const { me, updateMeQuery } = useMe();
   const [followAuthor] = useFollowAuthorMutation();
   const [unfollowAuthor] = useUnfollowAuthorMutation();
+  const { showModal } = useModalContext();
 
   const authorId = author.id;
   const alreadyFollowing = Boolean(me?.following.find((id) => id === authorId));
 
-  const onFollowButtonClick = () => {
+  const onFollowClick = () => {
     if (!me) return;
     followAuthor({
       variables: { authorId, userId: me.id },
@@ -97,13 +99,22 @@ const FollowButton: React.FC<Props> = ({ author }) => {
     });
   };
 
+  const onFollowButtonClick = () => {
+    if (!me) {
+      showModal({ type: CustomModalTypes.SIGN_IN, showCloseButton: true });
+    } else {
+      if (alreadyFollowing) onUnfollowClick();
+      else onFollowClick();
+    }
+  };
+
   return (
     <StyledButton
       $unfollow={alreadyFollowing}
       disableElevation
       disableFocusRipple
       disableRipple
-      onClick={alreadyFollowing ? onUnfollowClick : onFollowButtonClick}
+      onClick={onFollowButtonClick}
       disableTouchRipple
       size="small"
       variant="contained"

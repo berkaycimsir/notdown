@@ -111,6 +111,7 @@ export type Query = {
   getAllPublishedNotes?: Maybe<Array<Maybe<Note>>>;
   getAuthorsByName?: Maybe<Array<Maybe<User>>>;
   getNoteById?: Maybe<Note>;
+  getNotesByFollowing?: Maybe<Array<Maybe<Note>>>;
   getNotesByTitle?: Maybe<Array<Maybe<Note>>>;
   getPublishedNotes?: Maybe<Array<Maybe<Note>>>;
   getSavedNotes?: Maybe<Array<Maybe<Note>>>;
@@ -126,6 +127,11 @@ export type QueryGetAuthorsByNameArgs = {
 
 export type QueryGetNoteByIdArgs = {
   noteId: Scalars['Int'];
+};
+
+
+export type QueryGetNotesByFollowingArgs = {
+  userFollowing: Array<Scalars['Int']>;
 };
 
 
@@ -220,6 +226,13 @@ export type GetNotesByTitleQueryVariables = Exact<{
 
 
 export type GetNotesByTitleQuery = { __typename?: 'Query', getNotesByTitle?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+
+export type GetNotesByFollowingQueryVariables = Exact<{
+  userFollowing: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type GetNotesByFollowingQuery = { __typename?: 'Query', getNotesByFollowing?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
 
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -563,6 +576,41 @@ export function useGetNotesByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetNotesByTitleQueryHookResult = ReturnType<typeof useGetNotesByTitleQuery>;
 export type GetNotesByTitleLazyQueryHookResult = ReturnType<typeof useGetNotesByTitleLazyQuery>;
 export type GetNotesByTitleQueryResult = Apollo.QueryResult<GetNotesByTitleQuery, GetNotesByTitleQueryVariables>;
+export const GetNotesByFollowingDocument = gql`
+    query GetNotesByFollowing($userFollowing: [Int!]!) {
+  getNotesByFollowing(userFollowing: $userFollowing) {
+    ...NotesQueryNote
+  }
+}
+    ${NotesQueryNoteFragmentDoc}`;
+
+/**
+ * __useGetNotesByFollowingQuery__
+ *
+ * To run a query within a React component, call `useGetNotesByFollowingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotesByFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotesByFollowingQuery({
+ *   variables: {
+ *      userFollowing: // value for 'userFollowing'
+ *   },
+ * });
+ */
+export function useGetNotesByFollowingQuery(baseOptions: Apollo.QueryHookOptions<GetNotesByFollowingQuery, GetNotesByFollowingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotesByFollowingQuery, GetNotesByFollowingQueryVariables>(GetNotesByFollowingDocument, options);
+      }
+export function useGetNotesByFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotesByFollowingQuery, GetNotesByFollowingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotesByFollowingQuery, GetNotesByFollowingQueryVariables>(GetNotesByFollowingDocument, options);
+        }
+export type GetNotesByFollowingQueryHookResult = ReturnType<typeof useGetNotesByFollowingQuery>;
+export type GetNotesByFollowingLazyQueryHookResult = ReturnType<typeof useGetNotesByFollowingLazyQuery>;
+export type GetNotesByFollowingQueryResult = Apollo.QueryResult<GetNotesByFollowingQuery, GetNotesByFollowingQueryVariables>;
 export const SignInDocument = gql`
     mutation SignIn($username: String, $email: String, $password: String!) {
   signIn(username: $username, email: $email, password: $password) {

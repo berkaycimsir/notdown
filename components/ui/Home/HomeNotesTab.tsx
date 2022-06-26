@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
 import usePersistState from '../../../hooks/usePersistState';
 import RecommendedNotes from './Recommended';
+import FollowingNotes from './Following';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '0.5px solid #ddd',
@@ -68,7 +69,7 @@ const HomeNotesTab = () => {
         </StyledTabs>
         <Box sx={{ p: 2 }} />
         {value === 0 && <RecommendedNotes />}
-        {value === 1 && <RecommendedNotes />}
+        {value === 1 && <FollowingNotes />}
       </Box>
     </Box>
   );

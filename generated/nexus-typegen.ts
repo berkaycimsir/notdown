@@ -128,6 +128,7 @@ export interface NexusGenFieldTypes {
     getAllPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getAuthorsByName: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     getNoteById: NexusGenRootTypes['Note'] | null; // Note
+    getNotesByFollowing: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getNotesByTitle: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getSavedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
@@ -184,6 +185,7 @@ export interface NexusGenFieldTypeNames {
     getAllPublishedNotes: 'Note'
     getAuthorsByName: 'User'
     getNoteById: 'Note'
+    getNotesByFollowing: 'Note'
     getNotesByTitle: 'Note'
     getPublishedNotes: 'Note'
     getSavedNotes: 'Note'
@@ -247,6 +249,9 @@ export interface NexusGenArgTypes {
     }
     getNoteById: { // args
       noteId: number; // Int!
+    }
+    getNotesByFollowing: { // args
+      userFollowing: number[]; // [Int!]!
     }
     getNotesByTitle: { // args
       title: string; // String!

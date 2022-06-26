@@ -131,7 +131,7 @@ const AppSidebar: React.FC = () => {
 
   const onRouteIconClick = React.useCallback(
     (pathname: string) => {
-      if (me || pathname === '/') {
+      if (me || pathname === '/' || pathname === '/search') {
         router.push(pathname);
       } else {
         showModal({ type: CustomModalTypes.SIGN_IN, showCloseButton: true });

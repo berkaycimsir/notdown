@@ -84,10 +84,31 @@ const GetNotesByTitle = queryField('getNotesByTitle', {
   },
 });
 
+export const GetNotesByFollowing = queryField('getNotesByFollowing', {
+  type: list('Note'),
+  args: {
+    userFollowing: nonNull(list(nonNull(intArg()))),
+  },
+  resolve: async (_, { userFollowing }, { prisma }) => {
+    return await prisma.note.findMany({
+      where: {
+        authorId: {
+          in: userFollowing,
+        },
+        isPublished: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  },
+});
+
 export const NoteQuery = [
   GetSavedNotesQuery,
   GetPublishedNotesQuery,
   GetAllPublishedNotes,
   GetNotesByTitle,
   GetNoteById,
+  GetNotesByFollowing,
 ];

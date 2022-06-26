@@ -53,6 +53,7 @@ type Query {
   getAllPublishedNotes: [Note]
   getAuthorsByName(searchString: String!): [User]
   getNoteById(noteId: Int!): Note
+  getNotesByFollowing(userFollowing: [Int!]!): [Note]
   getNotesByTitle(title: String!): [Note]
   getPublishedNotes(authorId: ID!): [Note]
   getSavedNotes(authorId: ID!): [Note]
