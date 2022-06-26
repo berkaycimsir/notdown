@@ -1,9 +1,4 @@
-import {
-  ForumOutlined,
-  ForumRounded,
-  ModeCommentOutlined,
-  StarBorderRounded,
-} from '@mui/icons-material';
+import { ForumRounded, StarBorderRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   Box,
@@ -16,6 +11,7 @@ import {
 import { green, grey, indigo, yellow } from '@mui/material/colors';
 import React from 'react';
 import { NotesQueryNoteFragment } from '../../../generated/graphql';
+import FollowButton from '../Button/FollowButton';
 import Link from '../Link';
 import NoteDetailsActions from './Actions';
 
@@ -91,16 +87,7 @@ const NoteDetailsFooter: React.FC<Props> = ({ note }) => {
         >
           More from {note.author.username}
         </Link>
-        <StyledButton
-          disableElevation
-          disableFocusRipple
-          disableRipple
-          disableTouchRipple
-          size="small"
-          variant="contained"
-        >
-          Follow
-        </StyledButton>
+        <FollowButton author={note.author} />
       </Box>
     </Box>
   );

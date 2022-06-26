@@ -120,7 +120,7 @@ const UpdateUserProfile = mutationField('updateUserProfile', {
 });
 
 const FollowAuthor = mutationField('followAuthor', {
-  type: 'Boolean',
+  type: 'User',
   args: {
     userId: nonNull(intArg()),
     authorId: nonNull(intArg()),
@@ -129,7 +129,7 @@ const FollowAuthor = mutationField('followAuthor', {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const author = await prisma.user.findUnique({ where: { id: authorId } });
 
-    if (!user || !author) return false;
+    if (!user || !author) return null;
 
     await prisma.user.update({
       where: { id: userId },
@@ -145,12 +145,12 @@ const FollowAuthor = mutationField('followAuthor', {
       },
     });
 
-    return true;
+    return author;
   },
 });
 
 const UnfollowAuthor = mutationField('unfollowAuthor', {
-  type: 'Boolean',
+  type: 'User',
   args: {
     userId: nonNull(intArg()),
     authorId: nonNull(intArg()),
@@ -159,7 +159,7 @@ const UnfollowAuthor = mutationField('unfollowAuthor', {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const author = await prisma.user.findUnique({ where: { id: authorId } });
 
-    if (!user || !author) return false;
+    if (!user || !author) return null;
 
     await prisma.user.update({
       where: { id: userId },
@@ -175,7 +175,7 @@ const UnfollowAuthor = mutationField('unfollowAuthor', {
       },
     });
 
-    return true;
+    return author;
   },
 });
 

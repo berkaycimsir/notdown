@@ -39,9 +39,9 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNote: CreateNoteMutationReturnType;
   createUser: AuthMutationReturnType;
-  followAuthor?: Maybe<Scalars['Boolean']>;
+  followAuthor?: Maybe<User>;
   signIn: AuthMutationReturnType;
-  unfollowAuthor?: Maybe<Scalars['Boolean']>;
+  unfollowAuthor?: Maybe<User>;
   updateUserProfile?: Maybe<User>;
 };
 
@@ -254,7 +254,7 @@ export type FollowAuthorMutationVariables = Exact<{
 }>;
 
 
-export type FollowAuthorMutation = { __typename?: 'Mutation', followAuthor?: boolean | null };
+export type FollowAuthorMutation = { __typename?: 'Mutation', followAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
 export type UnfollowAuthorMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -262,14 +262,16 @@ export type UnfollowAuthorMutationVariables = Exact<{
 }>;
 
 
-export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: boolean | null };
+export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
 export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
+
+export type UserFollowerFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, userFollowers?: Array<{ __typename?: 'User', id: number } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number } | null> | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null };
 
 export type GetAuthorsByNameQueryVariables = Exact<{
   searchString: Scalars['String'];
@@ -330,6 +332,15 @@ export const GetAuthorsByNameUserFragmentDoc = gql`
   }
 }
     ${NotesQueryNoteFragmentDoc}`;
+export const UserFollowerFragmentDoc = gql`
+    fragment UserFollower on User {
+  id
+  fullName
+  username
+  email
+  profileImage
+}
+    `;
 export const CreateNoteDocument = gql`
     mutation CreateNote($title: String!, $markdown: String!, $summary: String!, $tags: [String!]!, $userId: ID!, $isPublished: Boolean!) {
   createNote(
@@ -670,7 +681,13 @@ export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserPr
 export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
 export const FollowAuthorDocument = gql`
     mutation followAuthor($userId: Int!, $authorId: Int!) {
-  followAuthor(userId: $userId, authorId: $authorId)
+  followAuthor(userId: $userId, authorId: $authorId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
 }
     `;
 export type FollowAuthorMutationFn = Apollo.MutationFunction<FollowAuthorMutation, FollowAuthorMutationVariables>;
@@ -702,7 +719,13 @@ export type FollowAuthorMutationResult = Apollo.MutationResult<FollowAuthorMutat
 export type FollowAuthorMutationOptions = Apollo.BaseMutationOptions<FollowAuthorMutation, FollowAuthorMutationVariables>;
 export const UnfollowAuthorDocument = gql`
     mutation unfollowAuthor($userId: Int!, $authorId: Int!) {
-  unfollowAuthor(userId: $userId, authorId: $authorId)
+  unfollowAuthor(userId: $userId, authorId: $authorId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
 }
     `;
 export type UnfollowAuthorMutationFn = Apollo.MutationFunction<UnfollowAuthorMutation, UnfollowAuthorMutationVariables>;
@@ -743,15 +766,15 @@ export const MeDocument = gql`
     followers
     following
     userFollowers {
-      id
+      ...UserFollower
     }
     userFollowing {
-      id
+      ...UserFollower
     }
     createdAt
   }
 }
-    `;
+    ${UserFollowerFragmentDoc}`;
 
 /**
  * __useMeQuery__

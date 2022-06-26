@@ -1,5 +1,4 @@
 import { ArrowRightAltRounded } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
 import {
   Avatar,
   Box,
@@ -7,7 +6,6 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  IconButton,
   Typography,
   styled,
   experimental_sx as sx,
@@ -20,20 +18,6 @@ import useMe from '../../../../hooks/useMe';
 import { cloud } from '../../../../utils/file/cloudinary';
 import FollowButton from '../../Button/FollowButton';
 import HomeNoteListItem from '../../Home/HomeNoteListItem';
-
-const StyledButton = styled(LoadingButton)(
-  sx({
-    textTransform: 'none',
-    borderRadius: 12,
-    background: green[600],
-    mt: 1,
-    mr: 1,
-    ':hover': {
-      background: green[600],
-      opacity: 0.9,
-    },
-  })
-);
 
 const StyledMoreNotesButton = styled(Button)(
   sx({
@@ -52,7 +36,7 @@ type Props = {
 const AuthorCard: React.FC<Props> = ({ author }) => {
   const { me } = useMe();
   const authorPicture = cloud.image(author.profileImage as string).toURL();
-  console.log(me);
+
   return (
     <Card sx={{ width: '100%', borderRadius: 2, my: 3 }} variant="outlined">
       <CardHeader
@@ -62,7 +46,7 @@ const AuthorCard: React.FC<Props> = ({ author }) => {
         subheaderTypographyProps={{
           sx: { cursor: 'pointer', ':hover': { textDecoration: 'underline' } },
         }}
-        action={me?.id !== author.id && <FollowButton authorId={author.id} />}
+        action={me?.id !== author.id && <FollowButton author={author} />}
       />
       <Divider />
       <CardContent>

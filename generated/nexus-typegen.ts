@@ -107,9 +107,9 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createNote: NexusGenRootTypes['CreateNoteMutationReturnType']; // CreateNoteMutationReturnType!
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
-    followAuthor: boolean | null; // Boolean
+    followAuthor: NexusGenRootTypes['User'] | null; // User
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
-    unfollowAuthor: boolean | null; // Boolean
+    unfollowAuthor: NexusGenRootTypes['User'] | null; // User
     updateUserProfile: NexusGenRootTypes['User'] | null; // User
   }
   Note: { // field return type
@@ -163,9 +163,9 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createNote: 'CreateNoteMutationReturnType'
     createUser: 'AuthMutationReturnType'
-    followAuthor: 'Boolean'
+    followAuthor: 'User'
     signIn: 'AuthMutationReturnType'
-    unfollowAuthor: 'Boolean'
+    unfollowAuthor: 'User'
     updateUserProfile: 'User'
   }
   Note: { // field return type name

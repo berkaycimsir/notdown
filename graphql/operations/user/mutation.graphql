@@ -33,9 +33,21 @@ mutation updateUserProfile($newUser: UpdateUserNewUserInput!, $userId: Int!) {
 }
 
 mutation followAuthor($userId: Int!, $authorId: Int!) {
-  followAuthor(userId: $userId, authorId: $authorId)
+  followAuthor(userId: $userId, authorId: $authorId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
 }
 
 mutation unfollowAuthor($userId: Int!, $authorId: Int!) {
-  unfollowAuthor(userId: $userId, authorId: $authorId)
+  unfollowAuthor(userId: $userId, authorId: $authorId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
 }
