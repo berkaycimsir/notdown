@@ -49,7 +49,9 @@ enum NoteErrors {
 
 type Query {
   getAllPublishedNotes: [Note]
+  getAuthorsByName(searchString: String!): [User]
   getNoteById(noteId: Int!): Note
+  getNotesByTitle(title: String!): [Note]
   getPublishedNotes(authorId: ID!): [Note]
   getSavedNotes(authorId: ID!): [Note]
   hello(name: String!): String!
@@ -68,6 +70,9 @@ type User {
   email: String!
   fullName: String!
   id: Int!
+  latestNote: Note
+  notes: [Note!]!
+  notesCount: Int
   profileImage: String
   username: String!
 }

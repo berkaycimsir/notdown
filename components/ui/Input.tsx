@@ -57,6 +57,7 @@ const StyledErrorText = styled(Typography)(
 );
 
 interface Props extends Omit<InputBaseProps, 'size'> {
+  containerProps?: PaperProps;
   variant?: PaperProps['variant'];
   size?: InputSize;
   startIcon?: React.ReactNode;
@@ -69,6 +70,7 @@ interface Props extends Omit<InputBaseProps, 'size'> {
 
 const Input = React.forwardRef<HTMLInputElement, Props>(function Input(
   {
+    containerProps,
     variant = 'outlined',
     startIcon,
     size = 'small',
@@ -89,6 +91,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(function Input(
         $isOutlined={variant === 'outlined'}
         $fullWidth={fullWidth}
         $hasError={hasError}
+        {...containerProps}
       >
         {startIcon && (
           <Box ml={0.4}>

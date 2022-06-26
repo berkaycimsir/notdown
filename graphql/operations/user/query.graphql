@@ -1,3 +1,16 @@
+fragment GetAuthorsByNameUser on User {
+  id
+  fullName
+  username
+  email
+  profileImage
+  notesCount
+  createdAt
+  latestNote {
+    ...NotesQueryNote
+  }
+}
+
 query Me {
   me {
     id
@@ -6,5 +19,11 @@ query Me {
     email
     profileImage
     createdAt
+  }
+}
+
+query GetAuthorsByName($searchString: String!) {
+  getAuthorsByName(searchString: $searchString) {
+    ...GetAuthorsByNameUser
   }
 }

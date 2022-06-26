@@ -1,9 +1,11 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import '@uiw/react-markdown-preview/markdown.css';
+import MarkdownPreviewLoader from './MarkdownPreviewLoader';
 
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
   ssr: false,
+  loading: () => <MarkdownPreviewLoader />,
 });
 
 type Props = {

@@ -122,7 +122,9 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getAllPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    getAuthorsByName: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     getNoteById: NexusGenRootTypes['Note'] | null; // Note
+    getNotesByTitle: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     getSavedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     hello: string; // String!
@@ -133,6 +135,9 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     fullName: string; // String!
     id: number; // Int!
+    latestNote: NexusGenRootTypes['Note'] | null; // Note
+    notes: NexusGenRootTypes['Note'][]; // [Note!]!
+    notesCount: number | null; // Int
     profileImage: string | null; // String
     username: string; // String!
   }
@@ -167,7 +172,9 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getAllPublishedNotes: 'Note'
+    getAuthorsByName: 'User'
     getNoteById: 'Note'
+    getNotesByTitle: 'Note'
     getPublishedNotes: 'Note'
     getSavedNotes: 'Note'
     hello: 'String'
@@ -178,6 +185,9 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     fullName: 'String'
     id: 'Int'
+    latestNote: 'Note'
+    notes: 'Note'
+    notesCount: 'Int'
     profileImage: 'String'
     username: 'String'
   }
@@ -210,8 +220,14 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getAuthorsByName: { // args
+      searchString: string; // String!
+    }
     getNoteById: { // args
       noteId: number; // Int!
+    }
+    getNotesByTitle: { // args
+      title: string; // String!
     }
     getPublishedNotes: { // args
       authorId: string; // ID!

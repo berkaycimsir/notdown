@@ -8,6 +8,7 @@ import {
   EditRounded,
   Notifications,
   NotificationsNoneRounded,
+  SearchRounded,
 } from '@mui/icons-material';
 import {
   Box,
@@ -60,14 +61,11 @@ const RouterIcons: Array<RouteIcon> = [
     outlined: <HomeOutlined />,
   },
   {
-    name: 'Notifications',
-    pathname: '/notifications',
-    filled: <Notifications sx={ROUTER_ICON_STYLES.filled} />,
+    name: 'Search',
+    pathname: '/search',
+    filled: <SearchRounded sx={ROUTER_ICON_STYLES.filled} />,
     outlined: (
-      <NotificationsNoneRounded
-        strokeWidth="0.1px"
-        sx={ROUTER_ICON_STYLES.outlined}
-      />
+      <SearchRounded strokeWidth="0.1px" sx={ROUTER_ICON_STYLES.outlined} />
     ),
   },
   {

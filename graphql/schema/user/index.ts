@@ -14,6 +14,24 @@ const UserType = objectType({
     t.field(User.username);
     t.field(User.profileImage);
     t.field(User.createdAt);
+    t.field(User.notes);
+    t.int('notesCount', {
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.note.count({
+          where: { authorId: parent.id, isPublished: true },
+        });
+      },
+    });
+    t.field('latestNote', {
+      type: 'Note',
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.note.findFirst({
+          where: { authorId: parent.id, isPublished: true },
+          take: 1,
+          orderBy: { createdAt: 'desc' },
+        });
+      },
+    });
   },
 });
 

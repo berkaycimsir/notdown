@@ -1,4 +1,4 @@
-import { queryField, list, idArg, nonNull, intArg } from 'nexus';
+import { queryField, list, idArg, nonNull, intArg, stringArg } from 'nexus';
 
 const GetSavedNotesQuery = queryField('getSavedNotes', {
   type: list('Note'),
@@ -64,9 +64,30 @@ const GetNoteById = queryField('getNoteById', {
   },
 });
 
+const GetNotesByTitle = queryField('getNotesByTitle', {
+  type: list('Note'),
+  args: {
+    title: nonNull(stringArg()),
+  },
+  resolve: async (_, { title }, { prisma }) => {
+    const notes = await prisma.note.findMany({
+      where: {
+        title: { contains: title, mode: 'insensitive' },
+        isPublished: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return notes;
+  },
+});
+
 export const NoteQuery = [
   GetSavedNotesQuery,
   GetPublishedNotesQuery,
   GetAllPublishedNotes,
+  GetNotesByTitle,
   GetNoteById,
 ];

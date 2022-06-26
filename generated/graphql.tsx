@@ -95,7 +95,9 @@ export enum NoteErrors {
 export type Query = {
   __typename?: 'Query';
   getAllPublishedNotes?: Maybe<Array<Maybe<Note>>>;
+  getAuthorsByName?: Maybe<Array<Maybe<User>>>;
   getNoteById?: Maybe<Note>;
+  getNotesByTitle?: Maybe<Array<Maybe<Note>>>;
   getPublishedNotes?: Maybe<Array<Maybe<Note>>>;
   getSavedNotes?: Maybe<Array<Maybe<Note>>>;
   hello: Scalars['String'];
@@ -103,8 +105,18 @@ export type Query = {
 };
 
 
+export type QueryGetAuthorsByNameArgs = {
+  searchString: Scalars['String'];
+};
+
+
 export type QueryGetNoteByIdArgs = {
   noteId: Scalars['Int'];
+};
+
+
+export type QueryGetNotesByTitleArgs = {
+  title: Scalars['String'];
 };
 
 
@@ -135,6 +147,9 @@ export type User = {
   email: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
+  latestNote?: Maybe<Note>;
+  notes: Array<Note>;
+  notesCount?: Maybe<Scalars['Int']>;
   profileImage?: Maybe<Scalars['String']>;
   username: Scalars['String'];
 };
@@ -181,6 +196,13 @@ export type GetNoteByIdQueryVariables = Exact<{
 
 export type GetNoteByIdQuery = { __typename?: 'Query', getNoteById?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
 
+export type GetNotesByTitleQueryVariables = Exact<{
+  title: Scalars['String'];
+}>;
+
+
+export type GetNotesByTitleQuery = { __typename?: 'Query', getNotesByTitle?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
@@ -208,10 +230,19 @@ export type UpdateUserProfileMutationVariables = Exact<{
 
 export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
+export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, createdAt: any } | null };
+
+export type GetAuthorsByNameQueryVariables = Exact<{
+  searchString: Scalars['String'];
+}>;
+
+
+export type GetAuthorsByNameQuery = { __typename?: 'Query', getAuthorsByName?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null } | null> | null };
 
 export const CreateNoteMutationNoteFragmentDoc = gql`
     fragment CreateNoteMutationNote on Note {
@@ -251,6 +282,20 @@ export const NotesQueryNoteFragmentDoc = gql`
   }
 }
     `;
+export const GetAuthorsByNameUserFragmentDoc = gql`
+    fragment GetAuthorsByNameUser on User {
+  id
+  fullName
+  username
+  email
+  profileImage
+  notesCount
+  createdAt
+  latestNote {
+    ...NotesQueryNote
+  }
+}
+    ${NotesQueryNoteFragmentDoc}`;
 export const CreateNoteDocument = gql`
     mutation CreateNote($title: String!, $markdown: String!, $summary: String!, $tags: [String!]!, $userId: ID!, $isPublished: Boolean!) {
   createNote(
@@ -438,6 +483,41 @@ export function useGetNoteByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetNoteByIdQueryHookResult = ReturnType<typeof useGetNoteByIdQuery>;
 export type GetNoteByIdLazyQueryHookResult = ReturnType<typeof useGetNoteByIdLazyQuery>;
 export type GetNoteByIdQueryResult = Apollo.QueryResult<GetNoteByIdQuery, GetNoteByIdQueryVariables>;
+export const GetNotesByTitleDocument = gql`
+    query GetNotesByTitle($title: String!) {
+  getNotesByTitle(title: $title) {
+    ...NotesQueryNote
+  }
+}
+    ${NotesQueryNoteFragmentDoc}`;
+
+/**
+ * __useGetNotesByTitleQuery__
+ *
+ * To run a query within a React component, call `useGetNotesByTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotesByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotesByTitleQuery({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useGetNotesByTitleQuery(baseOptions: Apollo.QueryHookOptions<GetNotesByTitleQuery, GetNotesByTitleQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotesByTitleQuery, GetNotesByTitleQueryVariables>(GetNotesByTitleDocument, options);
+      }
+export function useGetNotesByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotesByTitleQuery, GetNotesByTitleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotesByTitleQuery, GetNotesByTitleQueryVariables>(GetNotesByTitleDocument, options);
+        }
+export type GetNotesByTitleQueryHookResult = ReturnType<typeof useGetNotesByTitleQuery>;
+export type GetNotesByTitleLazyQueryHookResult = ReturnType<typeof useGetNotesByTitleLazyQuery>;
+export type GetNotesByTitleQueryResult = Apollo.QueryResult<GetNotesByTitleQuery, GetNotesByTitleQueryVariables>;
 export const SignInDocument = gql`
     mutation SignIn($username: String, $email: String, $password: String!) {
   signIn(username: $username, email: $email, password: $password) {
@@ -593,3 +673,38 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const GetAuthorsByNameDocument = gql`
+    query GetAuthorsByName($searchString: String!) {
+  getAuthorsByName(searchString: $searchString) {
+    ...GetAuthorsByNameUser
+  }
+}
+    ${GetAuthorsByNameUserFragmentDoc}`;
+
+/**
+ * __useGetAuthorsByNameQuery__
+ *
+ * To run a query within a React component, call `useGetAuthorsByNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAuthorsByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAuthorsByNameQuery({
+ *   variables: {
+ *      searchString: // value for 'searchString'
+ *   },
+ * });
+ */
+export function useGetAuthorsByNameQuery(baseOptions: Apollo.QueryHookOptions<GetAuthorsByNameQuery, GetAuthorsByNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAuthorsByNameQuery, GetAuthorsByNameQueryVariables>(GetAuthorsByNameDocument, options);
+      }
+export function useGetAuthorsByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAuthorsByNameQuery, GetAuthorsByNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAuthorsByNameQuery, GetAuthorsByNameQueryVariables>(GetAuthorsByNameDocument, options);
+        }
+export type GetAuthorsByNameQueryHookResult = ReturnType<typeof useGetAuthorsByNameQuery>;
+export type GetAuthorsByNameLazyQueryHookResult = ReturnType<typeof useGetAuthorsByNameLazyQuery>;
+export type GetAuthorsByNameQueryResult = Apollo.QueryResult<GetAuthorsByNameQuery, GetAuthorsByNameQueryVariables>;

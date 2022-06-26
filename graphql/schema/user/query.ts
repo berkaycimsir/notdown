@@ -1,4 +1,4 @@
-import { queryField } from 'nexus';
+import { list, nonNull, queryField, stringArg } from 'nexus';
 import { verify } from '../../../utils/token';
 
 const MeQuery = queryField('me', {
@@ -16,4 +16,25 @@ const MeQuery = queryField('me', {
   },
 });
 
-export const UserQuery = [MeQuery];
+const GetAuthorsByName = queryField('getAuthorsByName', {
+  type: list('User'),
+  args: {
+    searchString: nonNull(stringArg()),
+  },
+  resolve: async (_, { searchString }, { prisma }) => {
+    const authors = await prisma.user.findMany({
+      where: {
+        fullName: { contains: searchString, mode: 'insensitive' },
+        username: { contains: searchString, mode: 'insensitive' },
+        email: { contains: searchString, mode: 'insensitive' },
+      },
+      orderBy: {
+        notes: { _count: 'desc' },
+      },
+    });
+
+    return authors;
+  },
+});
+
+export const UserQuery = [MeQuery, GetAuthorsByName];

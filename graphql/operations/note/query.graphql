@@ -39,3 +39,9 @@ query GetNoteById($noteId: Int!) {
     ...NotesQueryNote
   }
 }
+
+query GetNotesByTitle($title: String!) {
+  getNotesByTitle(title: $title) {
+    ...NotesQueryNote
+  }
+}
