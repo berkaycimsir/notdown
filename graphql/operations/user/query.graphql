@@ -4,6 +4,7 @@ fragment GetAuthorsByNameUser on User {
   username
   email
   profileImage
+  about
   notesCount
   createdAt
   latestNote {
@@ -17,12 +18,14 @@ fragment UserFollower on User {
   username
   email
   profileImage
+  about
 }
 
 fragment GetAuthorByUsernameUser on User {
   id
   fullName
   username
+  about
   email
   profileImage
   notesCount
@@ -46,6 +49,7 @@ query Me {
     id
     fullName
     username
+    about
     email
     profileImage
     followers

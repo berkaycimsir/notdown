@@ -161,6 +161,7 @@ export type QueryHelloArgs = {
 };
 
 export type UpdateUserNewUserInput = {
+  about?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   fullName?: InputMaybe<Scalars['String']>;
   profileImage?: InputMaybe<Scalars['String']>;
@@ -169,6 +170,7 @@ export type UpdateUserNewUserInput = {
 
 export type User = {
   __typename?: 'User';
+  about?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   followers: Array<Scalars['Int']>;
@@ -284,30 +286,30 @@ export type UnfollowAuthorMutationVariables = Exact<{
 
 export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
-export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
+export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
 
-export type UserFollowerFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null };
+export type UserFollowerFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null };
 
-export type GetAuthorByUsernameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetAuthorByUsernameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null } | null };
 
 export type GetAuthorsByNameQueryVariables = Exact<{
   searchString: Scalars['String'];
 }>;
 
 
-export type GetAuthorsByNameQuery = { __typename?: 'Query', getAuthorsByName?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null } | null> | null };
+export type GetAuthorsByNameQuery = { __typename?: 'Query', getAuthorsByName?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null } | null> | null };
 
 export type GetAuthorByUsernameQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type GetAuthorByUsernameQuery = { __typename?: 'Query', getAuthorByUsername?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null } | null };
+export type GetAuthorByUsernameQuery = { __typename?: 'Query', getAuthorByUsername?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null } | null };
 
 export const CreateNoteMutationNoteFragmentDoc = gql`
     fragment CreateNoteMutationNote on Note {
@@ -354,6 +356,7 @@ export const GetAuthorsByNameUserFragmentDoc = gql`
   username
   email
   profileImage
+  about
   notesCount
   createdAt
   latestNote {
@@ -368,6 +371,7 @@ export const UserFollowerFragmentDoc = gql`
   username
   email
   profileImage
+  about
 }
     `;
 export const GetAuthorByUsernameUserFragmentDoc = gql`
@@ -375,6 +379,7 @@ export const GetAuthorByUsernameUserFragmentDoc = gql`
   id
   fullName
   username
+  about
   email
   profileImage
   notesCount
@@ -849,6 +854,7 @@ export const MeDocument = gql`
     id
     fullName
     username
+    about
     email
     profileImage
     followers

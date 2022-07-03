@@ -63,6 +63,7 @@ type Query {
 }
 
 input UpdateUserNewUserInput {
+  about: String
   email: String
   fullName: String
   profileImage: String
@@ -70,6 +71,7 @@ input UpdateUserNewUserInput {
 }
 
 type User {
+  about: String
   createdAt: DateTime!
   email: String!
   followers: [Int!]!

@@ -40,6 +40,12 @@ const ProfileSettings = () => {
             title="Email"
             initialValue={me.email}
           />
+          <ProfilePageInputField
+            field={UpdateProfileFieldNames.ABOUT}
+            title="About"
+            initialValue={me.about || ''}
+            multiline
+          />
         </>
       )}
     </Container>

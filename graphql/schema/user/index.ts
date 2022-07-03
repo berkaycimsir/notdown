@@ -12,6 +12,7 @@ const UserType = objectType({
     t.field(User.fullName);
     t.field(User.email);
     t.field(User.username);
+    t.field(User.about);
     t.field(User.profileImage);
     t.field(User.createdAt);
     t.field(User.notes);
@@ -74,6 +75,7 @@ const UpdateUserNewUserInput = inputObjectType({
     t.nullable.string('username');
     t.nullable.string('email');
     t.nullable.string('profileImage');
+    t.nullable.string('about');
   },
 });
 

@@ -30,6 +30,7 @@ declare global {
 
 export interface NexusGenInputs {
   UpdateUserNewUserInput: { // input type
+    about?: string | null; // String
     email?: string | null; // String
     fullName?: string | null; // String
     profileImage?: string | null; // String
@@ -74,6 +75,7 @@ export interface NexusGenObjects {
   }
   Query: {};
   User: { // root type
+    about?: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     followers: number[]; // [Int!]!
@@ -137,6 +139,7 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
+    about: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     followers: number[]; // [Int!]!
@@ -196,6 +199,7 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
   }
   User: { // field return type name
+    about: 'String'
     createdAt: 'DateTime'
     email: 'String'
     followers: 'Int'

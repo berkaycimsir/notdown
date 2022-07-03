@@ -41,6 +41,7 @@ export enum UpdateProfileFieldNames {
   USERNAME = 'username',
   EMAIL = 'email',
   PROFILE_IMAGE = 'profileImage',
+  ABOUT = 'about',
 }
 
 type Props = {
@@ -48,6 +49,7 @@ type Props = {
   field: UpdateProfileFieldNames;
   initialValue: string;
   description?: string;
+  multiline?: boolean;
 };
 
 const ProfilePageInputField: React.FC<Props> = ({
@@ -55,6 +57,7 @@ const ProfilePageInputField: React.FC<Props> = ({
   initialValue,
   field,
   description,
+  multiline = false,
 }) => {
   const { me, updateMeQuery } = useMe();
   const inputRef = createRef<HTMLInputElement>();
@@ -166,7 +169,13 @@ const ProfilePageInputField: React.FC<Props> = ({
         readOnly={!editing}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && onSaveButtonClick()}
+        onKeyDown={(e) =>
+          e.key === 'Enter' &&
+          field !== UpdateProfileFieldNames.ABOUT &&
+          onSaveButtonClick()
+        }
+        multiline={multiline}
+        minRows={4}
       />
       {description && (
         <Typography sx={{ mt: 2 }} variant="body2">
