@@ -37,4 +37,20 @@ const GetAuthorsByName = queryField('getAuthorsByName', {
   },
 });
 
-export const UserQuery = [MeQuery, GetAuthorsByName];
+const GetAuthorByUsername = queryField('getAuthorByUsername', {
+  type: 'User',
+  args: {
+    username: nonNull(stringArg()),
+  },
+  resolve: async (_, { username }, { prisma }) => {
+    const author = await prisma.user.findFirst({
+      where: {
+        username: { equals: username },
+      },
+    });
+
+    return author;
+  },
+});
+
+export const UserQuery = [MeQuery, GetAuthorsByName, GetAuthorByUsername];

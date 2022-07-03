@@ -7,10 +7,10 @@ import {
 } from '@mui/material';
 import { green, grey, red } from '@mui/material/colors';
 import React, { createRef, useRef } from 'react';
-import { useToastsContext } from '../../../contexts/toasts';
-import { useUpdateUserProfileMutation } from '../../../generated/graphql';
-import useMe from '../../../hooks/useMe';
-import Input from '../Input';
+import { useToastsContext } from '../../../../contexts/toasts';
+import { useUpdateUserProfileMutation } from '../../../../generated/graphql';
+import useMe from '../../../../hooks/useMe';
+import Input from '../../Input';
 
 const StyledButton = styled(Button)<{
   $green?: boolean;

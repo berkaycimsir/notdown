@@ -4,11 +4,11 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
-import usePersistState from '../../../hooks/usePersistState';
-import RecommendedNotes from './Recommended';
-import FollowingNotes from './Following';
-import useMe from '../../../hooks/useMe';
-import { CustomModalTypes, useModalContext } from '../../../contexts/modal';
+import usePersistState from '../../../../hooks/usePersistState';
+import ProfileTabLists from './Lists';
+import ProfileTabHome from './Home';
+import ProfileTabAbout from './About';
+import { GetAuthorByUsernameUserFragment } from '../../../../generated/graphql';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '0.5px solid #ddd',
@@ -46,22 +46,19 @@ const StyledTab = styled((props: StyledTabProps) => (
   },
 }));
 
-const HomeNotesTab = () => {
-  const { me } = useMe();
-  const { showModal } = useModalContext();
+type Props = {
+  user: GetAuthorByUsernameUserFragment;
+};
 
+const ProfileTabs: React.FC<Props> = ({ user }) => {
   const [{ value }, setValue] = usePersistState<{ value: number }>(
-    'notdown-home-notes-tab-value',
+    'notdown-profile-tabs-tab-value',
     {
       value: 0,
     }
   );
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    if (newValue === 1 && !me) {
-      showModal({ type: CustomModalTypes.SIGN_IN, showCloseButton: true });
-      return;
-    }
     setValue({ value: newValue });
   };
 
@@ -73,15 +70,17 @@ const HomeNotesTab = () => {
           onChange={handleChange}
           aria-label="ant example"
         >
-          <StyledTab label="Recommended" />
-          <StyledTab label="Following" />
+          <StyledTab label="Home" />
+          <StyledTab label="Lists" />
+          <StyledTab label="About" />
         </StyledTabs>
         <Box sx={{ p: 2 }} />
-        {value === 0 && <RecommendedNotes />}
-        {value === 1 && <FollowingNotes />}
+        {value === 0 && <ProfileTabHome user={user} />}
+        {value === 1 && <ProfileTabLists user={user} />}
+        {value === 2 && <ProfileTabAbout user={user} />}
       </Box>
     </Box>
   );
 };
 
-export default HomeNotesTab;
+export default ProfileTabs;

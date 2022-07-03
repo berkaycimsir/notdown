@@ -12,6 +12,7 @@ import {
   Button,
 } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { GetAuthorsByNameUserFragment } from '../../../../generated/graphql';
 import useMe from '../../../../hooks/useMe';
@@ -35,6 +36,7 @@ type Props = {
 
 const AuthorCard: React.FC<Props> = ({ author }) => {
   const { me } = useMe();
+  const router = useRouter();
   const authorPicture = cloud.image(author.profileImage as string).toURL();
 
   return (
@@ -45,6 +47,7 @@ const AuthorCard: React.FC<Props> = ({ author }) => {
         subheader={`@${author.username}`}
         subheaderTypographyProps={{
           sx: { cursor: 'pointer', ':hover': { textDecoration: 'underline' } },
+          onClick: () => router.push(`/profile/${author.username}`),
         }}
         action={me?.id !== author.id && <FollowButton author={author} />}
       />
@@ -72,6 +75,7 @@ const AuthorCard: React.FC<Props> = ({ author }) => {
                 variant="text"
                 size="small"
                 endIcon={<ArrowRightAltRounded />}
+                onClick={() => router.push(`/profile/${author.username}`)}
               >
                 {Number(author.notesCount) - 1 > 0
                   ? `${Number(author.notesCount) - 1} more ${

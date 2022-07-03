@@ -126,6 +126,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getAllPublishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    getAuthorByUsername: NexusGenRootTypes['User'] | null; // User
     getAuthorsByName: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     getNoteById: NexusGenRootTypes['Note'] | null; // Note
     getNotesByFollowing: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
@@ -146,6 +147,7 @@ export interface NexusGenFieldTypes {
     notes: NexusGenRootTypes['Note'][]; // [Note!]!
     notesCount: number | null; // Int
     profileImage: string | null; // String
+    publishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     userFollowers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     userFollowing: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     username: string; // String!
@@ -183,6 +185,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getAllPublishedNotes: 'Note'
+    getAuthorByUsername: 'User'
     getAuthorsByName: 'User'
     getNoteById: 'Note'
     getNotesByFollowing: 'Note'
@@ -203,6 +206,7 @@ export interface NexusGenFieldTypeNames {
     notes: 'Note'
     notesCount: 'Int'
     profileImage: 'String'
+    publishedNotes: 'Note'
     userFollowers: 'User'
     userFollowing: 'User'
     username: 'String'
@@ -244,6 +248,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getAuthorByUsername: { // args
+      username: string; // String!
+    }
     getAuthorsByName: { // args
       searchString: string; // String!
     }

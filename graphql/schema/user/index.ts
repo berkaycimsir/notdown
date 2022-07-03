@@ -37,6 +37,16 @@ const UserType = objectType({
       },
     });
 
+    t.field('publishedNotes', {
+      type: list('Note'),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.note.findMany({
+          where: { authorId: parent.id, isPublished: true },
+          orderBy: { createdAt: 'desc' },
+        });
+      },
+    });
+
     t.field('userFollowers', {
       type: list('User'),
       resolve: async (parent, _, { prisma }) => {

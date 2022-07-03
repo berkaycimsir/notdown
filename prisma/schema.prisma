@@ -17,6 +17,7 @@ model User {
   email        String   @unique
   username     String   @unique
   fullName     String
+  about        String?
   password     String
   notes        Note[]
   profileImage String?

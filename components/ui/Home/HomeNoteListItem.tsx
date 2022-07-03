@@ -66,6 +66,10 @@ const StyledAuthorContainer = styled(Box)(
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    cursor: 'pointer',
+    ':hover': {
+      opacity: 0.8,
+    },
   })
 );
 
@@ -101,7 +105,9 @@ const HomeNoteListItem: React.FC<Props> = ({ shouldRenderDivider, note }) => {
 
   return (
     <>
-      <StyledAuthorContainer>
+      <StyledAuthorContainer
+        onClick={() => router.push(`/profile/${note?.author.username}`)}
+      >
         <StyledProfileImage
           src={cloud.image(note?.author.profileImage as string).toURL()}
         />

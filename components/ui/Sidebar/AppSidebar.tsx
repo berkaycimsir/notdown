@@ -169,7 +169,9 @@ const AppSidebar: React.FC = () => {
       <div style={{ flex: 1 }} />
 
       <Tooltip title="Profile" placement="left">
-        <ProfileButton navigateToProfile={() => onRouteIconClick('/profile')} />
+        <ProfileButton
+          navigateToProfile={() => onRouteIconClick(`/profile/${me?.username}`)}
+        />
       </Tooltip>
     </StyledSidebar>
   );

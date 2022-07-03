@@ -1,27 +1,26 @@
 import { Container, Divider, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React from 'react';
-import { ClipLoader } from 'react-spinners';
 import ProfilePageInputField, {
   UpdateProfileFieldNames,
-} from '../../components/ui/Profile/Field';
-import ProfilePageLoading from '../../components/ui/Profile/ProfilePageLoading';
-import UpdateProfileImage from '../../components/ui/Profile/UpdateProfileImage';
-import useMe from '../../hooks/useMe';
-import { cloud } from '../../utils/file/cloudinary';
+} from '../../../components/ui/Profile/Settings/Field';
+import ProfileSettingsPageLoading from '../../../components/ui/Profile/Settings/ProfileSettingsPageLoading';
+import UpdateProfileImage from '../../../components/ui/Profile/Settings/UpdateProfileImage';
+import useMe from '../../../hooks/useMe';
+import { cloud } from '../../../utils/file/cloudinary';
 
-const Profile = () => {
+const ProfileSettings = () => {
   const { me, loading } = useMe();
   const profileImage = cloud.image(me?.profileImage as string).toURL();
 
   return (
     <Container maxWidth="md">
       {loading || !me ? (
-        <ProfilePageLoading />
+        <ProfileSettingsPageLoading />
       ) : (
         <>
           <Typography fontWeight="bold" variant="h4">
-            Your Profile
+            Profile Settings
           </Typography>
           <Divider sx={{ mb: 5, mt: 2, borderColor: grey[200] }} />
           <ProfilePageInputField
@@ -47,4 +46,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileSettings;

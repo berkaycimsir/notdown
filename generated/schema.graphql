@@ -51,6 +51,7 @@ enum NoteErrors {
 
 type Query {
   getAllPublishedNotes: [Note]
+  getAuthorByUsername(username: String!): User
   getAuthorsByName(searchString: String!): [User]
   getNoteById(noteId: Int!): Note
   getNotesByFollowing(userFollowing: [Int!]!): [Note]
@@ -79,6 +80,7 @@ type User {
   notes: [Note!]!
   notesCount: Int
   profileImage: String
+  publishedNotes: [Note]
   userFollowers: [User]
   userFollowing: [User]
   username: String!

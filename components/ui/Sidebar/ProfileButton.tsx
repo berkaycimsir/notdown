@@ -110,7 +110,12 @@ const ProfileButton: React.FC<Props> = ({ navigateToProfile }) => {
           Sign Out
         </StyledButton>
 
-        <StyledButton variant="subtitle2">Settings</StyledButton>
+        <StyledButton
+          onClick={() => router.push(`/profile/${me?.username}/settings`)}
+          variant="subtitle2"
+        >
+          Settings
+        </StyledButton>
 
         <Divider />
 

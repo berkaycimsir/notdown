@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@mui/material';
 import React from 'react';
 
-const ProfilePageLoading = () => {
+const ProfileSettingsPageLoading = () => {
   return (
     <Box mt={2}>
       <Skeleton width="36%" height={32} />
@@ -59,4 +59,4 @@ const ProfilePageLoading = () => {
   );
 };
 
-export default ProfilePageLoading;
+export default ProfileSettingsPageLoading;

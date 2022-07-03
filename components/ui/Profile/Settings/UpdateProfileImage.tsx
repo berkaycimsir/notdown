@@ -3,11 +3,11 @@ import { Box, Typography, ButtonBase, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React, { useRef } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { useToastsContext } from '../../../contexts/toasts';
-import { useUpdateUserProfileMutation } from '../../../generated/graphql';
-import useMe from '../../../hooks/useMe';
-import { UploadPresets, UploadFolders } from '../../../utils/file/types';
-import { uploadImage } from '../../../utils/file/upload';
+import { useToastsContext } from '../../../../contexts/toasts';
+import { useUpdateUserProfileMutation } from '../../../../generated/graphql';
+import useMe from '../../../../hooks/useMe';
+import { UploadPresets, UploadFolders } from '../../../../utils/file/types';
+import { uploadImage } from '../../../../utils/file/upload';
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',

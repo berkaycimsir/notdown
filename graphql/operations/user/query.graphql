@@ -19,6 +19,28 @@ fragment UserFollower on User {
   profileImage
 }
 
+fragment GetAuthorByUsernameUser on User {
+  id
+  fullName
+  username
+  email
+  profileImage
+  notesCount
+  createdAt
+  latestNote {
+    ...NotesQueryNote
+  }
+  userFollowers {
+    ...UserFollower
+  }
+  userFollowing {
+    ...UserFollower
+  }
+  publishedNotes {
+    ...NotesQueryNote
+  }
+}
+
 query Me {
   me {
     id
@@ -41,5 +63,11 @@ query Me {
 query GetAuthorsByName($searchString: String!) {
   getAuthorsByName(searchString: $searchString) {
     ...GetAuthorsByNameUser
+  }
+}
+
+query GetAuthorByUsername($username: String!) {
+  getAuthorByUsername(username: $username) {
+    ...GetAuthorByUsernameUser
   }
 }
