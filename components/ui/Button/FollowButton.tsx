@@ -45,6 +45,8 @@ const FollowButton: React.FC<Props> = ({ author }) => {
   const authorId = author.id;
   const alreadyFollowing = Boolean(me?.following.find((id) => id === authorId));
 
+  if (authorId === me?.id) return null;
+
   const onFollowClick = () => {
     if (!me) return;
     followAuthor({

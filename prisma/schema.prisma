@@ -24,6 +24,8 @@ model User {
   createdAt    DateTime @default(now())
   followers    Int[]
   following    Int[]
+  bookmarks    Int[]
+  favorites    Int[]
 }
 
 model Note {

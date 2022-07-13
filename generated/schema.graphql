@@ -72,8 +72,10 @@ input UpdateUserNewUserInput {
 
 type User {
   about: String
+  bookmarks: [Int!]!
   createdAt: DateTime!
   email: String!
+  favorites: [Int!]!
   followers: [Int!]!
   following: [Int!]!
   fullName: String!
@@ -83,6 +85,8 @@ type User {
   notesCount: Int
   profileImage: String
   publishedNotes: [Note]
+  userBookmarks: [Note]
+  userFavorites: [Note]
   userFollowers: [User]
   userFollowing: [User]
   username: String!

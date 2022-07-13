@@ -4,11 +4,11 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
-import usePersistState from '../../../../hooks/usePersistState';
-import ProfileTabBookmarks from './Bookmarks';
-import ProfileTabHome from './Home';
-import ProfileTabAbout from './About';
-import { GetAuthorByUsernameUserFragment } from '../../../../generated/graphql';
+import usePersistState from '../../../hooks/usePersistState';
+import useMe from '../../../hooks/useMe';
+import { CustomModalTypes, useModalContext } from '../../../contexts/modal';
+import BookmarkedNotes from './Bookmarked';
+import FavoritedNotes from './Favorited';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '0.5px solid #ddd',
@@ -46,19 +46,22 @@ const StyledTab = styled((props: StyledTabProps) => (
   },
 }));
 
-type Props = {
-  user: GetAuthorByUsernameUserFragment;
-};
+const BookmarksTabs = () => {
+  const { me } = useMe();
+  const { showModal } = useModalContext();
 
-const ProfileTabs: React.FC<Props> = ({ user }) => {
   const [{ value }, setValue] = usePersistState<{ value: number }>(
-    'notdown-profile-tabs-tab-value',
+    'notdown-bookmarks-tab-value',
     {
       value: 0,
     }
   );
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+    if (newValue === 1 && !me) {
+      showModal({ type: CustomModalTypes.SIGN_IN, showCloseButton: true });
+      return;
+    }
     setValue({ value: newValue });
   };
 
@@ -70,17 +73,15 @@ const ProfileTabs: React.FC<Props> = ({ user }) => {
           onChange={handleChange}
           aria-label="ant example"
         >
-          <StyledTab label="Home" />
-          <StyledTab label="Lists" />
-          <StyledTab label="About" />
+          <StyledTab label="Bookmarks" />
+          <StyledTab label="Favorited" />
         </StyledTabs>
         <Box sx={{ p: 2 }} />
-        {value === 0 && <ProfileTabHome user={user} />}
-        {value === 1 && <ProfileTabBookmarks user={user} />}
-        {value === 2 && <ProfileTabAbout user={user} />}
+        {value === 0 && <BookmarkedNotes />}
+        {value === 1 && <FavoritedNotes />}
       </Box>
     </Box>
   );
 };
 
-export default ProfileTabs;
+export default BookmarksTabs;

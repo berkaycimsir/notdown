@@ -11,11 +11,10 @@ import {
   experimental_sx as sx,
   Button,
 } from '@mui/material';
-import { green, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { GetAuthorsByNameUserFragment } from '../../../../generated/graphql';
-import useMe from '../../../../hooks/useMe';
 import { cloud } from '../../../../utils/file/cloudinary';
 import FollowButton from '../../Button/FollowButton';
 import HomeNoteListItem from '../../Home/HomeNoteListItem';
@@ -35,7 +34,6 @@ type Props = {
 };
 
 const AuthorCard: React.FC<Props> = ({ author }) => {
-  const { me } = useMe();
   const router = useRouter();
   const authorPicture = cloud.image(author.profileImage as string).toURL();
 
@@ -49,7 +47,7 @@ const AuthorCard: React.FC<Props> = ({ author }) => {
           sx: { cursor: 'pointer', ':hover': { textDecoration: 'underline' } },
           onClick: () => router.push(`/profile/${author.username}`),
         }}
-        action={me?.id !== author.id && <FollowButton author={author} />}
+        action={<FollowButton author={author} />}
       />
       <Divider />
       <CardContent>

@@ -76,8 +76,10 @@ export interface NexusGenObjects {
   Query: {};
   User: { // root type
     about?: string | null; // String
+    bookmarks: number[]; // [Int!]!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
+    favorites: number[]; // [Int!]!
     followers: number[]; // [Int!]!
     following: number[]; // [Int!]!
     fullName: string; // String!
@@ -140,8 +142,10 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     about: string | null; // String
+    bookmarks: number[]; // [Int!]!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
+    favorites: number[]; // [Int!]!
     followers: number[]; // [Int!]!
     following: number[]; // [Int!]!
     fullName: string; // String!
@@ -151,6 +155,8 @@ export interface NexusGenFieldTypes {
     notesCount: number | null; // Int
     profileImage: string | null; // String
     publishedNotes: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    userBookmarks: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
+    userFavorites: Array<NexusGenRootTypes['Note'] | null> | null; // [Note]
     userFollowers: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     userFollowing: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     username: string; // String!
@@ -200,8 +206,10 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     about: 'String'
+    bookmarks: 'Int'
     createdAt: 'DateTime'
     email: 'String'
+    favorites: 'Int'
     followers: 'Int'
     following: 'Int'
     fullName: 'String'
@@ -211,6 +219,8 @@ export interface NexusGenFieldTypeNames {
     notesCount: 'Int'
     profileImage: 'String'
     publishedNotes: 'Note'
+    userBookmarks: 'Note'
+    userFavorites: 'Note'
     userFollowers: 'User'
     userFollowing: 'User'
     username: 'String'

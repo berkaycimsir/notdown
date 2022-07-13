@@ -18,6 +18,8 @@ const UserType = objectType({
     t.field(User.notes);
     t.field(User.followers);
     t.field(User.following);
+    t.field(User.bookmarks);
+    t.field(User.favorites);
 
     t.int('notesCount', {
       resolve: async (parent, _, { prisma }) => {
@@ -62,6 +64,24 @@ const UserType = objectType({
       resolve: async (parent, _, { prisma }) => {
         return await prisma.user.findMany({
           where: { id: { in: parent.following } },
+        });
+      },
+    });
+
+    t.field('userBookmarks', {
+      type: list('Note'),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.note.findMany({
+          where: { id: { in: parent.bookmarks } },
+        });
+      },
+    });
+
+    t.field('userFavorites', {
+      type: list('Note'),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.note.findMany({
+          where: { id: { in: parent.favorites } },
         });
       },
     });

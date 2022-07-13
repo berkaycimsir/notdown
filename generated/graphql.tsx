@@ -171,8 +171,10 @@ export type UpdateUserNewUserInput = {
 export type User = {
   __typename?: 'User';
   about?: Maybe<Scalars['String']>;
+  bookmarks: Array<Scalars['Int']>;
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
+  favorites: Array<Scalars['Int']>;
   followers: Array<Scalars['Int']>;
   following: Array<Scalars['Int']>;
   fullName: Scalars['String'];
@@ -182,6 +184,8 @@ export type User = {
   notesCount?: Maybe<Scalars['Int']>;
   profileImage?: Maybe<Scalars['String']>;
   publishedNotes?: Maybe<Array<Maybe<Note>>>;
+  userBookmarks?: Maybe<Array<Maybe<Note>>>;
+  userFavorites?: Maybe<Array<Maybe<Note>>>;
   userFollowers?: Maybe<Array<Maybe<User>>>;
   userFollowing?: Maybe<Array<Maybe<User>>>;
   username: Scalars['String'];

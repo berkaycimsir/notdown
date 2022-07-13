@@ -8,6 +8,7 @@ import {
   experimental_sx as sx,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { NotesQueryNoteFragment } from '../../../generated/graphql';
 import { formatCreatedAt } from '../../../utils/date';
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const NoteDetailsHeader: React.FC<Props> = ({ note }) => {
+  const router = useRouter();
   const author = note.author;
   const authorPicture = cloud.image(author.profileImage as string).toURL();
 
@@ -31,7 +33,16 @@ const NoteDetailsHeader: React.FC<Props> = ({ note }) => {
       flexDirection="row"
     >
       <Box display="flex" alignItems="center" flexDirection="row">
-        <Avatar src={authorPicture} sx={{ width: 48, height: 48 }} />
+        <Avatar
+          src={authorPicture}
+          onClick={() => router.push(`/profile/${author.username}`)}
+          sx={{
+            cursor: 'pointer',
+            width: 48,
+            height: 48,
+            ':hover': { opacity: 0.7 },
+          }}
+        />
 
         <Box display="flex" ml={2} flexDirection="column">
           <Typography variant="subtitle1">{author.fullName}</Typography>

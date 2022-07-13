@@ -5,8 +5,8 @@ type Props = {
   user: GetAuthorByUsernameUserFragment;
 };
 
-const ProfleTabLists: React.FC<Props> = ({ user }) => {
+const ProfleTabBookmarks: React.FC<Props> = ({ user }) => {
   return <div>ProfleTabLists</div>;
 };
 
-export default ProfleTabLists;
+export default ProfleTabBookmarks;
