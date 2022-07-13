@@ -1,5 +1,5 @@
 import { Note } from 'nexus-prisma';
-import { objectType } from 'nexus';
+import { list, objectType } from 'nexus';
 import { NoteMutation } from './mutation';
 import { NoteEnums } from './enum';
 import { NoteQuery } from './query';
@@ -18,6 +18,17 @@ const NoteType = objectType({
     t.field(Note.authorId);
     t.field(Note.createdAt);
     t.field(Note.updatedAt);
+
+    t.field('favorites', {
+      type: list('User'),
+      resolve: async (parent, _, { prisma }) => {
+        return await prisma.user.findMany({
+          where: {
+            favorites: { has: parent.id },
+          },
+        });
+      },
+    });
   },
 });
 

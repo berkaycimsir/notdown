@@ -11,15 +11,10 @@ import {
 import { green, grey, indigo, yellow } from '@mui/material/colors';
 import React from 'react';
 import { NotesQueryNoteFragment } from '../../../generated/graphql';
+import FavoriteButton from '../Button/FavoriteButton';
 import FollowButton from '../Button/FollowButton';
 import Link from '../Link';
 import NoteDetailsActions from './Actions';
-
-const StyledStarIcon = styled(StarBorderRounded)(
-  sx({
-    color: yellow[600],
-  })
-);
 
 const StyledCommentIcon = styled(ForumRounded)(
   sx({
@@ -50,14 +45,10 @@ const NoteDetailsFooter: React.FC<Props> = ({ note }) => {
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box display="flex" flexDirection="row" alignItems="center">
-            <IconButton sx={{ mr: 1 }} size="small">
-              <StyledStarIcon />
-            </IconButton>
-            <Typography fontWeight="normal" color={grey[700]} variant="caption">
-              12
-            </Typography>
-          </Box>
-          <Box display="flex" flexDirection="row" alignItems="center">
+            <FavoriteButton
+              favoriteCount={note.favorites?.length || 0}
+              noteId={note.id}
+            />
             <IconButton sx={{ ml: 2, mr: 1 }} size="small">
               <StyledCommentIcon />
             </IconButton>

@@ -24,10 +24,14 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 type Mutation {
+  bookmarkNote(noteId: Int!, userId: Int!): User
   createNote(isPublished: Boolean!, markdown: String!, summary: String!, tags: [String!]!, title: String!, userId: ID!): CreateNoteMutationReturnType!
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
+  favoriteNote(noteId: Int!, userId: Int!): User
   followAuthor(authorId: Int!, userId: Int!): User
   signIn(email: String, password: String!, username: String): AuthMutationReturnType!
+  unbookmarkNote(noteId: Int!, userId: Int!): User
+  unfavoriteNote(noteId: Int!, userId: Int!): User
   unfollowAuthor(authorId: Int!, userId: Int!): User
   updateUserProfile(newUser: UpdateUserNewUserInput!, userId: Int!): User
 }
@@ -36,6 +40,7 @@ type Note {
   author: User!
   authorId: Int!
   createdAt: DateTime!
+  favorites: [User]
   id: Int!
   isPublished: Boolean!
   markdown: String!

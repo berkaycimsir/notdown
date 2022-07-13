@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { merge, unionBy } from 'lodash';
 import {
   booleanArg,
   inputObjectType,
@@ -179,10 +179,102 @@ const UnfollowAuthor = mutationField('unfollowAuthor', {
   },
 });
 
+const FavoriteNote = mutationField('favoriteNote', {
+  type: 'User',
+  args: {
+    userId: nonNull(intArg()),
+    noteId: nonNull(intArg()),
+  },
+  resolve: async (_, { userId, noteId }, { prisma }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) return null;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        favorites: unionBy([noteId], user.favorites),
+      },
+    });
+
+    return user;
+  },
+});
+
+const UnfavoriteNote = mutationField('unfavoriteNote', {
+  type: 'User',
+  args: {
+    userId: nonNull(intArg()),
+    noteId: nonNull(intArg()),
+  },
+  resolve: async (_, { userId, noteId }, { prisma }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) return null;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        favorites: unionBy(user.favorites.filter((id) => id !== noteId)),
+      },
+    });
+
+    return user;
+  },
+});
+
+const BookmarkNote = mutationField('bookmarkNote', {
+  type: 'User',
+  args: {
+    userId: nonNull(intArg()),
+    noteId: nonNull(intArg()),
+  },
+  resolve: async (_, { userId, noteId }, { prisma }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) return null;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        bookmarks: unionBy([noteId], user.bookmarks),
+      },
+    });
+
+    return user;
+  },
+});
+
+const UnbookmarkNote = mutationField('unbookmarkNote', {
+  type: 'User',
+  args: {
+    userId: nonNull(intArg()),
+    noteId: nonNull(intArg()),
+  },
+  resolve: async (_, { userId, noteId }, { prisma }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) return null;
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        bookmarks: unionBy(user.bookmarks.filter((id) => id !== noteId)),
+      },
+    });
+
+    return user;
+  },
+});
+
 export const UserMutation = [
   CreateUserMutation,
   SignInMutation,
   UpdateUserProfile,
   FollowAuthor,
   UnfollowAuthor,
+  FavoriteNote,
+  UnfavoriteNote,
+  BookmarkNote,
+  UnbookmarkNote,
 ];

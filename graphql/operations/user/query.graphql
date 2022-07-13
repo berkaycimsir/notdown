@@ -61,6 +61,8 @@ query Me {
       ...UserFollower
     }
     createdAt
+    favorites
+    bookmarks
   }
 }
 

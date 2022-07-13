@@ -14,6 +14,13 @@ fragment NotesQueryNote on Note {
     email
     profileImage
   }
+  favorites {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
 }
 
 query GetSavedNotes($authorId: ID!) {

@@ -109,10 +109,14 @@ export interface NexusGenFieldTypes {
     note: NexusGenRootTypes['Note'] | null; // Note
   }
   Mutation: { // field return type
+    bookmarkNote: NexusGenRootTypes['User'] | null; // User
     createNote: NexusGenRootTypes['CreateNoteMutationReturnType']; // CreateNoteMutationReturnType!
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+    favoriteNote: NexusGenRootTypes['User'] | null; // User
     followAuthor: NexusGenRootTypes['User'] | null; // User
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
+    unbookmarkNote: NexusGenRootTypes['User'] | null; // User
+    unfavoriteNote: NexusGenRootTypes['User'] | null; // User
     unfollowAuthor: NexusGenRootTypes['User'] | null; // User
     updateUserProfile: NexusGenRootTypes['User'] | null; // User
   }
@@ -120,6 +124,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     authorId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
+    favorites: Array<NexusGenRootTypes['User'] | null> | null; // [User]
     id: number; // Int!
     isPublished: boolean; // Boolean!
     markdown: string; // String!
@@ -173,10 +178,14 @@ export interface NexusGenFieldTypeNames {
     note: 'Note'
   }
   Mutation: { // field return type name
+    bookmarkNote: 'User'
     createNote: 'CreateNoteMutationReturnType'
     createUser: 'AuthMutationReturnType'
+    favoriteNote: 'User'
     followAuthor: 'User'
     signIn: 'AuthMutationReturnType'
+    unbookmarkNote: 'User'
+    unfavoriteNote: 'User'
     unfollowAuthor: 'User'
     updateUserProfile: 'User'
   }
@@ -184,6 +193,7 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     authorId: 'Int'
     createdAt: 'DateTime'
+    favorites: 'User'
     id: 'Int'
     isPublished: 'Boolean'
     markdown: 'String'
@@ -229,6 +239,10 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    bookmarkNote: { // args
+      noteId: number; // Int!
+      userId: number; // Int!
+    }
     createNote: { // args
       isPublished: boolean; // Boolean!
       markdown: string; // String!
@@ -243,6 +257,10 @@ export interface NexusGenArgTypes {
       password: string; // String!
       username: string; // String!
     }
+    favoriteNote: { // args
+      noteId: number; // Int!
+      userId: number; // Int!
+    }
     followAuthor: { // args
       authorId: number; // Int!
       userId: number; // Int!
@@ -251,6 +269,14 @@ export interface NexusGenArgTypes {
       email?: string | null; // String
       password: string; // String!
       username?: string | null; // String
+    }
+    unbookmarkNote: { // args
+      noteId: number; // Int!
+      userId: number; // Int!
+    }
+    unfavoriteNote: { // args
+      noteId: number; // Int!
+      userId: number; // Int!
     }
     unfollowAuthor: { // args
       authorId: number; // Int!

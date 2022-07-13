@@ -37,12 +37,22 @@ export type CreateNoteMutationReturnType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  bookmarkNote?: Maybe<User>;
   createNote: CreateNoteMutationReturnType;
   createUser: AuthMutationReturnType;
+  favoriteNote?: Maybe<User>;
   followAuthor?: Maybe<User>;
   signIn: AuthMutationReturnType;
+  unbookmarkNote?: Maybe<User>;
+  unfavoriteNote?: Maybe<User>;
   unfollowAuthor?: Maybe<User>;
   updateUserProfile?: Maybe<User>;
+};
+
+
+export type MutationBookmarkNoteArgs = {
+  noteId: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 
@@ -64,6 +74,12 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationFavoriteNoteArgs = {
+  noteId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+
 export type MutationFollowAuthorArgs = {
   authorId: Scalars['Int'];
   userId: Scalars['Int'];
@@ -74,6 +90,18 @@ export type MutationSignInArgs = {
   email?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUnbookmarkNoteArgs = {
+  noteId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+
+export type MutationUnfavoriteNoteArgs = {
+  noteId: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 
@@ -93,6 +121,7 @@ export type Note = {
   author: User;
   authorId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
+  favorites?: Maybe<Array<Maybe<User>>>;
   id: Scalars['Int'];
   isPublished: Scalars['Boolean'];
   markdown: Scalars['String'];
@@ -191,7 +220,7 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } };
+export type CreateNoteMutationNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null };
 
 export type CreateNoteMutationVariables = Exact<{
   title: Scalars['String'];
@@ -203,49 +232,49 @@ export type CreateNoteMutationVariables = Exact<{
 }>;
 
 
-export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null } };
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null } };
 
-export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } };
+export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null };
 
 export type GetSavedNotesQueryVariables = Exact<{
   authorId: Scalars['ID'];
 }>;
 
 
-export type GetSavedNotesQuery = { __typename?: 'Query', getSavedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetSavedNotesQuery = { __typename?: 'Query', getSavedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null };
 
 export type GetPublishedNotesQueryVariables = Exact<{
   authorId: Scalars['ID'];
 }>;
 
 
-export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetPublishedNotesQuery = { __typename?: 'Query', getPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null };
 
 export type GetAllPublishedNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPublishedNotesQuery = { __typename?: 'Query', getAllPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetAllPublishedNotesQuery = { __typename?: 'Query', getAllPublishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null };
 
 export type GetNoteByIdQueryVariables = Exact<{
   noteId: Scalars['Int'];
 }>;
 
 
-export type GetNoteByIdQuery = { __typename?: 'Query', getNoteById?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
+export type GetNoteByIdQuery = { __typename?: 'Query', getNoteById?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null };
 
 export type GetNotesByTitleQueryVariables = Exact<{
   title: Scalars['String'];
 }>;
 
 
-export type GetNotesByTitleQuery = { __typename?: 'Query', getNotesByTitle?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetNotesByTitleQuery = { __typename?: 'Query', getNotesByTitle?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null };
 
 export type GetNotesByFollowingQueryVariables = Exact<{
   userFollowing: Array<Scalars['Int']> | Scalars['Int'];
 }>;
 
 
-export type GetNotesByFollowingQuery = { __typename?: 'Query', getNotesByFollowing?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetNotesByFollowingQuery = { __typename?: 'Query', getNotesByFollowing?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null };
 
 export type SignInMutationVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
@@ -290,30 +319,62 @@ export type UnfollowAuthorMutationVariables = Exact<{
 
 export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
 
-export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null };
+export type FavoriteNoteMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  noteId: Scalars['Int'];
+}>;
+
+
+export type FavoriteNoteMutation = { __typename?: 'Mutation', favoriteNote?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
+
+export type UnfavoriteNoteMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  noteId: Scalars['Int'];
+}>;
+
+
+export type UnfavoriteNoteMutation = { __typename?: 'Mutation', unfavoriteNote?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
+
+export type BookmarkNoteMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  noteId: Scalars['Int'];
+}>;
+
+
+export type BookmarkNoteMutation = { __typename?: 'Mutation', bookmarkNote?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
+
+export type UnbookmarkNoteMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  noteId: Scalars['Int'];
+}>;
+
+
+export type UnbookmarkNoteMutation = { __typename?: 'Mutation', unbookmarkNote?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
+
+export type GetAuthorsByNameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null };
 
 export type UserFollowerFragment = { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null };
 
-export type GetAuthorByUsernameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null };
+export type GetAuthorByUsernameUserFragment = { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, favorites: Array<number>, bookmarks: Array<number>, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null } | null };
 
 export type GetAuthorsByNameQueryVariables = Exact<{
   searchString: Scalars['String'];
 }>;
 
 
-export type GetAuthorsByNameQuery = { __typename?: 'Query', getAuthorsByName?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null } | null> | null };
+export type GetAuthorsByNameQuery = { __typename?: 'Query', getAuthorsByName?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null } | null> | null };
 
 export type GetAuthorByUsernameQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type GetAuthorByUsernameQuery = { __typename?: 'Query', getAuthorByUsername?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } } | null> | null } | null };
+export type GetAuthorByUsernameQuery = { __typename?: 'Query', getAuthorByUsername?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, notesCount?: number | null, createdAt: any, latestNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, publishedNotes?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null } | null };
 
 export const CreateNoteMutationNoteFragmentDoc = gql`
     fragment CreateNoteMutationNote on Note {
@@ -326,6 +387,13 @@ export const CreateNoteMutationNoteFragmentDoc = gql`
   createdAt
   tags
   author {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+  favorites {
     id
     fullName
     username
@@ -345,6 +413,13 @@ export const NotesQueryNoteFragmentDoc = gql`
   createdAt
   tags
   author {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+  favorites {
     id
     fullName
     username
@@ -852,6 +927,158 @@ export function useUnfollowAuthorMutation(baseOptions?: Apollo.MutationHookOptio
 export type UnfollowAuthorMutationHookResult = ReturnType<typeof useUnfollowAuthorMutation>;
 export type UnfollowAuthorMutationResult = Apollo.MutationResult<UnfollowAuthorMutation>;
 export type UnfollowAuthorMutationOptions = Apollo.BaseMutationOptions<UnfollowAuthorMutation, UnfollowAuthorMutationVariables>;
+export const FavoriteNoteDocument = gql`
+    mutation favoriteNote($userId: Int!, $noteId: Int!) {
+  favoriteNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+    `;
+export type FavoriteNoteMutationFn = Apollo.MutationFunction<FavoriteNoteMutation, FavoriteNoteMutationVariables>;
+
+/**
+ * __useFavoriteNoteMutation__
+ *
+ * To run a mutation, you first call `useFavoriteNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavoriteNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favoriteNoteMutation, { data, loading, error }] = useFavoriteNoteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useFavoriteNoteMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteNoteMutation, FavoriteNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavoriteNoteMutation, FavoriteNoteMutationVariables>(FavoriteNoteDocument, options);
+      }
+export type FavoriteNoteMutationHookResult = ReturnType<typeof useFavoriteNoteMutation>;
+export type FavoriteNoteMutationResult = Apollo.MutationResult<FavoriteNoteMutation>;
+export type FavoriteNoteMutationOptions = Apollo.BaseMutationOptions<FavoriteNoteMutation, FavoriteNoteMutationVariables>;
+export const UnfavoriteNoteDocument = gql`
+    mutation unfavoriteNote($userId: Int!, $noteId: Int!) {
+  unfavoriteNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+    `;
+export type UnfavoriteNoteMutationFn = Apollo.MutationFunction<UnfavoriteNoteMutation, UnfavoriteNoteMutationVariables>;
+
+/**
+ * __useUnfavoriteNoteMutation__
+ *
+ * To run a mutation, you first call `useUnfavoriteNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnfavoriteNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unfavoriteNoteMutation, { data, loading, error }] = useUnfavoriteNoteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useUnfavoriteNoteMutation(baseOptions?: Apollo.MutationHookOptions<UnfavoriteNoteMutation, UnfavoriteNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnfavoriteNoteMutation, UnfavoriteNoteMutationVariables>(UnfavoriteNoteDocument, options);
+      }
+export type UnfavoriteNoteMutationHookResult = ReturnType<typeof useUnfavoriteNoteMutation>;
+export type UnfavoriteNoteMutationResult = Apollo.MutationResult<UnfavoriteNoteMutation>;
+export type UnfavoriteNoteMutationOptions = Apollo.BaseMutationOptions<UnfavoriteNoteMutation, UnfavoriteNoteMutationVariables>;
+export const BookmarkNoteDocument = gql`
+    mutation bookmarkNote($userId: Int!, $noteId: Int!) {
+  bookmarkNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+    `;
+export type BookmarkNoteMutationFn = Apollo.MutationFunction<BookmarkNoteMutation, BookmarkNoteMutationVariables>;
+
+/**
+ * __useBookmarkNoteMutation__
+ *
+ * To run a mutation, you first call `useBookmarkNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBookmarkNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bookmarkNoteMutation, { data, loading, error }] = useBookmarkNoteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useBookmarkNoteMutation(baseOptions?: Apollo.MutationHookOptions<BookmarkNoteMutation, BookmarkNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BookmarkNoteMutation, BookmarkNoteMutationVariables>(BookmarkNoteDocument, options);
+      }
+export type BookmarkNoteMutationHookResult = ReturnType<typeof useBookmarkNoteMutation>;
+export type BookmarkNoteMutationResult = Apollo.MutationResult<BookmarkNoteMutation>;
+export type BookmarkNoteMutationOptions = Apollo.BaseMutationOptions<BookmarkNoteMutation, BookmarkNoteMutationVariables>;
+export const UnbookmarkNoteDocument = gql`
+    mutation unbookmarkNote($userId: Int!, $noteId: Int!) {
+  unbookmarkNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+    `;
+export type UnbookmarkNoteMutationFn = Apollo.MutationFunction<UnbookmarkNoteMutation, UnbookmarkNoteMutationVariables>;
+
+/**
+ * __useUnbookmarkNoteMutation__
+ *
+ * To run a mutation, you first call `useUnbookmarkNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnbookmarkNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unbookmarkNoteMutation, { data, loading, error }] = useUnbookmarkNoteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useUnbookmarkNoteMutation(baseOptions?: Apollo.MutationHookOptions<UnbookmarkNoteMutation, UnbookmarkNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnbookmarkNoteMutation, UnbookmarkNoteMutationVariables>(UnbookmarkNoteDocument, options);
+      }
+export type UnbookmarkNoteMutationHookResult = ReturnType<typeof useUnbookmarkNoteMutation>;
+export type UnbookmarkNoteMutationResult = Apollo.MutationResult<UnbookmarkNoteMutation>;
+export type UnbookmarkNoteMutationOptions = Apollo.BaseMutationOptions<UnbookmarkNoteMutation, UnbookmarkNoteMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -870,6 +1097,8 @@ export const MeDocument = gql`
       ...UserFollower
     }
     createdAt
+    favorites
+    bookmarks
   }
 }
     ${UserFollowerFragmentDoc}`;

@@ -51,3 +51,43 @@ mutation unfollowAuthor($userId: Int!, $authorId: Int!) {
     profileImage
   }
 }
+
+mutation favoriteNote($userId: Int!, $noteId: Int!) {
+  favoriteNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+
+mutation unfavoriteNote($userId: Int!, $noteId: Int!) {
+  unfavoriteNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+
+mutation bookmarkNote($userId: Int!, $noteId: Int!) {
+  bookmarkNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
+
+mutation unbookmarkNote($userId: Int!, $noteId: Int!) {
+  unbookmarkNote(userId: $userId, noteId: $noteId) {
+    id
+    fullName
+    username
+    email
+    profileImage
+  }
+}
