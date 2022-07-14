@@ -309,7 +309,7 @@ export type FollowAuthorMutationVariables = Exact<{
 }>;
 
 
-export type FollowAuthorMutation = { __typename?: 'Mutation', followAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
+export type FollowAuthorMutation = { __typename?: 'Mutation', followAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, about?: string | null, profileImage?: string | null } | null };
 
 export type UnfollowAuthorMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -317,7 +317,7 @@ export type UnfollowAuthorMutationVariables = Exact<{
 }>;
 
 
-export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null };
+export type UnfollowAuthorMutation = { __typename?: 'Mutation', unfollowAuthor?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null } | null };
 
 export type FavoriteNoteMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -866,6 +866,7 @@ export const FollowAuthorDocument = gql`
     fullName
     username
     email
+    about
     profileImage
   }
 }
@@ -903,6 +904,7 @@ export const UnfollowAuthorDocument = gql`
     id
     fullName
     username
+    about
     email
     profileImage
   }

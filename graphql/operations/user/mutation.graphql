@@ -38,6 +38,7 @@ mutation followAuthor($userId: Int!, $authorId: Int!) {
     fullName
     username
     email
+    about
     profileImage
   }
 }
@@ -47,6 +48,7 @@ mutation unfollowAuthor($userId: Int!, $authorId: Int!) {
     id
     fullName
     username
+    about
     email
     profileImage
   }
