@@ -29,6 +29,8 @@ fragment GetAuthorByUsernameUser on User {
   email
   profileImage
   notesCount
+  favorites
+  bookmarks
   createdAt
   latestNote {
     ...NotesQueryNote
@@ -40,6 +42,12 @@ fragment GetAuthorByUsernameUser on User {
     ...UserFollower
   }
   publishedNotes {
+    ...NotesQueryNote
+  }
+  userBookmarks {
+    ...NotesQueryNote
+  }
+  userFavorites {
     ...NotesQueryNote
   }
 }

@@ -9,6 +9,7 @@ import ProfileTabBookmarks from './Bookmarks';
 import ProfileTabHome from './Home';
 import ProfileTabAbout from './About';
 import { GetAuthorByUsernameUserFragment } from '../../../../generated/graphql';
+import ProfileTabFavorites from './Favorites';
 
 const StyledTabs = styled(Tabs)({
   borderBottom: '0.5px solid #ddd',
@@ -71,13 +72,15 @@ const ProfileTabs: React.FC<Props> = ({ user }) => {
           aria-label="ant example"
         >
           <StyledTab label="Home" />
-          <StyledTab label="Lists" />
+          <StyledTab label="Bookmarks" />
+          <StyledTab label="Favorites" />
           <StyledTab label="About" />
         </StyledTabs>
         <Box sx={{ p: 2 }} />
         {value === 0 && <ProfileTabHome user={user} />}
         {value === 1 && <ProfileTabBookmarks user={user} />}
-        {value === 2 && <ProfileTabAbout user={user} />}
+        {value === 2 && <ProfileTabFavorites user={user} />}
+        {value === 3 && <ProfileTabAbout user={user} />}
       </Box>
     </Box>
   );

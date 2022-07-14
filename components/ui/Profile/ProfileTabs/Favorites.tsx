@@ -7,14 +7,14 @@ type Props = {
   user: GetAuthorByUsernameUserFragment;
 };
 
-const ProfileTabBookmarks: React.FC<Props> = ({ user }) => {
-  const userBookmarks = user.userBookmarks;
+const ProfileTabFavorites: React.FC<Props> = ({ user }) => {
+  const userFavorites = user.userFavorites;
 
   return (
     <List disablePadding>
-      {(userBookmarks || []).map((note, i) => (
+      {(userFavorites || []).map((note, i) => (
         <HomeNoteListItem
-          shouldRenderDivider={(userBookmarks || []).length - 1 !== i}
+          shouldRenderDivider={(userFavorites || []).length - 1 !== i}
           note={note}
           key={note?.id}
         />
@@ -23,4 +23,4 @@ const ProfileTabBookmarks: React.FC<Props> = ({ user }) => {
   );
 };
 
-export default ProfileTabBookmarks;
+export default ProfileTabFavorites;
