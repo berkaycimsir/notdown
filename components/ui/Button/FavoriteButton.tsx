@@ -14,6 +14,7 @@ import {
   GetNoteByIdDocument,
   GetNoteByIdQuery,
   GetNoteByIdQueryVariables,
+  NotesQueryNoteFragment,
   useFavoriteNoteMutation,
   useUnfavoriteNoteMutation,
 } from '../../../generated/graphql';
@@ -32,20 +33,21 @@ const StyledUnfavoriteIcon = styled(StarRounded)(
 );
 
 type Props = {
-  favoriteCount: number;
-  noteId: number;
+  note: NotesQueryNoteFragment;
 };
 
-const FavoriteButton: React.FC<Props> = ({ favoriteCount, noteId }) => {
+const FavoriteButton: React.FC<Props> = ({ note }) => {
   const { me, updateMeQuery } = useMe();
 
   const [favoriteNote] = useFavoriteNoteMutation();
   const [unfavoriteNote] = useUnfavoriteNoteMutation();
   const { showModal } = useModalContext();
 
+  const noteId = note.id;
+  const favoritesCount = (note.favorites || []).length;
   const alreadyFavorited = Boolean(me?.favorites.find((id) => id === noteId));
 
-  if (!noteId || !me?.id) return null;
+  if (!noteId) return null;
 
   const onFavoriteClick = () => {
     if (!me) return;
@@ -66,6 +68,7 @@ const FavoriteButton: React.FC<Props> = ({ favoriteCount, noteId }) => {
           me: {
             ...me,
             favorites: unionBy([noteId], me.favorites),
+            userFavorites: unionBy([note], me.userFavorites),
           },
         });
 
@@ -117,6 +120,7 @@ const FavoriteButton: React.FC<Props> = ({ favoriteCount, noteId }) => {
           me: {
             ...me,
             favorites: me.favorites.filter((id) => id !== noteId),
+            userFavorites: me.userFavorites?.filter((n) => n?.id !== noteId),
           },
         });
 
@@ -157,7 +161,7 @@ const FavoriteButton: React.FC<Props> = ({ favoriteCount, noteId }) => {
         {alreadyFavorited ? <StyledUnfavoriteIcon /> : <StyledFavoriteIcon />}
       </IconButton>
       <Typography fontWeight="normal" color={grey[700]} variant="caption">
-        {favoriteCount}
+        {favoritesCount}
       </Typography>
     </Box>
   );

@@ -360,7 +360,7 @@ export type GetAuthorByUsernameUserFragment = { __typename?: 'User', id: number,
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, favorites: Array<number>, bookmarks: Array<number>, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, fullName: string, username: string, about?: string | null, email: string, profileImage?: string | null, followers: Array<number>, following: Array<number>, createdAt: any, favorites: Array<number>, bookmarks: Array<number>, userFollowers?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userFollowing?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null, about?: string | null } | null> | null, userBookmarks?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null, userFavorites?: Array<{ __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null> | null } | null };
 
 export type GetAuthorsByNameQueryVariables = Exact<{
   searchString: Scalars['String'];
@@ -1099,9 +1099,16 @@ export const MeDocument = gql`
     createdAt
     favorites
     bookmarks
+    userBookmarks {
+      ...NotesQueryNote
+    }
+    userFavorites {
+      ...NotesQueryNote
+    }
   }
 }
-    ${UserFollowerFragmentDoc}`;
+    ${UserFollowerFragmentDoc}
+${NotesQueryNoteFragmentDoc}`;
 
 /**
  * __useMeQuery__

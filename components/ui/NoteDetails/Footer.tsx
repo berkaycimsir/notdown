@@ -45,10 +45,7 @@ const NoteDetailsFooter: React.FC<Props> = ({ note }) => {
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box display="flex" flexDirection="row" alignItems="center">
-            <FavoriteButton
-              favoriteCount={note.favorites?.length || 0}
-              noteId={note.id}
-            />
+            <FavoriteButton note={note} />
             <IconButton sx={{ ml: 2, mr: 1 }} size="small">
               <StyledCommentIcon />
             </IconButton>
@@ -58,7 +55,7 @@ const NoteDetailsFooter: React.FC<Props> = ({ note }) => {
           </Box>
         </Box>
 
-        <NoteDetailsActions />
+        <NoteDetailsActions note={note} />
       </Box>
 
       <Divider

@@ -54,7 +54,7 @@ const NoteDetailsHeader: React.FC<Props> = ({ note }) => {
         </Box>
       </Box>
 
-      <NoteDetailsActions />
+      <NoteDetailsActions note={note} />
     </Box>
   );
 };

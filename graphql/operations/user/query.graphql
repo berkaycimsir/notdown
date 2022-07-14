@@ -63,6 +63,12 @@ query Me {
     createdAt
     favorites
     bookmarks
+    userBookmarks {
+      ...NotesQueryNote
+    }
+    userFavorites {
+      ...NotesQueryNote
+    }
   }
 }
 
