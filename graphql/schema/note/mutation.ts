@@ -1,3 +1,4 @@
+import { merge } from 'lodash';
 import {
   booleanArg,
   idArg,
@@ -5,6 +6,8 @@ import {
   nonNull,
   stringArg,
   list,
+  intArg,
+  nullable,
 } from 'nexus';
 import { NoteErrors } from './enum';
 
@@ -54,4 +57,56 @@ const CreateNoteMutation = mutationField('createNote', {
   },
 });
 
-export const NoteMutation = [CreateNoteMutation];
+const UpdateNoteMutation = mutationField('updateNote', {
+  type: nullable('Note'),
+  args: {
+    noteId: nonNull(intArg()),
+    newNote: nonNull('UpdateNoteNewNoteInput'),
+  },
+  resolve: async (_, { noteId, newNote }, { prisma }) => {
+    const note = await prisma.note.findFirst({ where: { id: noteId } });
+
+    if (!note) return null;
+
+    const updatedNote = await prisma.note.update({
+      where: { id: noteId },
+      data: merge(note, newNote),
+    });
+
+    if (!updatedNote) {
+      return null;
+    }
+
+    return updatedNote;
+  },
+});
+
+const RemoveNoteMutation = mutationField('removeNote', {
+  type: nonNull('Note'),
+  args: {
+    noteId: nonNull(intArg()),
+  },
+  resolve: async (_, { noteId }, { prisma }) => {
+    return await prisma.note.delete({ where: { id: noteId } });
+  },
+});
+
+const PublishNoteMutation = mutationField('publishNote', {
+  type: nonNull('Note'),
+  args: {
+    noteId: nonNull(intArg()),
+  },
+  resolve: async (_, { noteId }, { prisma }) => {
+    return await prisma.note.update({
+      where: { id: noteId },
+      data: { isPublished: true },
+    });
+  },
+});
+
+export const NoteMutation = [
+  CreateNoteMutation,
+  RemoveNoteMutation,
+  PublishNoteMutation,
+  UpdateNoteMutation,
+];

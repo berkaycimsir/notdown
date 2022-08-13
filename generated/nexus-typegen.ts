@@ -29,6 +29,12 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  UpdateNoteNewNoteInput: { // input type
+    markdown?: string | null; // String
+    summary?: string | null; // String
+    tags?: Array<string | null> | null; // [String]
+    title?: string | null; // String
+  }
   UpdateUserNewUserInput: { // input type
     about?: string | null; // String
     email?: string | null; // String
@@ -114,10 +120,13 @@ export interface NexusGenFieldTypes {
     createUser: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
     favoriteNote: NexusGenRootTypes['User'] | null; // User
     followAuthor: NexusGenRootTypes['User'] | null; // User
+    publishNote: NexusGenRootTypes['Note']; // Note!
+    removeNote: NexusGenRootTypes['Note']; // Note!
     signIn: NexusGenRootTypes['AuthMutationReturnType']; // AuthMutationReturnType!
     unbookmarkNote: NexusGenRootTypes['User'] | null; // User
     unfavoriteNote: NexusGenRootTypes['User'] | null; // User
     unfollowAuthor: NexusGenRootTypes['User'] | null; // User
+    updateNote: NexusGenRootTypes['Note'] | null; // Note
     updateUserProfile: NexusGenRootTypes['User'] | null; // User
   }
   Note: { // field return type
@@ -183,10 +192,13 @@ export interface NexusGenFieldTypeNames {
     createUser: 'AuthMutationReturnType'
     favoriteNote: 'User'
     followAuthor: 'User'
+    publishNote: 'Note'
+    removeNote: 'Note'
     signIn: 'AuthMutationReturnType'
     unbookmarkNote: 'User'
     unfavoriteNote: 'User'
     unfollowAuthor: 'User'
+    updateNote: 'Note'
     updateUserProfile: 'User'
   }
   Note: { // field return type name
@@ -265,6 +277,12 @@ export interface NexusGenArgTypes {
       authorId: number; // Int!
       userId: number; // Int!
     }
+    publishNote: { // args
+      noteId: number; // Int!
+    }
+    removeNote: { // args
+      noteId: number; // Int!
+    }
     signIn: { // args
       email?: string | null; // String
       password: string; // String!
@@ -281,6 +299,10 @@ export interface NexusGenArgTypes {
     unfollowAuthor: { // args
       authorId: number; // Int!
       userId: number; // Int!
+    }
+    updateNote: { // args
+      newNote: NexusGenInputs['UpdateNoteNewNoteInput']; // UpdateNoteNewNoteInput!
+      noteId: number; // Int!
     }
     updateUserProfile: { // args
       newUser: NexusGenInputs['UpdateUserNewUserInput']; // UpdateUserNewUserInput!

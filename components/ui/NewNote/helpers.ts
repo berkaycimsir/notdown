@@ -1,52 +1,12 @@
-import { unionBy } from 'lodash';
-import {
-  CreateNoteMutationNoteFragment,
-  GetPublishedNotesDocument,
-  GetPublishedNotesQuery,
-  GetPublishedNotesQueryVariables,
-  GetSavedNotesDocument,
-  GetSavedNotesQuery,
-  GetSavedNotesQueryVariables,
-  NoteErrors,
-} from '../../../generated/graphql';
-import { cache } from '../../../graphql/client';
-
-const updatePublishedNotes = (
-  authorId: string,
-  createdNote: CreateNoteMutationNoteFragment
-): void => {
-  cache.updateQuery<GetPublishedNotesQuery, GetPublishedNotesQueryVariables>(
-    {
-      query: GetPublishedNotesDocument,
-      variables: { authorId },
-    },
-    (prev) => ({
-      ...prev,
-      getPublishedNotes: unionBy([createdNote], prev?.getPublishedNotes, 'id'),
-    })
-  );
-};
-
-const updateSavedNotes = (
-  authorId: string,
-  createdNote: CreateNoteMutationNoteFragment
-): void => {
-  cache.updateQuery<GetSavedNotesQuery, GetSavedNotesQueryVariables>(
-    {
-      query: GetSavedNotesDocument,
-      variables: { authorId },
-    },
-    (prev) => ({
-      ...prev,
-      getSavedNotes: unionBy([createdNote], prev?.getSavedNotes, 'id'),
-    })
-  );
-};
+import { NoteErrors } from '../../../generated/graphql';
 
 const getErrorMessage = (
   error: NoteErrors | null | undefined,
-  isPublished: boolean
+  isPublished: boolean,
+  editMode: boolean
 ): string => {
+  if (editMode) return 'Your note was updated successfully.';
+
   switch (error) {
     case NoteErrors.UserDoesNotExists:
       return "Couldn't find the author. Please try again!";
@@ -59,4 +19,4 @@ const getErrorMessage = (
   }
 };
 
-export { updatePublishedNotes, updateSavedNotes, getErrorMessage };
+export { getErrorMessage };

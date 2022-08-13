@@ -5,10 +5,12 @@ type EditorState = {
   markdown: string;
   summary: string;
   tags: Array<string>;
+  editing: { noteId: number | undefined };
   setMarkdown: (newValue: string) => void;
   setTitle: (newValue: string) => void;
   setSummary: (newValue: string) => void;
   setTags: (newTags: Array<string>) => void;
+  setEditing: (newValue: { noteId: number | undefined }) => void;
   clear: () => void;
 };
 
@@ -16,6 +18,7 @@ const initialState = {
   title: '',
   markdown: '> Tell about your story...',
   summary: '',
+  editing: { noteId: undefined },
   tags: [],
 };
 
@@ -34,6 +37,9 @@ export const useEditorStateStore = createPersistentStore({
   },
   setTags: (newTags: Array<string>) => {
     set((prev) => ({ ...prev, tags: newTags }));
+  },
+  setEditing: (newValue: { noteId: number | undefined }) => {
+    set((prev) => ({ ...prev, editing: newValue }));
   },
   clear: () =>
     set((prev) => ({

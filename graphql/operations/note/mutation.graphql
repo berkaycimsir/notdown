@@ -45,3 +45,21 @@ mutation CreateNote(
     error
   }
 }
+
+mutation updateNote($newNote: UpdateNoteNewNoteInput!, $noteId: Int!) {
+  updateNote(newNote: $newNote, noteId: $noteId) {
+    ...CreateNoteMutationNote
+  }
+}
+
+mutation RemoveNote($noteId: Int!) {
+  removeNote(noteId: $noteId) {
+    id
+  }
+}
+
+mutation PublishNote($noteId: Int!) {
+  publishNote(noteId: $noteId) {
+    id
+  }
+}

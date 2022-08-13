@@ -29,10 +29,13 @@ type Mutation {
   createUser(email: String!, fullName: String!, password: String!, username: String!): AuthMutationReturnType!
   favoriteNote(noteId: Int!, userId: Int!): User
   followAuthor(authorId: Int!, userId: Int!): User
+  publishNote(noteId: Int!): Note!
+  removeNote(noteId: Int!): Note!
   signIn(email: String, password: String!, username: String): AuthMutationReturnType!
   unbookmarkNote(noteId: Int!, userId: Int!): User
   unfavoriteNote(noteId: Int!, userId: Int!): User
   unfollowAuthor(authorId: Int!, userId: Int!): User
+  updateNote(newNote: UpdateNoteNewNoteInput!, noteId: Int!): Note
   updateUserProfile(newUser: UpdateUserNewUserInput!, userId: Int!): User
 }
 
@@ -65,6 +68,13 @@ type Query {
   getSavedNotes(authorId: ID!): [Note]
   hello(name: String!): String!
   me: User
+}
+
+input UpdateNoteNewNoteInput {
+  markdown: String
+  summary: String
+  tags: [String]
+  title: String
 }
 
 input UpdateUserNewUserInput {

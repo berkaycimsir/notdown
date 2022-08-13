@@ -42,10 +42,13 @@ export type Mutation = {
   createUser: AuthMutationReturnType;
   favoriteNote?: Maybe<User>;
   followAuthor?: Maybe<User>;
+  publishNote: Note;
+  removeNote: Note;
   signIn: AuthMutationReturnType;
   unbookmarkNote?: Maybe<User>;
   unfavoriteNote?: Maybe<User>;
   unfollowAuthor?: Maybe<User>;
+  updateNote?: Maybe<Note>;
   updateUserProfile?: Maybe<User>;
 };
 
@@ -86,6 +89,16 @@ export type MutationFollowAuthorArgs = {
 };
 
 
+export type MutationPublishNoteArgs = {
+  noteId: Scalars['Int'];
+};
+
+
+export type MutationRemoveNoteArgs = {
+  noteId: Scalars['Int'];
+};
+
+
 export type MutationSignInArgs = {
   email?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
@@ -108,6 +121,12 @@ export type MutationUnfavoriteNoteArgs = {
 export type MutationUnfollowAuthorArgs = {
   authorId: Scalars['Int'];
   userId: Scalars['Int'];
+};
+
+
+export type MutationUpdateNoteArgs = {
+  newNote: UpdateNoteNewNoteInput;
+  noteId: Scalars['Int'];
 };
 
 
@@ -189,6 +208,13 @@ export type QueryHelloArgs = {
   name: Scalars['String'];
 };
 
+export type UpdateNoteNewNoteInput = {
+  markdown?: InputMaybe<Scalars['String']>;
+  summary?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateUserNewUserInput = {
   about?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
@@ -233,6 +259,28 @@ export type CreateNoteMutationVariables = Exact<{
 
 
 export type CreateNoteMutation = { __typename?: 'Mutation', createNote: { __typename?: 'CreateNoteMutationReturnType', error?: NoteErrors | null, note?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null } };
+
+export type UpdateNoteMutationVariables = Exact<{
+  newNote: UpdateNoteNewNoteInput;
+  noteId: Scalars['Int'];
+}>;
+
+
+export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote?: { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null } | null };
+
+export type RemoveNoteMutationVariables = Exact<{
+  noteId: Scalars['Int'];
+}>;
+
+
+export type RemoveNoteMutation = { __typename?: 'Mutation', removeNote: { __typename?: 'Note', id: number } };
+
+export type PublishNoteMutationVariables = Exact<{
+  noteId: Scalars['Int'];
+}>;
+
+
+export type PublishNoteMutation = { __typename?: 'Mutation', publishNote: { __typename?: 'Note', id: number } };
 
 export type NotesQueryNoteFragment = { __typename?: 'Note', id: number, markdown: string, title: string, summary: string, isPublished: boolean, updatedAt: any, createdAt: any, tags: Array<string>, author: { __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null }, favorites?: Array<{ __typename?: 'User', id: number, fullName: string, username: string, email: string, profileImage?: string | null } | null> | null };
 
@@ -534,6 +582,106 @@ export function useCreateNoteMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateNoteMutationHookResult = ReturnType<typeof useCreateNoteMutation>;
 export type CreateNoteMutationResult = Apollo.MutationResult<CreateNoteMutation>;
 export type CreateNoteMutationOptions = Apollo.BaseMutationOptions<CreateNoteMutation, CreateNoteMutationVariables>;
+export const UpdateNoteDocument = gql`
+    mutation updateNote($newNote: UpdateNoteNewNoteInput!, $noteId: Int!) {
+  updateNote(newNote: $newNote, noteId: $noteId) {
+    ...CreateNoteMutationNote
+  }
+}
+    ${CreateNoteMutationNoteFragmentDoc}`;
+export type UpdateNoteMutationFn = Apollo.MutationFunction<UpdateNoteMutation, UpdateNoteMutationVariables>;
+
+/**
+ * __useUpdateNoteMutation__
+ *
+ * To run a mutation, you first call `useUpdateNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNoteMutation, { data, loading, error }] = useUpdateNoteMutation({
+ *   variables: {
+ *      newNote: // value for 'newNote'
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useUpdateNoteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNoteMutation, UpdateNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateNoteMutation, UpdateNoteMutationVariables>(UpdateNoteDocument, options);
+      }
+export type UpdateNoteMutationHookResult = ReturnType<typeof useUpdateNoteMutation>;
+export type UpdateNoteMutationResult = Apollo.MutationResult<UpdateNoteMutation>;
+export type UpdateNoteMutationOptions = Apollo.BaseMutationOptions<UpdateNoteMutation, UpdateNoteMutationVariables>;
+export const RemoveNoteDocument = gql`
+    mutation RemoveNote($noteId: Int!) {
+  removeNote(noteId: $noteId) {
+    id
+  }
+}
+    `;
+export type RemoveNoteMutationFn = Apollo.MutationFunction<RemoveNoteMutation, RemoveNoteMutationVariables>;
+
+/**
+ * __useRemoveNoteMutation__
+ *
+ * To run a mutation, you first call `useRemoveNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeNoteMutation, { data, loading, error }] = useRemoveNoteMutation({
+ *   variables: {
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function useRemoveNoteMutation(baseOptions?: Apollo.MutationHookOptions<RemoveNoteMutation, RemoveNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveNoteMutation, RemoveNoteMutationVariables>(RemoveNoteDocument, options);
+      }
+export type RemoveNoteMutationHookResult = ReturnType<typeof useRemoveNoteMutation>;
+export type RemoveNoteMutationResult = Apollo.MutationResult<RemoveNoteMutation>;
+export type RemoveNoteMutationOptions = Apollo.BaseMutationOptions<RemoveNoteMutation, RemoveNoteMutationVariables>;
+export const PublishNoteDocument = gql`
+    mutation PublishNote($noteId: Int!) {
+  publishNote(noteId: $noteId) {
+    id
+  }
+}
+    `;
+export type PublishNoteMutationFn = Apollo.MutationFunction<PublishNoteMutation, PublishNoteMutationVariables>;
+
+/**
+ * __usePublishNoteMutation__
+ *
+ * To run a mutation, you first call `usePublishNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishNoteMutation, { data, loading, error }] = usePublishNoteMutation({
+ *   variables: {
+ *      noteId: // value for 'noteId'
+ *   },
+ * });
+ */
+export function usePublishNoteMutation(baseOptions?: Apollo.MutationHookOptions<PublishNoteMutation, PublishNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PublishNoteMutation, PublishNoteMutationVariables>(PublishNoteDocument, options);
+      }
+export type PublishNoteMutationHookResult = ReturnType<typeof usePublishNoteMutation>;
+export type PublishNoteMutationResult = Apollo.MutationResult<PublishNoteMutation>;
+export type PublishNoteMutationOptions = Apollo.BaseMutationOptions<PublishNoteMutation, PublishNoteMutationVariables>;
 export const GetSavedNotesDocument = gql`
     query GetSavedNotes($authorId: ID!) {
   getSavedNotes(authorId: $authorId) {

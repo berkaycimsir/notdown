@@ -3,7 +3,9 @@ import { Box, IconButton, experimental_sx as sx, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React from 'react';
 import { NotesQueryNoteFragment } from '../../../generated/graphql';
+import useMe from '../../../hooks/useMe';
 import BookmarkButton from '../Button/BookmarkButton';
+import NoteActions from '../Notes/Actions';
 
 const StyledMoreIcon = styled(MoreHorizRounded)(
   sx({
@@ -19,12 +21,14 @@ type Props = {
 };
 
 const NoteDetailsActions: React.FC<Props> = ({ note }) => {
+  const { me } = useMe();
+
+  const myNote = me?.id === note.author.id;
+
   return (
     <Box>
-      <BookmarkButton note={note} />
-      <IconButton sx={{ ml: 2 }} size="small">
-        <StyledMoreIcon />
-      </IconButton>
+      {!myNote && <BookmarkButton note={note} />}
+      {myNote && <NoteActions note={note} />}
     </Box>
   );
 };

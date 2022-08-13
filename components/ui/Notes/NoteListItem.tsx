@@ -5,6 +5,7 @@ import {
   Divider,
   styled,
   experimental_sx as sx,
+  ListItemSecondaryAction,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { useRouter } from 'next/router';
@@ -12,6 +13,7 @@ import React from 'react';
 import { NotesQueryNoteFragment } from '../../../generated/graphql';
 import { timeAgo } from '../../../utils/date';
 import { readingTime, wordCount } from '../../../utils/markdown';
+import NoteActions from './Actions';
 
 type Props = {
   shouldRenderDivider: boolean;
@@ -79,6 +81,11 @@ const NoteListItem: React.FC<Props> = ({ shouldRenderDivider, note }) => {
             </React.Fragment>
           }
         />
+        {note && (
+          <ListItemSecondaryAction>
+            <NoteActions note={note} />
+          </ListItemSecondaryAction>
+        )}
       </ListItem>
       {note?.tags.map((tag) => (
         <StyledTags variant="caption" key={tag}>

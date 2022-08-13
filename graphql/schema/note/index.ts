@@ -1,5 +1,5 @@
 import { Note } from 'nexus-prisma';
-import { list, objectType } from 'nexus';
+import { inputObjectType, list, objectType } from 'nexus';
 import { NoteMutation } from './mutation';
 import { NoteEnums } from './enum';
 import { NoteQuery } from './query';
@@ -44,9 +44,20 @@ const CreateNoteMutationReturnType = objectType({
   },
 });
 
+const UpdateNoteNewNoteInput = inputObjectType({
+  name: 'UpdateNoteNewNoteInput',
+  definition(t) {
+    t.nullable.string('title');
+    t.nullable.string('markdown');
+    t.nullable.string('summary');
+    t.nullable.list.string('tags');
+  },
+});
+
 export const NoteTypes = [
   NoteType,
   CreateNoteMutationReturnType,
+  UpdateNoteNewNoteInput,
   ...NoteMutation,
   ...NoteQuery,
   ...NoteEnums,

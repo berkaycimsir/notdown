@@ -1,4 +1,4 @@
-import { ArrowBackRounded, MoreHorizRounded } from '@mui/icons-material';
+import { ArrowBackRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   Box,
@@ -11,14 +11,15 @@ import { green } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useToastsContext } from '../../../contexts/toasts';
-import { useCreateNoteMutation } from '../../../generated/graphql';
+import {
+  GetPublishedNotesDocument,
+  GetSavedNotesDocument,
+  useCreateNoteMutation,
+  useUpdateNoteMutation,
+} from '../../../generated/graphql';
 import useMe from '../../../hooks/useMe';
 import { useEditorStateStore } from '../../../store/editor-state';
-import {
-  getErrorMessage,
-  updatePublishedNotes,
-  updateSavedNotes,
-} from './helpers';
+import { getErrorMessage } from './helpers';
 import MoreOptions from './MoreOptions';
 
 const StyledContainer = styled(Box)(
@@ -52,11 +53,13 @@ const StyledButton = styled(LoadingButton)(
 
 const EditorHeader = () => {
   const { me } = useMe();
-  const { title, markdown, summary, tags, clear } = useEditorStateStore();
+  const { title, markdown, summary, tags, clear, editing, setEditing } =
+    useEditorStateStore();
   const { showToast } = useToastsContext();
   const router = useRouter();
 
   const [createNote, { loading }] = useCreateNoteMutation();
+  const [updateNote, { loading: updateNoteLoading }] = useUpdateNoteMutation();
 
   const isEmpty = React.useMemo(
     () => title === '' || markdown === '' || summary === '',
@@ -75,45 +78,83 @@ const EditorHeader = () => {
         return;
       }
 
-      const { data } = await createNote({
-        variables: {
-          title,
-          markdown,
-          summary,
-          tags,
-          userId: String(me.id),
-          isPublished,
-        },
-        update: (_, { data: mutationData }) => {
-          const createdNote = mutationData?.createNote.note;
-          if (!createdNote) return;
-          if (isPublished) updatePublishedNotes(String(me.id), createdNote);
-          if (!isPublished) updateSavedNotes(String(me.id), createdNote);
-        },
-      });
+      if (editing.noteId) {
+        await updateNote({
+          variables: {
+            noteId: editing.noteId,
+            newNote: {
+              title,
+              markdown,
+              summary,
+              tags,
+            },
+          },
+          refetchQueries: [
+            {
+              query: GetSavedNotesDocument,
+              variables: { authorId: String(me.id) },
+            },
+            {
+              query: GetPublishedNotesDocument,
+              variables: { authorId: String(me.id) },
+            },
+          ],
+        });
 
-      const error = data?.createNote?.error;
+        showToast({
+          type: 'success',
+          message: getErrorMessage(null, isPublished, true),
+        });
 
-      showToast({
-        type: error ? 'error' : 'success',
-        message: getErrorMessage(error, isPublished),
-      });
+        router.push(`/notes/${editing.noteId}`);
+        setEditing({ noteId: undefined });
+      } else {
+        const { data } = await createNote({
+          variables: {
+            title,
+            markdown,
+            summary,
+            tags,
+            userId: String(me.id),
+            isPublished,
+          },
+          refetchQueries: [
+            {
+              query: GetSavedNotesDocument,
+              variables: { authorId: String(me.id) },
+            },
+            {
+              query: GetPublishedNotesDocument,
+              variables: { authorId: String(me.id) },
+            },
+          ],
+        });
 
-      if (!error) {
-        clear();
+        const error = data?.createNote?.error;
+
+        showToast({
+          type: error ? 'error' : 'success',
+          message: getErrorMessage(error, isPublished, false),
+        });
+
         router.push(`/notes/${data?.createNote?.note?.id}`);
       }
+
+      clear();
     },
     [
       me,
       isEmpty,
-      createNote,
+      editing.noteId,
+      showToast,
+      updateNote,
       title,
       markdown,
       summary,
       tags,
-      showToast,
+      createNote,
       clear,
+      setEditing,
       router,
     ]
   );
@@ -135,7 +176,7 @@ const EditorHeader = () => {
         disableFocusRipple
         disableRipple
         disableTouchRipple
-        loading={loading}
+        loading={loading || updateNoteLoading}
         size="small"
         variant="contained"
       >
